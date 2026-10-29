@@ -15,7 +15,7 @@ namespace GrandNavigation.Gunnery
             if(!prediction.Valid) return false;
             if(!initialized || aimTarget!=prediction.selection.LockedTarget)
             {
-                PlayerAimPoint=prediction.PredictedIntercept; PlayerAimPoint=new Vector3(PlayerAimPoint.x,0,PlayerAimPoint.z);
+                PlayerAimPoint=prediction.InitialAimNearRegion(); PlayerAimPoint=new Vector3(PlayerAimPoint.x,0,PlayerAimPoint.z);
                 aimTarget=prediction.selection.LockedTarget; initialized=true;
             }
             forward=PlayerAimPoint-prediction.fireControl.position; forward.y=0; forward.Normalize();
