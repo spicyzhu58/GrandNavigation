@@ -93,22 +93,16 @@ namespace GrandNavigation.Gunnery
         {
             Initialize(); var select=session.selection; var prediction=session.prediction; var aim=session.aim;
             GUI.Box(new Rect(12,12,355,208),"");
-            GUI.Label(new Rect(24,20,335,30),"GUNNERY | CALIBRATION",big);
-            string target=select.HasTarget ? session.ActiveTarget.callsign+"  |  "+Vector3.Distance(prediction.fireControl.position,select.TargetPosition).ToString("F0")+" m" : "NO LOCK";
+            GUI.Label(new Rect(24,20,335,30),"GRAND NAVIGATION | V0.2",big);
+            string target=select.HasTarget ? "TargetShip  |  "+Vector3.Distance(prediction.fireControl.position,select.TargetPosition).ToString("F0")+" m" : "NO LOCK";
             GUI.Label(new Rect(24,54,330,28),target,label);
-            GUI.Label(new Rect(24,82,330,48),prediction.Status+(prediction.Valid ? "\nObservation age "+prediction.SampleAge.ToString("F1")+" s  /  delay "+prediction.observationLatency.ToString("F1")+" s" : ""),label);
-            GUI.Label(new Rect(24,130,330,50),"Sampled speed "+prediction.SampledTargetVelocity.magnitude.ToString("F1")+" m/s\n"+(aim.IsAiming ? "Observe splashes, then correct cyan aim." : session.Notice),label);
+            GUI.Label(new Rect(24,82,330,48),prediction.Status+(prediction.Valid ? "\nObservation age "+prediction.SampleAge.ToString("F1")+" / "+prediction.fireControlUpdateInterval.ToString("F1")+" s" : ""),label);
+            GUI.Label(new Rect(24,130,330,50),session.target.mode+" | "+session.target.Velocity.magnitude.ToString("F1")+" m/s\n"+(aim.IsAiming ? "Observe splashes, then correct cyan aim." : session.Notice),label);
             if(!aim.IsAiming && GUI.Button(new Rect(24,184,130,26),"Reset [R]")) session.ResetBattle();
             GUI.Label(new Rect(170,184,180,26),aim.IsAiming?"AIM VIEW":"OVERVIEW",label);
             GUI.Box(new Rect(12,Screen.height-76,Screen.width-24,64),"");
             GUI.Label(new Rect(24,Screen.height-70,Screen.width-48,56),
-                "LMB: lock / salvo   RMB: aim / overview   Wheel: zoom   Esc: unlock   R: reset\nTab: next ship   A: constant   B: throttle   C: throttle + turn   Yellow: estimate   Cyan: YOUR landing point",label);
-            if(session.targets!=null) foreach(var ship in session.targets)
-            {
-                if(!ship || !ship.gameObject.activeInHierarchy || !ship.GetComponent<Health>().IsAlive) continue;
-                if(ship.GetComponent<Health>()!=select.LockedTarget && Project(ship.transform.position+Vector3.up*10,out var labelPoint))
-                    GUI.Label(new Rect(labelPoint.x-70,labelPoint.y-20,180,24),ship.callsign,label);
-            }
+                "LMB: lock / salvo   RMB: aim / overview   Wheel: zoom   Esc: unlock   R: reset\n1: stop   2: lateral 8   3: diagonal 12   4: maneuver 10 m/s   Yellow: uncertain area   Blue: YOUR impact point",label);
             // Prediction is rendered only as an area: no precise centre marker.
             if(aim.IsAiming) Marker(aim.PlayerAimPoint+Vector3.up*.2f,Color.cyan,true);
             if(select.HasTarget && Project(select.TargetPosition+Vector3.up*4,out var p))

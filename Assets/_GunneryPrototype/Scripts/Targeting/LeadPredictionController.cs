@@ -11,11 +11,6 @@ namespace GrandNavigation.Gunnery
         [Min(.01f)] public float gravity=9.81f;
         [Min(1)] public float maxRange=250;
         [Min(.05f)] public float fireControlUpdateInterval=2.5f;
-        [Header("Observation quality (zero latency retains laboratory mode)")]
-        [Min(0)] public float observationLatency=0;
-        public bool useOpticalObservations=false;
-        [Min(0)] public float rangeResolution=8, bearingResolutionDegrees=2;
-        public bool IsAcquiring { get; private set; }
         [Header("Uncertainty region (metres; independent of gun dispersion)")]
         [Min(.1f)] public float baseLongitudinalRadius=8, baseLateralRadius=5;
         [Min(.1f)] public float minRadius=3, maxRadius=18;
@@ -37,7 +32,7 @@ namespace GrandNavigation.Gunnery
         public float ObservedTurnDegrees => active?.ObservedTurnDegrees ?? 0;
         public int SampleCount => active?.ObservationCount ?? 0;
         public int CachedTargetCount => tracks.Count;
-        readonly Dictionary<Health,FireControlObservationBuffer> tracks=new Dictionary<Health,FireControlObservationBuffer>();
+        readonly Dictionary<Health,FireControlTrack> tracks=new Dictionary<Health,FireControlTrack>();
         readonly List<Health> invalidTargets=new List<Health>();
         FireControlTrack active;
         double lastTime=double.NegativeInfinity;
@@ -81,7 +76,7 @@ namespace GrandNavigation.Gunnery
         // Explicit clock also makes pause, slow motion and observation boundaries testable.
         public void RefreshAt(double now)
         {
-            Valid=false; IsAcquiring=false; FlightTime=0; SampleAge=0; active=null; PredictedIntercept=Vector3.zero;
+            Valid=false; FlightTime=0; SampleAge=0; active=null; PredictedIntercept=Vector3.zero;
             if(!FireControlTrack.FiniteTime(now)) { Status="INVALID CLOCK"; return; }
             if(now<lastTime) tracks.Clear();
             lastTime=now;
@@ -90,24 +85,21 @@ namespace GrandNavigation.Gunnery
             foreach(var key in invalidTargets) tracks.Remove(key);
             if(!selection || !selection.HasTarget || !fireControl) { Status="NO TARGET - click the orange ship"; return; }
             Health target=selection.LockedTarget;
-            if(!tracks.TryGetValue(target,out var buffer)) { buffer=new FireControlObservationBuffer(); tracks.Add(target,buffer); }
-            bool available=buffer.Update(now,fireControlUpdateInterval,observationLatency,useOpticalObservations,
-                rangeResolution,bearingResolutionDegrees,fireControl.position,()=>target.transform.position,()=>
+            if(!tracks.TryGetValue(target,out active)) { active=new FireControlTrack(); tracks.Add(target,active); }
+            if(!active.UpdateObservation(now,fireControlUpdateInterval,()=>target.transform.position,()=>
             {
                 var motion=target.GetComponent<TargetMotion>();
                 return motion ? motion.Velocity : Vector3.zero;
-            });
-            active=buffer.Track;
-            if(!available) { IsAcquiring=true; Status="RANGEFINDING - observing target"; return; }
+            })) { Status="INVALID OBSERVATION"; return; }
             SampleAge=active.Age(now);
             if(active.Predict(now,fireControl.position,muzzleSpeed,gravity,maxRange,out var point,out var t))
-            { PredictedIntercept=point; FlightTime=t; Valid=true; Status=useOpticalObservations && SampleCount<2 ? "BUILDING MOTION TRACK" : useOpticalObservations && SampleAge>=fireControlUpdateInterval ? "STALE ESTIMATE - correct from splashes" : "COARSE FIRE CONTROL"; }
+            { PredictedIntercept=point; FlightTime=t; Valid=true; Status="FIRE CONTROL ESTIMATE"; }
             else Status="NO INTERCEPT / OUT OF RANGE";
         }
         // Debug battle reset starts a new engagement; ordinary unlock/relock never clears live-target history.
         public void ClearSamples()
         {
-            tracks.Clear(); active=null; displayedTarget=null; Valid=false; IsAcquiring=false; SampleAge=0; FlightTime=0; PredictedIntercept=Vector3.zero;
+            tracks.Clear(); active=null; displayedTarget=null; Valid=false; SampleAge=0; FlightTime=0; PredictedIntercept=Vector3.zero;
             lastTime=double.NegativeInfinity;
         }
         void OnDisable() { if(selection) selection.SelectionChanged-=Refresh; ClearSamples(); }

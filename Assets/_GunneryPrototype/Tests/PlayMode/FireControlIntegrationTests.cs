@@ -18,7 +18,7 @@ namespace GrandNavigation.Gunnery.Tests
                 new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single));
 #endif
             yield return null;
-            s=Object.FindFirstObjectByType<PrototypeSession>(); LaboratoryProfile.Apply(s); weapons=s.GetComponent<WeaponManager>();
+            s=Object.FindFirstObjectByType<PrototypeSession>(); weapons=s.GetComponent<WeaponManager>();
             s.target.SetMode(TargetMotion.MotionMode.Stationary,0); s.ResetBattle();
             s.selection.Select(s.target.GetComponent<Health>()); Assert.IsTrue(s.aim.Begin());
             aimForward=s.aim.PlayerAimPoint-s.prediction.fireControl.position; aimForward.y=0; aimForward.Normalize();
