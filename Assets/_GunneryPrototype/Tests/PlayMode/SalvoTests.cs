@@ -18,7 +18,7 @@ namespace GrandNavigation.Gunnery.Tests
                 new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single));
 #endif
             yield return null;
-            session=Object.FindFirstObjectByType<PrototypeSession>();
+            session=Object.FindFirstObjectByType<PrototypeSession>(); LaboratoryProfile.Apply(session);
             Assert.IsNotNull(session); weapons=session.GetComponent<WeaponManager>(); hp=session.target.GetComponent<Health>();
             session.target.SetMode(TargetMotion.MotionMode.Stationary,0); session.ResetBattle();
             session.selection.Select(hp); Assert.IsTrue(session.aim.Begin());

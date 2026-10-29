@@ -4,7 +4,7 @@ namespace GrandNavigation.Gunnery
     [RequireComponent(typeof(Health),typeof(Rigidbody))]
     public class TargetMotion : MonoBehaviour
     {
-        public enum MotionMode { Stationary, Lateral, Diagonal, Maneuvering }
+        public enum MotionMode { Stationary, Lateral, Diagonal, Maneuvering, PatrolLinear, VariableSpeed, VariableManeuver }
         public enum TurnPattern { Sequence, Alternating, LeftOnly, RightOnly }
         public MotionMode mode=MotionMode.Lateral;
         [Min(0)] public float speed=8;
@@ -17,6 +17,15 @@ namespace GrandNavigation.Gunnery
         [Range(0,180)] public float turnAngle=15;
         public TurnPattern turnPattern=TurnPattern.Sequence;
         public float[] turnSequence={-15,20};
+        [Header("Combat training profiles")]
+        public string callsign="Target";
+        public Vector2 patrolX=new Vector2(-95,95), patrolZ=new Vector2(100,220);
+        [Min(.1f)] public float acceleration=2.5f, speedStageDuration=4.2f;
+        public float[] speedSequence={5,14,7,12};
+        [Min(0)] public float speedPhaseOffset=0;
+        [Range(0,360)] public float spawnHeading=90;
+        public float CurrentSpeed { get; private set; }
+        float throttleTime;
         public bool IsTurning { get; private set; }
         public int SequenceIndex { get; private set; }
         Rigidbody body; Health health; bool boundaryStopped;
@@ -26,8 +35,9 @@ namespace GrandNavigation.Gunnery
         float Safe(float v,float fallback) => BallisticSolver.Finite(v)?v:fallback;
         public Vector3 Velocity => !health || !health.IsAlive || boundaryStopped ? Vector3.zero :
             mode==MotionMode.Stationary ? Vector3.zero :
-            mode==MotionMode.Maneuvering ? maneuverVelocity :
+            (mode==MotionMode.Maneuvering || IsTrainingProfile) ? maneuverVelocity :
             (mode==MotionMode.Lateral ? Vector3.right : new Vector3(1,0,-.5f).normalized)*Mathf.Max(0,Safe(speed,0));
+        public bool IsTrainingProfile => mode==MotionMode.PatrolLinear || mode==MotionMode.VariableSpeed || mode==MotionMode.VariableManeuver;
         void Awake()
         {
             body=GetComponent<Rigidbody>(); health=GetComponent<Health>(); body.isKinematic=true; body.useGravity=false;
@@ -36,8 +46,8 @@ namespace GrandNavigation.Gunnery
         void ResetManeuver()
         {
             heading=transform.eulerAngles.y; phaseTime=0; SequenceIndex=0; IsTurning=false;
-            previousMode=mode;
-            maneuverVelocity=Quaternion.Euler(0,heading,0)*Vector3.forward*Mathf.Max(0,Safe(maneuverSpeed,10));
+            previousMode=mode; throttleTime=0; CurrentSpeed=Mathf.Max(0,Safe(mode==MotionMode.PatrolLinear?speed:maneuverSpeed,10));
+            maneuverVelocity=Quaternion.Euler(0,heading,0)*Vector3.forward*CurrentSpeed;
         }
         float NextTurn()
         {
@@ -74,6 +84,31 @@ namespace GrandNavigation.Gunnery
             }
             if(previousMode!=mode) { boundaryStopped=false; ResetManeuver(); }
             float dt=Time.fixedDeltaTime;
+            if(IsTrainingProfile)
+            {
+                if(mode==MotionMode.VariableManeuver) AdvanceHeading(dt);
+                float wanted=Mathf.Max(0,Safe(speed,8));
+                if(mode!=MotionMode.PatrolLinear)
+                {
+                    float stage=Mathf.Max(.1f,Safe(speedStageDuration,4.2f));
+                    int index=Mathf.FloorToInt((throttleTime+Mathf.Max(0,speedPhaseOffset))/stage);
+                    wanted=speedSequence!=null && speedSequence.Length>0 ? Mathf.Clamp(Safe(speedSequence[index%speedSequence.Length],8),0,20) : 8;
+                }
+                CurrentSpeed=Mathf.MoveTowards(CurrentSpeed,wanted,Mathf.Max(.1f,Safe(acceleration,2.5f))*dt);
+                throttleTime+=dt;
+                Vector3 direction=Quaternion.Euler(0,heading,0)*Vector3.forward;
+                Vector3 old=body.position,next=old+direction*CurrentSpeed*dt;
+                float xmin=Mathf.Min(patrolX.x,patrolX.y),xmax=Mathf.Max(patrolX.x,patrolX.y);
+                float zmin=Mathf.Min(patrolZ.x,patrolZ.y),zmax=Mathf.Max(patrolZ.x,patrolZ.y);
+                bool reflected=false;
+                if(next.x>xmax) { next.x=2*xmax-next.x; direction.x=-direction.x; reflected=true; }
+                else if(next.x<xmin) { next.x=2*xmin-next.x; direction.x=-direction.x; reflected=true; }
+                if(next.z>zmax) { next.z=2*zmax-next.z; direction.z=-direction.z; reflected=true; }
+                else if(next.z<zmin) { next.z=2*zmin-next.z; direction.z=-direction.z; reflected=true; }
+                if(reflected) heading=Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg;
+                maneuverVelocity=(next-old)/dt;
+                body.MovePosition(next); body.MoveRotation(Quaternion.Euler(0,heading,0)); return;
+            }
             if(mode==MotionMode.Maneuvering)
             {
                 AdvanceHeading(dt);
@@ -100,7 +135,7 @@ namespace GrandNavigation.Gunnery
         {
             if(!body) body=GetComponent<Rigidbody>();
             if(!health) health=GetComponent<Health>();
-            boundaryStopped=false; body.position=spawnPosition; body.rotation=Quaternion.Euler(0,90,0);
+            boundaryStopped=false; body.position=spawnPosition; body.rotation=Quaternion.Euler(0,spawnHeading,0);
             transform.SetPositionAndRotation(spawnPosition,body.rotation); ResetManeuver();
             foreach(var c in GetComponentsInChildren<Collider>()) c.enabled=true;
             health.Restore(); Physics.SyncTransforms();

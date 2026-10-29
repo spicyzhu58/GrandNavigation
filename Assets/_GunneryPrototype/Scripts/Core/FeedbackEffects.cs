@@ -27,7 +27,7 @@ namespace GrandNavigation.Gunnery
             if(water)
             {
                 column.name="Water column";
-                var foam=Puff(new Vector3(position.x,.1f,position.z),new Color(.65f,.9f,1),new Vector3(1.8f,.08f,1.8f),column.Lifetime,Vector3.zero);
+                var foam=Puff(new Vector3(position.x,.1f,position.z),new Color(.65f,.9f,1),new Vector3(1.8f,.08f,1.8f),Mathf.Max(4,column.Lifetime),Vector3.zero);
                 foam.name="Impact foam";
             }
             if (!water) Puff(position, Color.gray, Vector3.one * 1.5f, 1.2f, Vector3.up * 3);

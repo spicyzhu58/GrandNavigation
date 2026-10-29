@@ -29,7 +29,7 @@ namespace GrandNavigation.Gunnery.Tests
                 new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single));
 #endif
             yield return null;
-            var s=Object.FindFirstObjectByType<PrototypeSession>();
+            var s=Object.FindFirstObjectByType<PrototypeSession>(); LaboratoryProfile.Apply(s);
             var w=s.GetComponent<WeaponManager>();
             s.target.SetMode(TargetMotion.MotionMode.Stationary,0); s.ResetBattle();
             // Isolate injected input from native device events; restored by UnityTearDown even on assertion failure.

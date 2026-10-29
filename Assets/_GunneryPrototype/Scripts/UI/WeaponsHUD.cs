@@ -23,7 +23,7 @@ namespace GrandNavigation.Gunnery
             }
             GUI.color=Color.white;
             GUI.Label(new Rect(x+12,146,280,48),weapons.Status,style);
-            var hp=session.target.GetComponent<Health>();
+            var hp=session.ActiveTarget.GetComponent<Health>();
             GUI.Label(new Rect(x+12,194,280,24),"Target HP: "+hp.CurrentHP.ToString("F0")+" / "+hp.maxHP.ToString("F0"),style);
             GUI.Label(new Rect(x+12,221,280,28),"Hits "+ProjectileController.HitCount+"  |  Splashes "+ProjectileController.SplashCount,style);
             if(!hp.IsAlive) GUI.Label(new Rect(Screen.width/2-170,80,360,50),"TARGET SUNK - press R to reset",title);

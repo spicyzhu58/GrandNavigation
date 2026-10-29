@@ -16,7 +16,7 @@ namespace GrandNavigation.Gunnery.Tests
                 new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single));
 #endif
             yield return null;
-            var s=Object.FindFirstObjectByType<PrototypeSession>(); var target=s.target;
+            var s=Object.FindFirstObjectByType<PrototypeSession>(); LaboratoryProfile.Apply(s); var target=s.target;
             target.SetMode(TargetMotion.MotionMode.Maneuvering,10); s.ResetBattle();
             s.selection.Select(target.GetComponent<Health>()); s.prediction.Refresh();
             Assert.That(s.prediction.SampledTargetVelocity.x,Is.EqualTo(10).Within(.02));
@@ -47,7 +47,7 @@ namespace GrandNavigation.Gunnery.Tests
                 new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single));
 #endif
             yield return null;
-            var s=Object.FindFirstObjectByType<PrototypeSession>();
+            var s=Object.FindFirstObjectByType<PrototypeSession>(); LaboratoryProfile.Apply(s);
             s.target.SetMode(TargetMotion.MotionMode.Maneuvering,10); s.ResetBattle();
             s.selection.Select(s.target.GetComponent<Health>()); s.prediction.Refresh();
             double stamp=s.prediction.SampleTimestamp; Vector3 point=s.target.transform.position;

@@ -8,6 +8,8 @@ namespace GrandNavigation.Gunnery
         public TargetSelectionController selection;
         public ManualAimController aim;
         public float normalZoom=1, aimFov=36;
+        public Vector3 aimOffset=new Vector3(0,35,-65);
+        [Range(0,.5f)] public float impactFraming=0;
         float shake; Vector3 smoothPosition;
         void Start() { smoothPosition=view.transform.position; }
         public void Zoom(float scroll)
@@ -20,7 +22,8 @@ namespace GrandNavigation.Gunnery
         {
             bool aiming=aim.IsAiming && selection.HasTarget;
             Vector3 focus=aiming ? selection.TargetPosition+Vector3.up*1.5f : player.position+Vector3.forward*65;
-            Vector3 wanted=aiming ? focus+new Vector3(0,35,-65) :
+            if(aiming) focus+=Vector3.ClampMagnitude(aim.PlayerAimPoint-selection.TargetPosition,60)*impactFraming;
+            Vector3 wanted=aiming ? focus+aimOffset :
                 player.position+new Vector3(65,130,-85)*normalZoom;
             float blend=1-Mathf.Exp(-Time.deltaTime*5);
             smoothPosition=Vector3.Lerp(smoothPosition,wanted,blend);
