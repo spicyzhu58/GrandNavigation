@@ -11,7 +11,7 @@ namespace GrandNavigation.Gunnery
         public ManualAimController aim;
         public PrototypeCameraController cameraRig;
         public TargetMotion target;
-        public event Action FireRequested;
+        public event Action FireRequested; public event Action ResetRequested;
         public string Notice { get; private set; } = "Click orange ship to lock. Right mouse to aim.";
         void Awake() { Application.runInBackground=true; }
         void Update()
@@ -51,7 +51,7 @@ namespace GrandNavigation.Gunnery
         {
             ExitAim(); selection.Clear(); target.ResetTarget();
             foreach(var shell in FindObjectsByType<ProjectileController>(FindObjectsSortMode.None)) Destroy(shell.gameObject);
-            ProjectileController.ResetStatistics(); Notice="Target reset. Click ship to lock.";
+            ProjectileController.ResetStatistics(); ResetRequested?.Invoke(); Notice="Target reset. Click ship to lock.";
         }
         void OnDisable() { Cursor.lockState=CursorLockMode.None; Cursor.visible=true; }
     }
