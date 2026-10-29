@@ -25,6 +25,7 @@ namespace GrandNavigation.Gunnery
                 if(keyboard.digit1Key.wasPressedThisFrame) target.SetMode(TargetMotion.MotionMode.Stationary,0);
                 if(keyboard.digit2Key.wasPressedThisFrame) target.SetMode(TargetMotion.MotionMode.Lateral,8);
                 if(keyboard.digit3Key.wasPressedThisFrame) target.SetMode(TargetMotion.MotionMode.Diagonal,12);
+                if(keyboard.digit4Key.wasPressedThisFrame) target.SetMode(TargetMotion.MotionMode.Maneuvering,10);
             }
             if(mouse==null) return;
             if(mouse.rightButton.wasPressedThisFrame)
