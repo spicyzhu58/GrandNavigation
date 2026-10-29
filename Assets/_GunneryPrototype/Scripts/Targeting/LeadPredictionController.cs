@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 namespace GrandNavigation.Gunnery
 {
@@ -9,20 +10,54 @@ namespace GrandNavigation.Gunnery
         [Min(1)] public float muzzleSpeed=65;
         [Min(.01f)] public float gravity=9.81f;
         [Min(1)] public float maxRange=250;
+        [Min(.05f)] public float fireControlUpdateInterval=2.5f;
         public Vector3 PredictedIntercept { get; private set; }
         public float FlightTime { get; private set; }
         public bool Valid { get; private set; }
         public string Status { get; private set; }
+        public Vector3 SampledTargetPosition => active?.Position ?? Vector3.zero;
+        public Vector3 SampledTargetVelocity => active?.Velocity ?? Vector3.zero;
+        public double SampleTimestamp => active?.Timestamp ?? 0;
+        public float SampleAge { get; private set; }
+        public Vector3 SampledHeading => active?.Heading ?? Vector3.forward;
+        public float ObservedTurnDegrees => active?.ObservedTurnDegrees ?? 0;
+        public int SampleCount => active?.ObservationCount ?? 0;
+        public int CachedTargetCount => tracks.Count;
+        readonly Dictionary<Health,FireControlTrack> tracks=new Dictionary<Health,FireControlTrack>();
+        readonly List<Health> invalidTargets=new List<Health>();
+        FireControlTrack active;
+        double lastTime=double.NegativeInfinity;
         void Update() => Refresh();
-        public void Refresh()
+        public void Refresh() => RefreshAt(Time.timeAsDouble);
+        // Explicit clock also makes pause, slow motion and observation boundaries testable.
+        public void RefreshAt(double now)
         {
-            Valid=false;
+            Valid=false; FlightTime=0; SampleAge=0; active=null; PredictedIntercept=Vector3.zero;
+            if(!FireControlTrack.FiniteTime(now)) { Status="INVALID CLOCK"; return; }
+            if(now<lastTime) tracks.Clear();
+            lastTime=now;
+            invalidTargets.Clear();
+            foreach(var pair in tracks) if(!pair.Key || !pair.Key.IsAlive) invalidTargets.Add(pair.Key);
+            foreach(var key in invalidTargets) tracks.Remove(key);
             if(!selection || !selection.HasTarget || !fireControl) { Status="NO TARGET - click the orange ship"; return; }
-            var motion=selection.LockedTarget.GetComponent<TargetMotion>();
-            if(BallisticSolver.TryIntercept(fireControl.position,selection.TargetPosition,motion ? motion.Velocity : Vector3.zero,
-                muzzleSpeed,gravity,maxRange,out var point,out var t))
-            { PredictedIntercept=point; FlightTime=t; Valid=true; Status="LEAD SOLUTION"; }
+            Health target=selection.LockedTarget;
+            if(!tracks.TryGetValue(target,out active)) { active=new FireControlTrack(); tracks.Add(target,active); }
+            if(!active.UpdateObservation(now,fireControlUpdateInterval,()=>target.transform.position,()=>
+            {
+                var motion=target.GetComponent<TargetMotion>();
+                return motion ? motion.Velocity : Vector3.zero;
+            })) { Status="INVALID OBSERVATION"; return; }
+            SampleAge=active.Age(now);
+            if(active.Predict(now,fireControl.position,muzzleSpeed,gravity,maxRange,out var point,out var t))
+            { PredictedIntercept=point; FlightTime=t; Valid=true; Status="FIRE CONTROL ESTIMATE"; }
             else Status="NO INTERCEPT / OUT OF RANGE";
         }
+        // Debug battle reset starts a new engagement; ordinary unlock/relock never clears live-target history.
+        public void ClearSamples()
+        {
+            tracks.Clear(); active=null; Valid=false; SampleAge=0; FlightTime=0; PredictedIntercept=Vector3.zero;
+            lastTime=double.NegativeInfinity;
+        }
+        void OnDisable() => ClearSamples();
     }
 }

@@ -49,7 +49,7 @@ namespace GrandNavigation.Gunnery
         public void ExitAim() { aim.End(); Cursor.lockState=CursorLockMode.None; Cursor.visible=true; }
         public void ResetBattle()
         {
-            ExitAim(); selection.Clear(); target.ResetTarget();
+            ExitAim(); selection.Clear(); aim.ResetAim(); prediction.ClearSamples(); target.ResetTarget();
             foreach(var shell in FindObjectsByType<ProjectileController>(FindObjectsSortMode.None)) Destroy(shell.gameObject);
             ProjectileController.ResetStatistics(); ResetRequested?.Invoke(); Notice="Target reset. Click ship to lock.";
         }

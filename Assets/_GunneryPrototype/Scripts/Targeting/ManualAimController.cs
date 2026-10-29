@@ -8,16 +8,22 @@ namespace GrandNavigation.Gunnery
         public Vector3 PlayerAimPoint { get; private set; }
         public bool IsAiming { get; private set; }
         Vector3 forward,right;
+        Health aimTarget; bool initialized;
         public bool Begin()
         {
             prediction.Refresh();
             if(!prediction.Valid) return false;
-            PlayerAimPoint=prediction.PredictedIntercept; PlayerAimPoint=new Vector3(PlayerAimPoint.x,0,PlayerAimPoint.z);
+            if(!initialized || aimTarget!=prediction.selection.LockedTarget)
+            {
+                PlayerAimPoint=prediction.PredictedIntercept; PlayerAimPoint=new Vector3(PlayerAimPoint.x,0,PlayerAimPoint.z);
+                aimTarget=prediction.selection.LockedTarget; initialized=true;
+            }
             forward=PlayerAimPoint-prediction.fireControl.position; forward.y=0; forward.Normalize();
             right=Vector3.Cross(Vector3.up,forward);
             IsAiming=true; return true;
         }
         public void End() => IsAiming=false;
+        public void ResetAim() { End(); aimTarget=null; initialized=false; }
         public void Adjust(Vector2 delta)
         {
             if(!IsAiming || !BallisticSolver.Finite(delta.x) || !BallisticSolver.Finite(delta.y)) return;
