@@ -1,1 +1,1 @@
-{"name":"GunneryPrototype.PlayTests","references":["GunneryPrototype"],"optionalUnityReferences":["TestAssemblies"]}
+{"name":"GunneryPrototype.PlayTests","references":["GunneryPrototype","Unity.InputSystem"],"optionalUnityReferences":["TestAssemblies"]}

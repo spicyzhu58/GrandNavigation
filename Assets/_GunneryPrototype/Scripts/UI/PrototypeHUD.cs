@@ -29,7 +29,7 @@ namespace GrandNavigation.Gunnery
         {
             Initialize(); var select=session.selection; var prediction=session.prediction; var aim=session.aim;
             GUI.Box(new Rect(12,12,355,208),"");
-            GUI.Label(new Rect(24,20,335,30),"GRAND NAVIGATION | GUNNERY",big);
+            GUI.Label(new Rect(24,20,335,30),"GRAND NAVIGATION | V0.1",big);
             string target=select.HasTarget ? "TargetShip  |  "+Vector3.Distance(prediction.fireControl.position,select.TargetPosition).ToString("F0")+" m" : "NO LOCK";
             GUI.Label(new Rect(24,54,330,28),target,label);
             GUI.Label(new Rect(24,82,330,48),prediction.Status+"  "+(prediction.Valid ? prediction.FlightTime.ToString("F2")+" s" : ""),label);
