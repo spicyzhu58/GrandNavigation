@@ -12,10 +12,13 @@ namespace GrandNavigation.Gunnery.Tests
     public class InputFlowTests
     {
         Mouse mouse; Keyboard keyboard;
+        readonly System.Collections.Generic.List<InputDevice> nativeDevices=new System.Collections.Generic.List<InputDevice>();
         [UnityTearDown] public IEnumerator Cleanup()
         {
             if(mouse!=null) InputSystem.RemoveDevice(mouse);
             if(keyboard!=null) InputSystem.RemoveDevice(keyboard);
+            foreach(var device in nativeDevices) if(device.added) InputSystem.EnableDevice(device);
+            nativeDevices.Clear();
             Cursor.lockState=CursorLockMode.None; Cursor.visible=true;
             yield return null;
         }
@@ -29,12 +32,16 @@ namespace GrandNavigation.Gunnery.Tests
             var s=Object.FindFirstObjectByType<PrototypeSession>();
             var w=s.GetComponent<WeaponManager>();
             s.target.SetMode(TargetMotion.MotionMode.Stationary,0); s.ResetBattle();
+            // Isolate injected input from native device events; restored by UnityTearDown even on assertion failure.
+            foreach(var device in InputSystem.devices)
+                if(device.enabled && (device is Mouse || device is Keyboard)) nativeDevices.Add(device);
+            foreach(var device in nativeDevices) InputSystem.DisableDevice(device);
             mouse=InputSystem.AddDevice<Mouse>(); keyboard=InputSystem.AddDevice<Keyboard>();
             yield return new WaitForSeconds(.8f);
             Vector2 p=s.cameraRig.view.WorldToScreenPoint(s.target.transform.position+Vector3.up*1.5f);
             InputSystem.QueueStateEvent(mouse,new MouseState { position=p }.WithButton(MouseButton.Left));
             yield return null; yield return null;
-            Assert.IsTrue(s.selection.HasTarget,"Mouse click must raycast-lock the ship.");
+            Assert.IsTrue(s.selection.HasTarget,$"Mouse click must raycast-lock ship. Point={p}, viewport={Screen.width}x{Screen.height}, virtualCurrent={Mouse.current==mouse}");
             InputSystem.QueueStateEvent(mouse,new MouseState { position=p }); yield return null;
             InputSystem.QueueStateEvent(mouse,new MouseState { position=p }.WithButton(MouseButton.Right));
             yield return null; yield return null;

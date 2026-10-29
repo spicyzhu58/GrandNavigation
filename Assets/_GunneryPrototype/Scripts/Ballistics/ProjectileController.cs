@@ -4,6 +4,7 @@ namespace GrandNavigation.Gunnery
     public class ProjectileController : MonoBehaviour
     {
         public float radius = .18f, damage = 40, maxLifetime = 12, worldLimit = 500;
+        [Min(.1f)] public float splashLifetime=1.5f;
         public static int SpawnedCount { get; private set; }
         public static int HitCount { get; private set; }
         public static int SplashCount { get; private set; }
@@ -53,7 +54,7 @@ namespace GrandNavigation.Gunnery
             Vector3 tangent=InitialVelocity+Vector3.down*gravity*nextTime;
             if(tangent.sqrMagnitude>.001f) transform.rotation=Quaternion.LookRotation(tangent);
             age=nextTime;
-            if(water) { resolved=true; SplashCount++; LastImpact=to; FeedbackEffects.Burst(to,true); Destroy(gameObject); }
+            if(water) { resolved=true; SplashCount++; LastImpact=to; FeedbackEffects.Burst(to,true,splashLifetime); Destroy(gameObject); }
             else if(age>maxLifetime || new Vector2(to.x,to.z).magnitude>worldLimit) { resolved=true; Destroy(gameObject); }
         }
     }

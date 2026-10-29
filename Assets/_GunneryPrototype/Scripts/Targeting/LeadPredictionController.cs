@@ -36,6 +36,7 @@ namespace GrandNavigation.Gunnery
         readonly List<Health> invalidTargets=new List<Health>();
         FireControlTrack active;
         double lastTime=double.NegativeInfinity;
+        void OnEnable() { if(selection) selection.SelectionChanged+=Refresh; }
         void Update() { Refresh(); UpdateRegion(Time.deltaTime); }
         public Vector2 ComputeRegionRadii(float distance,float speed,float age,float turn)
         {
@@ -60,7 +61,9 @@ namespace GrandNavigation.Gunnery
             }
             float blend=1-Mathf.Exp(-Mathf.Max(.1f,regionResponse)*Mathf.Max(0,delta));
             RegionRadii=Vector2.Lerp(RegionRadii,desired,blend);
-            RegionHeading=Vector3.Slerp(RegionHeading,SampledHeading,blend).normalized;
+            float yaw=Mathf.LerpAngle(Mathf.Atan2(RegionHeading.x,RegionHeading.z)*Mathf.Rad2Deg,
+                Mathf.Atan2(SampledHeading.x,SampledHeading.z)*Mathf.Rad2Deg,blend)*Mathf.Deg2Rad;
+            RegionHeading=new Vector3(Mathf.Sin(yaw),0,Mathf.Cos(yaw));
             RegionCenter=Vector3.Lerp(RegionCenter,PredictedIntercept,blend);
         }
         public Vector3 InitialAimNearRegion()
@@ -99,6 +102,6 @@ namespace GrandNavigation.Gunnery
             tracks.Clear(); active=null; displayedTarget=null; Valid=false; SampleAge=0; FlightTime=0; PredictedIntercept=Vector3.zero;
             lastTime=double.NegativeInfinity;
         }
-        void OnDisable() => ClearSamples();
+        void OnDisable() { if(selection) selection.SelectionChanged-=Refresh; ClearSamples(); }
     }
 }

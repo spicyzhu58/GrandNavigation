@@ -46,9 +46,13 @@ namespace GrandNavigation.Gunnery.Tests
         [UnityTest] public IEnumerator MovingLeadHitsAndCameraCannotMoveAim()
         {
             session.target.SetMode(TargetMotion.MotionMode.Diagonal,12);
-            session.aim.End(); Assert.IsTrue(session.aim.Begin());
+            session.ResetBattle(); session.selection.Select(hp); Assert.IsTrue(session.aim.Begin());
             yield return new WaitForSeconds(.5f);
-            session.aim.End(); Assert.IsTrue(session.aim.Begin());
+            // V0.2: explicit player correction, not the old re-entry snap-to-answer shortcut.
+            Vector3 forward=session.aim.PlayerAimPoint-session.prediction.fireControl.position; forward.y=0; forward.Normalize();
+            Vector3 right=Vector3.Cross(Vector3.up,forward);
+            Vector3 correction=session.prediction.PredictedIntercept-session.aim.PlayerAimPoint;
+            session.aim.Adjust(new Vector2(Vector3.Dot(correction,right),Vector3.Dot(correction,forward))/session.aim.metresPerPixel);
             yield return new WaitForSeconds(.08f);
             Assert.That(weapons.TryFireSalvo(),Is.EqualTo(6));
             var point=session.aim.PlayerAimPoint;
