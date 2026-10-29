@@ -10,7 +10,7 @@ namespace GrandNavigation.Gunnery
         [Min(1)] public float muzzleSpeed=65;
         [Min(.01f)] public float gravity=9.81f;
         [Min(1)] public float maxRange=250;
-        [Min(.05f)] public float fireControlUpdateInterval=2.5f;
+        [Min(.05f)] public float fireControlUpdateInterval=.5f;
         [Header("Uncertainty region (metres; independent of gun dispersion)")]
         [Min(.1f)] public float baseLongitudinalRadius=8, baseLateralRadius=5;
         [Min(.1f)] public float minRadius=3, maxRadius=18;
@@ -34,6 +34,7 @@ namespace GrandNavigation.Gunnery
         public int CachedTargetCount => tracks.Count;
         readonly Dictionary<Health,FireControlTrack> tracks=new Dictionary<Health,FireControlTrack>();
         readonly List<Health> invalidTargets=new List<Health>();
+        Health observedTarget;
         FireControlTrack active;
         double lastTime=double.NegativeInfinity;
         void OnEnable() { if(selection) selection.SelectionChanged+=Refresh; }
@@ -83,6 +84,8 @@ namespace GrandNavigation.Gunnery
             invalidTargets.Clear();
             foreach(var pair in tracks) if(!pair.Key || !pair.Key.IsAlive) invalidTargets.Add(pair.Key);
             foreach(var key in invalidTargets) tracks.Remove(key);
+            Health selected=selection && selection.HasTarget ? selection.LockedTarget : null;
+            if(observedTarget!=selected) { tracks.Clear(); observedTarget=selected; displayedTarget=null; }
             if(!selection || !selection.HasTarget || !fireControl) { Status="NO TARGET - click the orange ship"; return; }
             Health target=selection.LockedTarget;
             if(!tracks.TryGetValue(target,out active)) { active=new FireControlTrack(); tracks.Add(target,active); }
@@ -96,10 +99,10 @@ namespace GrandNavigation.Gunnery
             { PredictedIntercept=point; FlightTime=t; Valid=true; Status="FIRE CONTROL ESTIMATE"; }
             else Status="NO INTERCEPT / OUT OF RANGE";
         }
-        // Debug battle reset starts a new engagement; ordinary unlock/relock never clears live-target history.
+        // Target changes and battle reset discard the previous observation.
         public void ClearSamples()
         {
-            tracks.Clear(); active=null; displayedTarget=null; Valid=false; SampleAge=0; FlightTime=0; PredictedIntercept=Vector3.zero;
+            tracks.Clear(); observedTarget=null; active=null; displayedTarget=null; Valid=false; SampleAge=0; FlightTime=0; PredictedIntercept=Vector3.zero;
             lastTime=double.NegativeInfinity;
         }
         void OnDisable() { if(selection) selection.SelectionChanged-=Refresh; ClearSamples(); }

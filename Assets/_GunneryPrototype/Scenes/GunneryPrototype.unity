@@ -903,6 +903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GunneryPrototype::GrandNavigation.Gunnery.PrototypeHUD
   session: {fileID: 1040879794}
+  predictionSmoothTime: 0.12
 --- !u!114 &1040879794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,6 +970,7 @@ MonoBehaviour:
   muzzleSpeed: 65
   gravity: 9.81
   maxRange: 250
+  fireControlUpdateInterval: 0.5
 --- !u!114 &1040879798
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -60,21 +60,21 @@ namespace GrandNavigation.Gunnery.Tests
         [UnityTest] public IEnumerator InvalidTargetPurgesCacheAndHidesRegion()
         {
             yield return null;
-            var region=GameObject.Find("Observed fire-control area (no centre marker)");
-            Assert.IsNotNull(region); Assert.IsTrue(region.activeSelf);
+            var hud=Object.FindFirstObjectByType<PrototypeHUD>();
+            Assert.IsNotNull(hud); Assert.IsTrue(hud.PredictionVisible);
             s.target.GetComponent<Health>().Damage(10000,s.target.transform.position);
             yield return null; yield return null;
             Assert.IsFalse(s.aim.IsAiming); Assert.IsFalse(s.prediction.Valid);
-            Assert.That(s.prediction.CachedTargetCount,Is.Zero); Assert.IsFalse(region.activeSelf);
+            Assert.That(s.prediction.CachedTargetCount,Is.Zero); Assert.IsFalse(hud.PredictionVisible);
             Assert.IsTrue(BallisticSolver.Finite(s.prediction.PredictedIntercept));
         }
-        [UnityTest] public IEnumerator UnlockRelockAndAimToggleKeepObservationAndCorrection()
+        [UnityTest] public IEnumerator UnlockRelockRefreshesObservationAndKeepsPlayerCorrection()
         {
             s.aim.Adjust(new Vector2(20,10)); var saved=s.aim.PlayerAimPoint;
             var timestamp=s.prediction.SampleTimestamp; var target=s.target.GetComponent<Health>();
             s.ExitAim(); s.selection.Clear(); yield return null;
             s.selection.Select(target); Assert.IsTrue(s.aim.Begin());
-            Assert.That(s.prediction.SampleTimestamp,Is.EqualTo(timestamp));
+            Assert.That(s.prediction.SampleTimestamp,Is.GreaterThanOrEqualTo(timestamp));
             Assert.That(s.aim.PlayerAimPoint,Is.EqualTo(saved));
             yield return new WaitForSeconds(2.6f);
             Assert.That(s.prediction.SampleTimestamp,Is.GreaterThan(timestamp));
@@ -82,3 +82,4 @@ namespace GrandNavigation.Gunnery.Tests
         }
     }
 }
+

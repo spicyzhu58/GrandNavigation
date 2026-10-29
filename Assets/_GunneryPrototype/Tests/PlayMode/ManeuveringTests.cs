@@ -16,7 +16,7 @@ namespace GrandNavigation.Gunnery.Tests
                 new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single));
 #endif
             yield return null;
-            var s=Object.FindFirstObjectByType<PrototypeSession>(); var target=s.target;
+            var s=Object.FindFirstObjectByType<PrototypeSession>(); var target=s.target; s.prediction.fireControlUpdateInterval=2.5f; // Deliberately long interval for legacy maneuver timing regression.
             target.SetMode(TargetMotion.MotionMode.Maneuvering,10); s.ResetBattle();
             s.selection.Select(target.GetComponent<Health>()); s.prediction.Refresh();
             Assert.That(s.prediction.SampledTargetVelocity.x,Is.EqualTo(10).Within(.02));
@@ -70,3 +70,4 @@ namespace GrandNavigation.Gunnery.Tests
         }
     }
 }
+

@@ -49,7 +49,7 @@ namespace GrandNavigation.Gunnery.Tests
             track.UpdateObservation(1,2.5f,()=>Vector3.forward*100,()=>Vector3.zero);
             Assert.That(track.Timestamp,Is.EqualTo(1)); Assert.That(track.Heading,Is.EqualTo(Vector3.forward));
         }
-        [Test] public void RelockAndCameraCannotBypassPerTargetCacheAndDeadTargetsAreRemoved()
+        [Test] public void TargetSwitchDiscardsPreviousObservationAndDeadTargetsAreRemoved()
         {
             var root=new GameObject(); var a=new GameObject(); var b=new GameObject(); var muzzle=new GameObject();
             try
@@ -61,12 +61,12 @@ namespace GrandNavigation.Gunnery.Tests
                 selection.Select(ha); lead.RefreshAt(0);
                 a.transform.position+=Vector3.right*40;
                 selection.Clear(); lead.RefreshAt(.2); selection.Select(ha); lead.RefreshAt(.3);
-                Assert.That(lead.SampledTargetPosition.x,Is.Zero); Assert.That(lead.SampleCount,Is.EqualTo(1));
+                Assert.That(lead.SampledTargetPosition.x,Is.EqualTo(40)); Assert.That(lead.SampleCount,Is.EqualTo(1));
                 selection.Select(hb); lead.RefreshAt(.4); Assert.That(lead.SampledTargetPosition.x,Is.EqualTo(30));
-                selection.Select(ha); lead.RefreshAt(.5); Assert.That(lead.SampledTargetPosition.x,Is.Zero);
+                selection.Select(ha); lead.RefreshAt(.5); Assert.That(lead.SampledTargetPosition.x,Is.EqualTo(40));
                 lead.RefreshAt(2.5); Assert.That(lead.SampledTargetPosition.x,Is.EqualTo(40));
                 Object.DestroyImmediate(a); lead.RefreshAt(3);
-                Assert.IsFalse(lead.Valid); Assert.That(lead.CachedTargetCount,Is.EqualTo(1));
+                Assert.IsFalse(lead.Valid); Assert.That(lead.CachedTargetCount,Is.Zero);
                 Object.DestroyImmediate(b); lead.RefreshAt(3.1); Assert.That(lead.CachedTargetCount,Is.Zero);
             }
             finally { Object.DestroyImmediate(root); if(a) Object.DestroyImmediate(a); if(b) Object.DestroyImmediate(b); Object.DestroyImmediate(muzzle); }
