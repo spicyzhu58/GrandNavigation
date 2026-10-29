@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Game/Scenes/MainMenu.unity
+    guid: 036f954d21cd5f64c81035132246ed72
+  - enabled: 1
+    path: Assets/_GunneryPrototype/Scenes/GunneryPrototype.unity
+    guid: e848f849395b983439f3a6a3c94de9c8
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
