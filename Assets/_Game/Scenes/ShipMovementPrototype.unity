@@ -621,10 +621,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9aedc2021d55894eb2c3d2d5e23ec3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GrandNavigation.ShipMovement::GrandNavigation.Gameplay.ShipFollowCamera
-  target: {fileID: 1766497571}
-  offset: {x: 0, y: 20, z: -37}
-  positionSmoothTime: 0.3
-  rotationResponse: 5
+  followTarget: {fileID: 1766497571}
+  cameraPivot: {fileID: 1587494708}
+  cameraPivotHeight: 3
+  mouseSensitivityX: 0.15
+  mouseSensitivityY: 0.12
+  invertY: 0
+  defaultYaw: 0
+  defaultPitch: 30
+  minPitch: 10
+  maxPitch: 75
+  defaultDistance: 35
+  minDistance: 15
+  maxDistance: 65
+  zoomSensitivity: 0.04
+  rotationSmoothTime: 0.12
+  followSmoothTime: 0.2
+  zoomSmoothTime: 0.2
+  cameraCollisionRadius: 0.45
+  cameraCollisionPadding: 0.25
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  seaLevel: 0
+  minimumSeaClearance: 1
+  captureCursor: 1
 --- !u!81 &867075765
 AudioListener:
   m_ObjectHideFlags: 0
@@ -908,6 +929,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1587494707
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1587494708}
+  m_Layer: 0
+  m_Name: CameraPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1587494708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587494707}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1766497571}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1766497569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -962,7 +1014,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9192790198694998611, guid: 3e1ee6227f157694eb1879e196a48ca2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1587494708}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e1ee6227f157694eb1879e196a48ca2, type: 3}
 --- !u!114 &1766497570 stripped

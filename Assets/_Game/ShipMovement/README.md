@@ -71,3 +71,21 @@ Run:
     unity command test status --project-path D:\UnityHub\GrandNavigation
 
 Limitations: primitive islands and rectangular collision hull; no enemy AI, real weapons, damage gameplay, waves or buoyancy. Standalone player build has not been tested.
+
+## Free observation camera
+Component: Follow Camera > ShipFollowCamera. ShipMovement and PlayerShipInput are unchanged.
+- Mouse: 360-degree world-space orbit; pitch defaults to 10–75 degrees.
+- Wheel: smooth zoom; reset distance 35 m, range 15–65 m.
+- R: smoothly reset behind the ship's CURRENT heading, with default yaw/pitch/distance.
+- Esc: release/capture the cursor for Inspector tuning. Released mouse movement does not rotate the camera.
+- WASD still controls the ship independently. Orbit yaw does not follow ship yaw.
+- CameraPivot is a separate observation child of the physics root; Camera Pivot Height drives its vertical offset.
+- SetControlActive(false) releases camera ownership for a future fire-control view. No aiming mode is implemented.
+
+Inspector sections: Follow target, Mouse orbit, Zoom, Smoothing, Camera safety.
+Sensitivity is degrees/pixel; Zoom Sensitivity is metres/scroll unit (typical notch 120 units).
+Rotation/Follow/Zoom Smooth Time are in seconds. Default values are applied by R; other settings react during Play Mode.
+OnValidate clamps invalid min/max/default relationships and non-positive smoothing/radius values.
+
+To preserve a tuned Play Mode setup: component menu > Copy Component; stop Play; select the same component > Paste Component Values; save the scene. Unity normally discards Play Mode edits on stop.
+Solid obstacles use sphere casts; obstruction recovery is smoothed. A close obstruction cannot compress the camera into the visual hull; sea clearance and overlap lift protect the camera position. The prototype's box islands are verified; arbitrary complex caves/overhangs are not covered.
