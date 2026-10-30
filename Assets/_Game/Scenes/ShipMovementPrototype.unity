@@ -634,7 +634,7 @@ MonoBehaviour:
   defaultDistance: 35
   minDistance: 15
   maxDistance: 65
-  zoomSensitivity: 0.04
+  zoomSensitivity: 4
   rotationSmoothTime: 0.12
   followSmoothTime: 0.2
   zoomSmoothTime: 0.2

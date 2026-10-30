@@ -37,6 +37,23 @@ namespace GrandNavigation.Gameplay.Tests
             if(mouse!=null)InputSystem.RemoveDevice(mouse);if(keyboard!=null)InputSystem.RemoveDevice(keyboard);
             foreach(var d in native)if(d.added)InputSystem.EnableDevice(d);native.Clear();yield return null;
         }
+        IEnumerator WaitForOrbit(float expected)
+        {
+            float timeout=Time.realtimeSinceStartup+5f;
+            while(Mathf.Abs(rig.CurrentDistance-expected)>.25f && Time.realtimeSinceStartup<timeout)yield return null;
+            Assert.That(rig.CurrentDistance,Is.EqualTo(expected).Within(.3));
+        }
+        [UnityTest]public IEnumerator SingleWheelNotchProducesVisibleSmoothZoom()
+        {
+            Assert.That(InputSystem.settings.scrollDeltaBehavior,Is.EqualTo(InputSettings.ScrollDeltaBehavior.UniformAcrossAllPlatforms));
+            yield return new WaitForSeconds(.5f);
+            InputSystem.QueueDeltaStateEvent(mouse.scroll,new Vector2(0,1));yield return null;yield return null;
+            Assert.That(rig.RequestedDistance,Is.EqualTo(31).Within(.01),"One normalized wheel notch should zoom by 4 metres");
+            yield return WaitForOrbit(31);
+            InputSystem.QueueDeltaStateEvent(mouse.scroll,new Vector2(0,-1));yield return null;yield return null;
+            Assert.That(rig.RequestedDistance,Is.EqualTo(35).Within(.01));
+            yield return WaitForOrbit(35);
+        }
         [UnityTest]public IEnumerator MouseWheelResetLiveSettingsAndShipIndependence()
         {
             float heading=ship.transform.eulerAngles.y;
@@ -59,8 +76,7 @@ namespace GrandNavigation.Gameplay.Tests
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.R));yield return null;yield return null;
             Assert.That(rig.RequestedDistance,Is.EqualTo(35));Assert.That(rig.RequestedPitch,Is.EqualTo(30));
             Assert.That(Mathf.Abs(Mathf.DeltaAngle(rig.RequestedYaw,heading)),Is.LessThan(.1));
-            InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return new WaitForSeconds(1);
-            Assert.That(rig.CurrentDistance,Is.EqualTo(35).Within(.3));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return WaitForOrbit(35);
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Escape));yield return null;yield return null;
             Assert.That(Cursor.lockState,Is.EqualTo(CursorLockMode.None));float releasedYaw=rig.RequestedYaw;
             InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(200,0));yield return null;yield return null;
@@ -89,8 +105,7 @@ namespace GrandNavigation.Gameplay.Tests
             var hull=new Bounds(ship.transform.position,Vector3.zero);
             foreach(var renderer in ship.GetComponentsInChildren<Renderer>())hull.Encapsulate(renderer.bounds);
             Assert.IsFalse(hull.Contains(rig.transform.position));
-            Object.Destroy(obstacle);yield return null;yield return new WaitForSeconds(1);
-            Assert.That(rig.CurrentDistance,Is.EqualTo(35).Within(.3));
+            Object.Destroy(obstacle);yield return null;yield return WaitForOrbit(35);
             rig.SetControlActive(false);Vector3 saved=rig.transform.position;
             InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(400,200));yield return null;yield return null;
             Assert.That(rig.transform.position,Is.EqualTo(saved));

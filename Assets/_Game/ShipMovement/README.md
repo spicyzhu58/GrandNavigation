@@ -83,7 +83,7 @@ Component: Follow Camera > ShipFollowCamera. ShipMovement and PlayerShipInput ar
 - SetControlActive(false) releases camera ownership for a future fire-control view. No aiming mode is implemented.
 
 Inspector sections: Follow target, Mouse orbit, Zoom, Smoothing, Camera safety.
-Sensitivity is degrees/pixel; Zoom Sensitivity is metres/scroll unit (typical notch 120 units).
+Sensitivity is degrees/pixel; Zoom Sensitivity is metres/normalized scroll unit, default 4 m per notch with the project's Uniform Across All Platforms input setting. Input System 1.20.1 returns about 1 per notch, not the legacy Windows value 120.
 Rotation/Follow/Zoom Smooth Time are in seconds. Default values are applied by R; other settings react during Play Mode.
 OnValidate clamps invalid min/max/default relationships and non-positive smoothing/radius values.
 

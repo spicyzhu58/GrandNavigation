@@ -21,7 +21,7 @@ namespace GrandNavigation.Gameplay
         [SerializeField,Range(1,100),Tooltip("Reset orbit distance in metres.")] float defaultDistance=35;
         [SerializeField,Range(1,100),Tooltip("Closest requested orbit distance. Collision safety may override it.")] float minDistance=15;
         [SerializeField,Range(1,150),Tooltip("Farthest requested orbit distance.")] float maxDistance=65;
-        [SerializeField,Range(.001f,.2f),Tooltip("Metres per scroll unit; typical wheel notch is 120 units.")] float zoomSensitivity=.04f;
+        [SerializeField,Range(.1f,10f),Tooltip("Metres per normalized scroll unit (one wheel notch with Uniform Across All Platforms input). Positive scroll zooms in.")] float zoomSensitivity=4f;
         [Header("Smoothing")]
         [SerializeField,Range(.01f,2),Tooltip("Yaw and pitch damping time in seconds.")] float rotationSmoothTime=.12f;
         [SerializeField,Range(.01f,2),Tooltip("World pivot follow damping in seconds.")] float followSmoothTime=.2f;
