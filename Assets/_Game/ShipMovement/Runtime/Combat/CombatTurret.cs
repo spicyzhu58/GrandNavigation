@@ -40,6 +40,24 @@ namespace GrandNavigation.Gameplay
             }
             Aligned=SolutionValid&&Safe(direction)&&Vector3.Angle(muzzles[0].forward,direction)<=aimTolerance;
         }
+        // Unscattered sea-plane impact of the actual barrel, including platform velocity.
+        public static bool SeaImpact(Vector3 origin,Vector3 worldVelocity,float gravity,out Vector3 point)
+        {
+            point=Vector3.zero;
+            if(!CombatBallistics.Finite(origin)||!CombatBallistics.Finite(worldVelocity)||!float.IsFinite(gravity)||gravity<=0||origin.y<0)return false;
+            float discriminant=worldVelocity.y*worldVelocity.y+2*gravity*origin.y;
+            float time=(worldVelocity.y+Mathf.Sqrt(discriminant))/gravity;
+            if(!float.IsFinite(time)||time<=0)return false;
+            point=CombatBallistics.Position(origin,worldVelocity,gravity,time);point.y=0;
+            return CombatBallistics.Finite(point);
+        }
+        public bool TryGetImpact(int muzzleIndex,out Vector3 point)
+        {
+            point=Vector3.zero;
+            if(!weapon||!weapon.Owner||!weapon.Owner.IsAlive||muzzles==null||muzzleIndex>=muzzles.Length||muzzleIndex<0||!muzzles[muzzleIndex])return false;
+            var muzzle=muzzles[muzzleIndex];
+            return Safe(muzzle.forward)&&SeaImpact(muzzle.position,muzzle.forward*weapon.muzzleSpeed+weapon.Owner.WorldVelocity,weapon.gravity,out point);
+        }
         public int Fire(Vector3 centre)
         {
             if(!weapon||ReloadRemaining>0)return 0;int count=0;

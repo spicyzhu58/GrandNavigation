@@ -72,6 +72,31 @@ namespace GrandNavigation.Gameplay.Tests
             targetBody.isKinematic=false;target.TakeDamage(150);yield return null;yield return null;
             Assert.IsFalse(aim.IsAiming);
         }
+        [UnityTest]public IEnumerator ActualImpactHudGroupsFrontAndMergesOnlyAllBarrels()
+        {
+            combatInput.enabled=false;player.GetComponent<PlayerShipInput>().enabled=false;
+            player.Movement.enabled=false;player.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;
+            var hud=Object.FindFirstObjectByType<CombatHUD>();
+            Vector3 point=player.WorldPosition+Vector3.right*160;point.y=0;aim.SetPoint(point);
+            float deadline=Time.time+9;
+            while(Time.time<deadline&&!hud.ImpactsMerged)yield return null;
+            Assert.IsTrue(hud.ImpactsMerged,"All actual impacts should converge to a circle");
+            Assert.That(Vector3.Distance(hud.FrontImpact,point),Is.LessThan(3));
+            Assert.That(Vector3.Distance(hud.RearImpact,point),Is.LessThan(3));
+            var t=player.Weapon.turrets[0];t.enabled=false;
+            foreach(var barrel in t.barrels)barrel.rotation=Quaternion.Euler(0,20,0)*barrel.rotation;
+            yield return null;yield return null;
+            Assert.IsFalse(hud.ImpactsMerged,"One divergent front turret must break the circle");
+            Vector3 sum=Vector3.zero;
+            for(int i=0;i<2;i++)for(int j=0;j<2;j++)
+            {Assert.IsTrue(player.Weapon.turrets[i].TryGetImpact(j,out var impact));sum+=impact;}
+            Assert.That(Vector3.Distance(hud.FrontImpact,sum/4),Is.LessThan(.001f));
+            Assert.That(Vector3.Distance(hud.FrontImpact,hud.RearImpact),Is.GreaterThan(5));
+            Assert.That(aim.PlayerAimPoint,Is.EqualTo(point),"Actual impact HUD cannot modify the player's command");
+            t.enabled=true;
+            deadline=Time.time+4;while(Time.time<deadline&&!hud.ImpactsMerged)yield return null;
+            Assert.IsTrue(hud.ImpactsMerged);
+        }
         [UnityTest]public IEnumerator ImmediateSalvoUsesActualBarrelsAndReloads()
         {
             player.Weapon.dispersionEnabled=false;aim.SetPoint(player.WorldPosition+Vector3.right*180);

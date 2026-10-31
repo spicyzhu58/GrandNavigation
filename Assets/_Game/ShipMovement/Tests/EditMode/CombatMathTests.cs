@@ -13,6 +13,15 @@ namespace GrandNavigation.Gameplay.Tests
             Assert.That(Vector3.Distance(point,CombatBallistics.Position(origin,relative+platform,9.81f,time)),Is.LessThan(.005));
             Assert.That(time,Is.GreaterThan(0).And.LessThan(10));
         }
+        [Test] public void ActualBarrelSeaImpactIncludesPlatformVelocity()
+        {
+            Vector3 origin=new Vector3(4,5,2),relative=new Vector3(0,20,60),platform=new Vector3(12,0,-8);
+            Assert.IsTrue(CombatTurret.SeaImpact(origin,relative+platform,9.81f,out var point));
+            float time=(20+Mathf.Sqrt(400+2*9.81f*5))/9.81f;
+            Assert.That(Vector3.Distance(point,CombatBallistics.Position(origin,relative+platform,9.81f,time)),Is.LessThan(.001f));
+            Assert.IsFalse(CombatTurret.SeaImpact(origin,relative,0,out _));
+            Assert.IsFalse(CombatTurret.SeaImpact(origin,Vector3.one*float.NaN,9.81f,out _));
+        }
         [Test] public void InvalidAndUnreachableShotsFail()
         {
             Assert.IsFalse(CombatBallistics.Solve(Vector3.up,Vector3.forward*10000,Vector3.zero,65,9.81f,out _,out _));
