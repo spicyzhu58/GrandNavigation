@@ -23,6 +23,12 @@ namespace GrandNavigation.Gameplay
                 right=Vector3.Cross(Vector3.up,forward);
             }
         }
+        public void SetViewBasis(Vector3 direction)
+        {
+            direction=Vector3.ProjectOnPlane(direction,Vector3.up).normalized;
+            if(direction.sqrMagnitude<.01f)return;
+            forward=direction;right=Vector3.Cross(Vector3.up,forward);
+        }
         // Called only for mouse input, never because a lock, prediction or camera blend changed.
         public void AimFromObservation(Camera camera,Vector2 screenPosition)
         {

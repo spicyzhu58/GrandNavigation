@@ -37,11 +37,40 @@ namespace GrandNavigation.Gameplay.Tests
             Vector3 chosen=aim.PlayerAimPoint;fire.Lock(target);Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftShift));yield return new WaitForSeconds(1.5f);
             Assert.IsTrue(aim.IsAiming);Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
-            var rig=Object.FindFirstObjectByType<CombatCamera>();var expected=target.WorldPosition+Vector3.up*1.5f+new Vector3(0,35,-65);
+            var rig=Object.FindFirstObjectByType<CombatCamera>();var expected=target.WorldPosition+Vector3.up*(rig.targetFocusHeight+rig.aimingHeight)-rig.ViewingDirection*rig.aimingDistance;
             Assert.That(Vector3.Distance(rig.view.transform.position,expected),Is.LessThan(1));
             aim.SetPoint(player.WorldPosition+Vector3.left*250);yield return new WaitForSeconds(.5f);
             Assert.That(Vector3.Distance(rig.view.transform.position,expected),Is.LessThan(1),"Manual point must not zoom the closeup back out");
             float fov=rig.view.fieldOfView;InputSystem.QueueDeltaStateEvent(mouse.scroll,new Vector2(0,1));yield return new WaitForSeconds(.7f);Assert.That(rig.view.fieldOfView,Is.LessThan(fov-1));
+        }
+        [UnityTest]public IEnumerator TargetCameraFreezesBearingAndReanchorsOnNextEntry()
+        {
+            combatInput.enabled=false;player.GetComponent<PlayerShipInput>().enabled=false;player.Movement.enabled=false;
+            var body=player.GetComponent<Rigidbody>();body.isKinematic=true;
+            var targetBody=target.GetComponent<Rigidbody>();target.Movement.enabled=false;targetBody.isKinematic=true;
+            body.position=target.WorldPosition+Vector3.right*100;
+            yield return new WaitForFixedUpdate();yield return null;
+            fire.Lock(target);Vector3 chosen=aim.PlayerAimPoint;
+            var rig=Object.FindFirstObjectByType<CombatCamera>();
+            aim.SetAiming(true);rig.SetAiming(true);
+            Assert.That(Vector3.Distance(rig.ViewingDirection,Vector3.left),Is.LessThan(.01f));
+            yield return new WaitForSeconds(2);
+            Vector3 bearing=rig.ViewingDirection;
+            body.position+=Vector3.forward*60;body.rotation=Quaternion.Euler(0,135,0);
+            targetBody.position+=Vector3.forward*10;targetBody.rotation=Quaternion.Euler(0,90,0);
+            yield return new WaitForSeconds(2);
+            Assert.That(rig.ViewingDirection,Is.EqualTo(bearing));
+            Vector3 expected=target.WorldPosition+Vector3.up*(rig.targetFocusHeight+rig.aimingHeight)-bearing*rig.aimingDistance;
+            Assert.That(Vector3.Distance(rig.view.transform.position,expected),Is.LessThan(.2f));
+            Assert.That(Vector3.Angle(rig.view.transform.forward,target.WorldPosition+Vector3.up*rig.targetFocusHeight-rig.view.transform.position),Is.LessThan(1));
+            Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
+            aim.SetAiming(false);rig.SetAiming(false);yield return new WaitForSeconds(1);
+            aim.SetAiming(true);rig.SetAiming(true);
+            Assert.That(Vector3.Angle(bearing,rig.ViewingDirection),Is.GreaterThan(10));
+            Vector3 before=aim.PlayerAimPoint;aim.Adjust(Vector2.right);
+            Assert.That(Vector3.Dot((aim.PlayerAimPoint-before).normalized,Vector3.Cross(Vector3.up,rig.ViewingDirection)),Is.GreaterThan(.99f));
+            target.TakeDamage(150);yield return null;yield return null;
+            Assert.IsFalse(aim.IsAiming);
         }
         [UnityTest]public IEnumerator ImmediateSalvoUsesActualBarrelsAndReloads()
         {
