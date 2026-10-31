@@ -69,7 +69,7 @@ namespace GrandNavigation.Gameplay.Tests
             Assert.That(Vector3.Angle(bearing,rig.ViewingDirection),Is.GreaterThan(10));
             Vector3 before=aim.PlayerAimPoint;aim.Adjust(Vector2.right);
             Assert.That(Vector3.Dot((aim.PlayerAimPoint-before).normalized,Vector3.Cross(Vector3.up,rig.ViewingDirection)),Is.GreaterThan(.99f));
-            target.TakeDamage(150);yield return null;yield return null;
+            targetBody.isKinematic=false;target.TakeDamage(150);yield return null;yield return null;
             Assert.IsFalse(aim.IsAiming);
         }
         [UnityTest]public IEnumerator ImmediateSalvoUsesActualBarrelsAndReloads()
