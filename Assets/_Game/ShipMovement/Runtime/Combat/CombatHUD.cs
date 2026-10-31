@@ -10,13 +10,21 @@ namespace GrandNavigation.Gameplay
             var w=player.Weapon;string reload="";for(int i=0;i<w.turrets.Length;i++){var t=w.turrets[i];reload+=$"T{i+1}: {(t.ReloadRemaining>0?t.ReloadRemaining.ToString("F1")+"s":t.Aligned?"READY / ON TARGET":"READY / TRAVERSING")}  ";}
             GUI.Label(new Rect(24,24,420,220),$"PLAYER COMBAT V0.1    HP {player.Health.CurrentHealth}/{player.Health.maximumHealth}\nSpeed {player.Movement.ActualSpeed:F1}  Target {player.Movement.TargetSpeed:F1} m/s\nRudder {player.Movement.RudderAngle:F0} deg\n"+
                 (fireControl.Target?$"LOCK: {fireControl.Target.name}  HP {fireControl.Target.Health.CurrentHealth}/{fireControl.Target.Health.maximumHealth}\n":"NO TARGET\n")+
-                (fireControl.Valid?$"Observation {fireControl.SampleAge:F2}s / {fireControl.observationInterval:F1}s\n":"NO VALID PREDICTION / OUT OF RANGE\n")+reload+"\n"+w.Status+"\nWASD drive | RMB lock at centre reticle | Hold Shift aim\nMouse adjust aim / orbit | Wheel zoom | LMB salvo | Esc unlock\nR reset orbit | Yellow: prediction area | Cyan: YOUR impact point");
+                (fireControl.Valid?$"Observation {fireControl.SampleAge:F2}s / {fireControl.observationInterval:F1}s\n":"NO VALID PREDICTION / OUT OF RANGE\n")+reload+"\n"+w.Status+"\nWASD drive | RMB lock at centre reticle | Hold Shift aim\nMouse aims turrets / orbit | Wheel zoom | LMB salvo | Esc unlock\nR reset orbit | Yellow: prediction area | Cyan: YOUR impact point");
             if(!aim.IsAiming){GUI.color=Color.white;GUI.Label(new Rect(Screen.width/2-5,Screen.height/2-10,20,20),"+");}
             DrawAim(aim.PlayerAimPoint,Color.cyan);
             if(fireControl.Target)
             {
                 var p=view.WorldToScreenPoint(fireControl.Target.WorldPosition+Vector3.up*4);
-                if(p.z>0){GUI.color=Color.red;GUI.Box(new Rect(p.x-35,Screen.height-p.y-10,70,20),fireControl.Target.Health.CurrentHealth.ToString());}
+                if(p.z>0)
+                {
+                    float x=p.x,y=Screen.height-p.y;GUI.color=Color.green;
+                    GUI.DrawTexture(new Rect(x-42,y-18,84,2),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(x-42,y+16,84,2),Texture2D.whiteTexture);
+                    GUI.DrawTexture(new Rect(x-42,y-18,2,36),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(x+40,y-18,2,36),Texture2D.whiteTexture);
+                    GUI.color=Color.black;GUI.DrawTexture(new Rect(x-40,y-32,80,7),Texture2D.whiteTexture);
+                    GUI.color=Color.green;GUI.DrawTexture(new Rect(x-40,y-32,80f*fireControl.Target.Health.CurrentHealth/fireControl.Target.Health.maximumHealth,7),Texture2D.whiteTexture);
+                    GUI.Label(new Rect(x-42,y-55,120,22),fireControl.Target.Health.CurrentHealth+" HP");
+                }
             }
             GUI.color=Color.white;
         }

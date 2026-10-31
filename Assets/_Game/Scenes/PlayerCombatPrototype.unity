@@ -1960,6 +1960,7 @@ MonoBehaviour:
   longitudinalRadius: 8
   lateralRadius: 4
   smoothTime: 0.12
+  borderWidth: 0.15
 --- !u!4 &1116196790
 Transform:
   m_ObjectHideFlags: 0
@@ -2265,11 +2266,14 @@ MonoBehaviour:
   orbit: {fileID: 1294659626}
   aim: {fileID: 199245285}
   fireControl: {fileID: 199245281}
-  aimingFov: 32
+  aimingFov: 36
   smoothTime: 0.18
   aimingDistance: 65
-  aimingHeight: 24
-  framingMargin: 12
+  aimingHeight: 35
+  zoomDegreesPerNotch: 2
+  minimumAimFov: 18
+  maximumAimFov: 55
+  aimResponse: 5
 --- !u!114 &1294659626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2308,6 +2312,7 @@ MonoBehaviour:
   minimumSeaClearance: 1
   captureCursor: 1
   allowCursorRelease: 0
+  observationSightElevation: 20
 --- !u!114 &1294659627
 MonoBehaviour:
   m_ObjectHideFlags: 0

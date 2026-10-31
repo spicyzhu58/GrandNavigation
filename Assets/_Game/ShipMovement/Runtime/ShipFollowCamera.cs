@@ -34,6 +34,7 @@ namespace GrandNavigation.Gameplay
         [SerializeField,Range(.2f,5),Tooltip("Minimum camera centre clearance above the sea.")] float minimumSeaClearance=1;
         [SerializeField,Tooltip("Lock cursor for free mouse observation during play.")] bool captureCursor=true;
         [SerializeField,Tooltip("Disable when a combat input controller owns Esc.")] bool allowCursorRelease=true;
+        [SerializeField,Range(0,25),Tooltip("Raise the observation sight above the ship; zero preserves the movement prototype camera.")] float observationSightElevation;
 
         public Transform target { get=>followTarget; set { followTarget=value;initialized=false; } }
         // Legacy scene builder compatibility; no second camera system.
@@ -113,7 +114,7 @@ namespace GrandNavigation.Gameplay
             distance=Mathf.SmoothDamp(distance,requestedDistance,ref zoomVelocity,zoomSmoothTime);
             Vector3 direction=Quaternion.Euler(pitch,yaw,0)*Vector3.back;
             Vector3 position=ResolveCollision(pivotPosition,direction,distance);
-            transform.SetPositionAndRotation(position,Quaternion.LookRotation(pivotPosition-position,Vector3.up));
+            transform.SetPositionAndRotation(position,Quaternion.LookRotation(pivotPosition-position,Vector3.up)*Quaternion.Euler(-observationSightElevation,0,0));
         }
         Vector3 ResolveCollision(Vector3 origin,Vector3 direction,float requested)
         {

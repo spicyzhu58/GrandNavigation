@@ -4,7 +4,7 @@ Open `Assets/_Game/Scenes/PlayerCombatPrototype.unity` and press Play. No menu o
 
 ## Controls
 - W/S: adjust target speed; A/D: rudder. Movement continues in aim mode.
-- Mouse: free orbit; wheel: zoom. R resets the observation camera.
+- Mouse: free orbit AND aim the guns at the sea under the observation sight, without locking or holding a button. Wheel zooms; R resets the observation camera.
 - Right-click: lock the enemy under the screen-centre pointer (cursor is captured).
 - Hold either Shift: aim view. Mouse moves the cyan world-space sea impact point. Release Shift to return.
 - Left-click: immediate salvo, in either camera mode. Esc clears lock.
@@ -12,14 +12,14 @@ Open `Assets/_Game/Scenes/PlayerCombatPrototype.unity` and press Play. No menu o
 
 A turret fires immediately when loaded and its ACTUAL barrels are in the allowed local sector. A rear turret may fire astern while still turning: it never waits or bends shells toward the cursor. Each turret has a 260-degree traverse sector and a 5-second reload. Front turrets exclude the rear 100 degrees; the rear turret excludes the front 100 degrees. Mechanical traverse follows the allowed interval without wrapping through the forbidden sector.
 
-The first aim entry initializes the cyan point at the current prediction if valid. Subsequent entry, observation updates, ship movement and camera motion do not move that world point. A new target does not silently reset the existing aim point.
+Mouse movement in observation mode sets the cyan sea point using the visible camera ray. Locking, entering Shift, observation updates, ship movement and camera blends never snap it to the prediction. In Shift mode the mouse adjusts that same world point in the horizontal aiming plane. Without mouse input it remains fixed.
 
 ## Designer parameters
 - Ship Weapon: muzzle speed 65 m/s relative to platform, gravity 9.81, configured range 300 m (physical reach still governs), damage 25. Gaussian sigma = 1 + distance * .8 / 100 metres; radial rejection at 3 sigma. Dispersion can be disabled.
 - Main turret 1/2/3: independent neutral yaw, traverse arc/speed, elevation speed/limits, aim tolerance, reload.
 - Combat Systems / CombatFireControl: observation .5 s. Target motion is only read when observation is due; every-frame extrapolation uses the saved state. A changed/cleared lock discards the observation.
-- Yellow prediction region: longitudinal radius 8 m, lateral 4 m, visual smoothing .12 s. Transparent world-space mesh and border; no centre glyph; hidden when prediction is invalid. This is a fixed reference area, not a probability distribution and not weapon dispersion.
-- CombatAimController: .15 metres/pixel. CombatCamera: aim FOV 32, distance 65, height 24, smoothing .18 s. Aim view fits the target, prediction and chosen impact point together with a configurable 12 m framing margin.
+- Yellow prediction region: longitudinal radius 8 m, lateral 4 m, visual smoothing .12 s. Transparent world-space mesh and dashed border, matching fire-control-v02; no centre glyph; hidden when prediction is invalid. This is a fixed reference area, not a probability distribution and not weapon dispersion.
+- CombatAimController: .15 metres/pixel. CombatCamera matches fire-control-v02: target position + 1.5 m focus height, world offset (0,35,-65), FOV 36, exponential response 5. Wheel adjusts aim FOV from 18 to 55. It does not automatically pull back to fit the manual point. Observation sight is raised 20 degrees above the ship-centred orbit so the centre ray can aim beyond the player hull.
 - Target Destroyer: HP 150, speed 8. Set TestTargetMotion speed to zero for static testing. Player HP 600. Optional TargetBattleship prefab has HP 450 and the same non-tactical motion component. No target weapons or tactical AI.
 - CombatEffects: water-column lifetime 1.5 s.
 
@@ -39,3 +39,5 @@ EditMode tests cover moving/static ballistic precision, invalid solutions, arcs,
 PlayMode tests load actual saved scenes, use Input System virtual devices, and verify immediate fire, six-shell cap, reload, swept collision, friendly protection, moving shots, lock/Shift/manual aim/driving/sinking, plus the existing movement and camera tests. See the delivery report for actual run results; test source alone is not evidence of passing.
 
 Validated on 2026-10-31 through the existing Unity CLI / Pipeline: compilation succeeded; 17/17 EditMode and final combined 13/13 PlayMode tests passed. Saved scene has zero missing scripts, three turrets, six muzzles and player HP 600. Game-view captures confirmed the fixed yellow ellipse without a centre glyph, independent cyan aim and target framing. A runtime salvo produced six water impacts; the integration test also verified six real shell hits sink the 150 HP target and clear lock. Native physical mouse/keyboard playthrough and a standalone build were not performed for this combat integration (Input System event injection was used). Historical Unity Connect token-exchange network errors were observed; final Console ground truth reported zero errors/warnings and compilationFailed=false.
+
+Input correction validated: 14/14 combined PlayMode tests passed, including mouse-driven turret aim without a lock, lock/Shift preserving the chosen point, fixed v02 closeup framing and aim-wheel zoom. Actual game-view capture confirms the green target box and dashed yellow prediction area.

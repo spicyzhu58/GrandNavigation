@@ -26,6 +26,23 @@ namespace GrandNavigation.Gameplay.Tests
             if(mouse!=null)InputSystem.RemoveDevice(mouse);if(keyboard!=null)InputSystem.RemoveDevice(keyboard);
             foreach(var d in native)if(d.added)InputSystem.EnableDevice(d);native.Clear();yield return null;
         }
+        [UnityTest]public IEnumerator MouseAimsWithoutLockAndShiftUsesPrototypeCloseup()
+        {
+            Assert.IsNull(fire.Target);Vector3 initial=aim.PlayerAimPoint;
+            InputSystem.QueueStateEvent(mouse,new MouseState{position=new Vector2(Screen.width*.5f,Screen.height*.5f),delta=new Vector2(160,-35)});
+            yield return null;yield return null;
+            Assert.That(Vector3.Distance(initial,aim.PlayerAimPoint),Is.GreaterThan(1));Assert.That(player.Weapon.AimPoint,Is.EqualTo(aim.PlayerAimPoint));
+            float yaw=player.Weapon.turrets[0].LocalYaw;yield return new WaitForSeconds(.4f);
+            Assert.That(Mathf.Abs(Mathf.DeltaAngle(yaw,player.Weapon.turrets[0].LocalYaw)),Is.GreaterThan(.1f));
+            Vector3 chosen=aim.PlayerAimPoint;fire.Lock(target);Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftShift));yield return new WaitForSeconds(1.5f);
+            Assert.IsTrue(aim.IsAiming);Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
+            var rig=Object.FindFirstObjectByType<CombatCamera>();var expected=target.WorldPosition+Vector3.up*1.5f+new Vector3(0,35,-65);
+            Assert.That(Vector3.Distance(rig.view.transform.position,expected),Is.LessThan(1));
+            aim.SetPoint(player.WorldPosition+Vector3.left*250);yield return new WaitForSeconds(.5f);
+            Assert.That(Vector3.Distance(rig.view.transform.position,expected),Is.LessThan(1),"Manual point must not zoom the closeup back out");
+            float fov=rig.view.fieldOfView;InputSystem.QueueDeltaStateEvent(mouse.scroll,new Vector2(0,1));yield return new WaitForSeconds(.7f);Assert.That(rig.view.fieldOfView,Is.LessThan(fov-1));
+        }
         [UnityTest]public IEnumerator ImmediateSalvoUsesActualBarrelsAndReloads()
         {
             player.Weapon.dispersionEnabled=false;aim.SetPoint(player.WorldPosition+Vector3.right*180);

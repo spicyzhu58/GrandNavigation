@@ -19,7 +19,7 @@ namespace GrandNavigation.Gameplay.Editor
             var grey=Mat("Combat hull",new Color(.5f,.59f,.64f));var dark=Mat("Deck",new Color(.22f,.29f,.34f));
             var orange=Mat("Target",new Color(.8f,.19f,.05f));var seaMat=Mat("Sea",new Color(.025f,.12f,.19f),true);
             var flash=Mat("Flash",new Color(1,.7f,.12f),true);var splash=Mat("Splash",new Color(.65f,.9f,1),true);
-            var fill=Mat("Prediction fill",new Color(1,.8f,0,.12f),true,true);var edge=Mat("Prediction edge",new Color(1,.8f,0,.6f),true,true);
+            var fill=Mat("Prediction fill",new Color(1,.8f,0,.08f),true,true);var edge=Mat("Prediction edge",new Color(1,.8f,0,.5f),true,true);
             Part("Sea",null,PrimitiveType.Plane,Vector3.zero,new Vector3(100,1,100),seaMat);
             var contact=AssetDatabase.LoadAssetAtPath<PhysicsMaterial>("Assets/_Game/ShipMovement/Materials/ShipContact.physicMaterial");
             for(int i=0;i<4;i++)
@@ -67,7 +67,7 @@ namespace GrandNavigation.Gameplay.Editor
             CreateBattleshipTarget();
             var cam=new GameObject("Combat Camera",typeof(Camera),typeof(AudioListener)).GetComponent<Camera>();cam.tag="MainCamera";cam.fieldOfView=60;cam.farClipPlane=1600;cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.06f,.14f,.22f);
             cam.gameObject.AddComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
-            var orbit=cam.gameObject.AddComponent<ShipFollowCamera>();orbit.target=player.transform;Set(orbit,"allowCursorRelease",false);
+            var orbit=cam.gameObject.AddComponent<ShipFollowCamera>();orbit.target=player.transform;Set(orbit,"allowCursorRelease",false);var orbitSettings=new SerializedObject(orbit);orbitSettings.FindProperty("observationSightElevation").floatValue=20;orbitSettings.ApplyModifiedPropertiesWithoutUndo();
             var cameraPivot=new GameObject("CameraPivot").transform;cameraPivot.SetParent(playerGo.transform,false);cameraPivot.localPosition=Vector3.up*3;orbit.SetPivot(cameraPivot);
             cam.transform.position=player.WorldPosition+new Vector3(0,20,-32);cam.transform.LookAt(playerGo.transform.position+Vector3.up*3);
             var systems=new GameObject("Combat Systems");var fire=systems.AddComponent<CombatFireControl>();fire.player=player;fire.reference=weapon.turrets[0].muzzles[0];
