@@ -8,6 +8,8 @@ namespace GrandNavigation.Gameplay
         [SerializeField] HealthSystem healthSystem;
         [SerializeField] Weapon weapon;
         public HealthSystem Health => healthSystem;
+        public bool IsAlive => healthSystem && healthSystem.IsAlive;
+        [Tooltip("Ships with the same team cannot damage each other by default.")] public int team;
         public Weapon Weapon => weapon;
         public ShipMovement Movement { get; private set; }
         public Vector3 WorldVelocity => Movement?Movement.WorldVelocity:Vector3.zero;

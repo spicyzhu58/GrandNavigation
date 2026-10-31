@@ -60,7 +60,7 @@ namespace GrandNavigation.Gameplay.Tests
                 player.TakeDamage(-20);Assert.That(player.Health.CurrentHealth,Is.EqualTo(70));
                 Assert.That(go.GetComponents<Ship>().Length,Is.EqualTo(1));
                 var projectile=go.AddComponent<Projectile>();player.Weapon.projectile=projectile;
-                Assert.IsTrue(player.FireWeapon());Assert.IsTrue(projectile.Activated);
+                Assert.IsFalse(player.FireWeapon());Assert.IsFalse(projectile.Activated); // An unconfigured weapon must not launch a live projectile.
                 projectile.ResolveHit(player,10);Assert.That(player.Health.CurrentHealth,Is.EqualTo(60));
                 Assert.That(Projectile.ComposeWorldVelocity(Vector3.forward*65,Vector3.right*8),Is.EqualTo(new Vector3(8,0,65)));
             }

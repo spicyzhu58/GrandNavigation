@@ -33,6 +33,7 @@ namespace GrandNavigation.Gameplay
         [SerializeField,Tooltip("Flat sea reference height.")] float seaLevel;
         [SerializeField,Range(.2f,5),Tooltip("Minimum camera centre clearance above the sea.")] float minimumSeaClearance=1;
         [SerializeField,Tooltip("Lock cursor for free mouse observation during play.")] bool captureCursor=true;
+        [SerializeField,Tooltip("Disable when a combat input controller owns Esc.")] bool allowCursorRelease=true;
 
         public Transform target { get=>followTarget; set { followTarget=value;initialized=false; } }
         // Legacy scene builder compatibility; no second camera system.
@@ -86,7 +87,7 @@ namespace GrandNavigation.Gameplay
         {
             if(!ControlActive || !followTarget)return;
             if(!initialized)Initialize();
-            if(Keyboard.current!=null && Keyboard.current.escapeKey.wasPressedThisFrame)cursorReleased=!cursorReleased;
+            if(allowCursorRelease && Keyboard.current!=null && Keyboard.current.escapeKey.wasPressedThisFrame)cursorReleased=!cursorReleased;
             var mouse=Mouse.current;
             if(mouse!=null && (!captureCursor || !cursorReleased))
             {

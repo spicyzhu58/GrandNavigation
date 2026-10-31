@@ -1,0 +1,109 @@
+using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.TestTools;
+using UnityEditor.SceneManagement;
+namespace GrandNavigation.Gameplay.Tests
+{
+    public class PlayerCombatTests
+    {
+        PlayerShip player;Destroyer target;CombatFireControl fire;CombatAimController aim;PlayerCombatInput combatInput;
+        Mouse mouse;Keyboard keyboard;readonly List<InputDevice> native=new List<InputDevice>();
+        [UnitySetUp]public IEnumerator Setup()
+        {
+            EditorSceneManager.LoadSceneInPlayMode("Assets/_Game/Scenes/PlayerCombatPrototype.unity",new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single));
+            yield return null;player=Object.FindFirstObjectByType<PlayerShip>();target=Object.FindFirstObjectByType<Destroyer>();fire=Object.FindFirstObjectByType<CombatFireControl>();aim=Object.FindFirstObjectByType<CombatAimController>();combatInput=Object.FindFirstObjectByType<PlayerCombatInput>();
+            foreach(var d in InputSystem.devices)if(d.enabled&&(d is Mouse||d is Keyboard))native.Add(d);foreach(var d in native)InputSystem.DisableDevice(d);
+            mouse=InputSystem.AddDevice<Mouse>();keyboard=InputSystem.AddDevice<Keyboard>();Application.runInBackground=true;
+            target.GetComponent<TestTargetMotion>().enabled=false;target.Movement.SetTargetSpeed(0);target.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;
+            yield return null;
+        }
+        [UnityTearDown]public IEnumerator Cleanup()
+        {
+            if(mouse!=null)InputSystem.RemoveDevice(mouse);if(keyboard!=null)InputSystem.RemoveDevice(keyboard);
+            foreach(var d in native)if(d.added)InputSystem.EnableDevice(d);native.Clear();yield return null;
+        }
+        [UnityTest]public IEnumerator ImmediateSalvoUsesActualBarrelsAndReloads()
+        {
+            player.Weapon.dispersionEnabled=false;aim.SetPoint(player.WorldPosition+Vector3.right*180);
+            var directions=new List<Vector3>();var origins=new List<Vector3>();foreach(var t in player.Weapon.turrets)foreach(var m in t.muzzles){directions.Add(m.forward);origins.Add(m.position);}
+            int before=Projectile.SpawnedCount;Assert.IsTrue(player.FireWeapon());Assert.That(player.Weapon.LastSalvoCount,Is.EqualTo(6));Assert.That(Projectile.SpawnedCount-before,Is.EqualTo(6));
+            var shots=Object.FindObjectsByType<Projectile>(FindObjectsSortMode.None);Assert.That(shots.Length,Is.EqualTo(6));
+            foreach(var shell in shots)
+            {
+                int index=origins.FindIndex(p=>Vector3.Distance(p,shell.Origin)<.001f);Assert.That(index,Is.GreaterThanOrEqualTo(0));
+                Assert.That(Vector3.Distance(directions[index],(shell.InitialVelocity-player.WorldVelocity).normalized),Is.LessThan(.00001f));
+                Assert.That((shell.InitialVelocity-player.WorldVelocity).magnitude,Is.EqualTo(65).Within(.01));
+            }
+            Assert.IsFalse(player.FireWeapon());Assert.That(player.Weapon.LastSalvoCount,Is.Zero);
+            foreach(var t in player.Weapon.turrets)Assert.That(t.ReloadRemaining,Is.GreaterThan(4.9));
+            yield return new WaitForSeconds(5.1f);Assert.IsTrue(player.FireWeapon());Assert.That(player.Weapon.LastSalvoCount,Is.LessThanOrEqualTo(6));
+        }
+        [UnityTest]public IEnumerator MovingAlignedSalvoHitsChosenWorldPoint()
+        {
+            combatInput.enabled=false;player.GetComponent<PlayerShipInput>().enabled=false;player.Movement.enabled=false;
+            player.GetComponent<Rigidbody>().linearVelocity=new Vector3(8,0,12);player.Weapon.dispersionEnabled=false;
+            Vector3 point=new Vector3(160,0,-65);aim.SetPoint(point);
+            float deadline=Time.time+8;bool ready=false;
+            while(Time.time<deadline){ready=true;foreach(var t in player.Weapon.turrets)ready&=t.Aligned;if(ready)break;yield return null;}
+            Assert.IsTrue(ready);Vector3 inherited=player.WorldVelocity;Assert.IsTrue(player.FireWeapon());Assert.That(player.Weapon.LastSalvoCount,Is.EqualTo(6));
+            foreach(var shell in Object.FindObjectsByType<Projectile>(FindObjectsSortMode.None))
+            {
+                Assert.That((shell.InitialVelocity-inherited).magnitude,Is.EqualTo(65).Within(.01));
+                float t=(shell.InitialVelocity.y+Mathf.Sqrt(shell.InitialVelocity.y*shell.InitialVelocity.y+2*9.81f*shell.Origin.y))/9.81f;
+                Assert.That(Vector3.Distance(point,CombatBallistics.Position(shell.Origin,shell.InitialVelocity,9.81f,t)),Is.LessThan(.08));
+            }
+            int splash=Projectile.SplashCount;yield return new WaitForSeconds(5);Assert.That(Projectile.SplashCount-splash,Is.EqualTo(6));
+        }
+        [UnityTest]public IEnumerator LockShiftDriveManualAimAndSinkUseRealInputAndOop()
+        {
+            var screen=combatInput.view.WorldToScreenPoint(target.WorldPosition);InputSystem.QueueStateEvent(mouse,new MouseState{position=new Vector2(screen.x,screen.y)}.WithButton(MouseButton.Right));yield return null;yield return null;
+            Assert.That(fire.Target,Is.EqualTo(target));Assert.IsTrue(fire.Valid);
+            InputSystem.QueueStateEvent(mouse,new MouseState());InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftShift,Key.W,Key.D));yield return null;yield return null;
+            Assert.IsTrue(aim.IsAiming);Vector3 old=aim.PlayerAimPoint;
+            InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(40,20));yield return null;yield return null;Assert.That(Vector3.Distance(old,aim.PlayerAimPoint),Is.GreaterThan(1));
+            Vector3 chosen=aim.PlayerAimPoint;yield return new WaitForSeconds(.7f);Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));Assert.That(player.Movement.TargetSpeed,Is.GreaterThan(4));Assert.That(player.Movement.RudderAngle,Is.GreaterThan(10));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;yield return null;Assert.IsFalse(aim.IsAiming);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftShift));yield return null;yield return null;Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
+            Assert.That(player.GetComponents<Ship>().Length,Is.EqualTo(1));Assert.IsInstanceOf<EnemyShip>(target);Assert.IsNotNull(player.Weapon);Assert.IsNotNull(player.Health);Assert.IsNotNull(player.Movement);
+            ((IDamageable)target).TakeDamage(150);yield return null;yield return null;
+            Assert.IsNull(fire.Target);Assert.IsFalse(fire.Valid);Assert.IsFalse(fire.observation.Valid);Assert.IsFalse(target.Movement.enabled);Assert.IsFalse(target.Weapon.enabled);Assert.IsFalse(aim.IsAiming);
+        }
+        [UnityTest]public IEnumerator SweptProjectileDealsOneHitAndRejectsFriendlyDamage()
+        {
+            Vector3 position=target.WorldPosition;int hp=target.Health.CurrentHealth;int hit=Projectile.DamageCount;
+            var shell=Object.Instantiate(player.Weapon.projectile);shell.Launch(position-Vector3.right*20,Vector3.right*1000,9.81f,player,25,false);
+            yield return new WaitForSeconds(.1f);Assert.That(target.Health.CurrentHealth,Is.EqualTo(hp-25));Assert.That(Projectile.DamageCount-hit,Is.EqualTo(1));
+            target.team=player.team;var friendly=Object.Instantiate(player.Weapon.projectile);friendly.Launch(position-Vector3.right*20,Vector3.right*1000,9.81f,player,25,false);
+            yield return new WaitForSeconds(.1f);Assert.That(target.Health.CurrentHealth,Is.EqualTo(hp-25));
+            var once=new GameObject("Single resolution").AddComponent<Projectile>();once.ResolveHit(target,25);once.ResolveHit(target,25);Assert.That(target.Health.CurrentHealth,Is.EqualTo(hp-50));Object.Destroy(once.gameObject);
+        }
+        [UnityTest]public IEnumerator AlignedSixShellSalvoActuallySinksLockedTarget()
+        {
+            combatInput.enabled=false;player.Weapon.dispersionEnabled=false;
+            target.GetComponent<Rigidbody>().position=player.WorldPosition+Vector3.right*160;
+            target.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();yield return null;
+            fire.Lock(target);aim.SetPoint(target.WorldPosition);
+            float timeout=Time.time+8;bool ready=false;
+            while(Time.time<timeout){ready=true;foreach(var turret in player.Weapon.turrets)ready&=turret.Aligned;if(ready)break;yield return null;}
+            Assert.IsTrue(ready);int hits=Projectile.DamageCount;Assert.IsTrue(player.FireWeapon());Assert.That(player.Weapon.LastSalvoCount,Is.EqualTo(6));
+            yield return new WaitForSeconds(4);
+            Assert.That(Projectile.DamageCount-hits,Is.EqualTo(6));Assert.That(target.Health.CurrentHealth,Is.Zero);Assert.IsNull(fire.Target);
+        }
+        [UnityTest]public IEnumerator MechanicalArcsNeverCrossForbiddenSector()
+        {
+            combatInput.enabled=false;aim.SetPoint(player.WorldPosition+Vector3.back*160);
+            for(int i=0;i<200;i++)
+            {
+                foreach(var t in player.Weapon.turrets){t.Track(.04f);Assert.IsTrue(GunneryMath.InArc(t.LocalYaw,t.neutralYaw,t.traverseArc));}
+            }
+            var front=player.Weapon.turrets[0];Assert.IsFalse(front.Safe(-player.WorldForward));
+            foreach(var b in front.barrels)b.rotation=Quaternion.LookRotation(-player.WorldForward);
+            Assert.IsTrue(player.FireWeapon());Assert.That(player.Weapon.LastSalvoCount,Is.EqualTo(4));Assert.That(front.ReloadRemaining,Is.Zero);yield return null;
+        }
+    }
+}
