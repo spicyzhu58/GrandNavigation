@@ -24,7 +24,7 @@ namespace GrandNavigation.Gameplay
         public void Refresh()
         {
             Valid=false;
-            if(!player||!player.IsAlive||!Target||!Target.IsAlive||!Target.gameObject.activeInHierarchy){Target=null;observation.Clear();return;}
+            if(!player||!player.IsAlive||!Target||!Target.IsAlive||!Target.isActiveAndEnabled){Target=null;observation.Clear();return;}
             observation.Sample(Time.timeAsDouble,observationInterval,()=>Target.WorldPosition,()=>Target.WorldVelocity);
             if(observation.Velocity.sqrMagnitude>.01f)ObservedHeading=observation.Velocity.normalized;
             var w=player.Weapon;Vector3 origin=reference?reference.position:player.WorldPosition+Vector3.up*3;

@@ -24,15 +24,16 @@ namespace GrandNavigation.Gameplay.Tests
         [UnityTearDown]public IEnumerator Cleanup()
         {
             if(mouse!=null)InputSystem.RemoveDevice(mouse);if(keyboard!=null)InputSystem.RemoveDevice(keyboard);
-            foreach(var d in native)if(d.added)InputSystem.EnableDevice(d);native.Clear();yield return null;
+            foreach(var d in native)if(d.added)InputSystem.EnableDevice(d);native.Clear();
+            yield return null;
         }
         [UnityTest]public IEnumerator MouseAimsWithoutLockAndShiftUsesPrototypeCloseup()
         {
-            Assert.IsNull(fire.Target);Vector3 initial=aim.PlayerAimPoint;
+            Assert.IsNull(fire.Target);Vector3 initial=aim.PlayerAimPoint;float yaw=player.Weapon.turrets[0].LocalYaw;
             InputSystem.QueueStateEvent(mouse,new MouseState{position=new Vector2(Screen.width*.5f,Screen.height*.5f),delta=new Vector2(160,-35)});
             yield return null;yield return null;
             Assert.That(Vector3.Distance(initial,aim.PlayerAimPoint),Is.GreaterThan(1));Assert.That(player.Weapon.AimPoint,Is.EqualTo(aim.PlayerAimPoint));
-            float yaw=player.Weapon.turrets[0].LocalYaw;yield return new WaitForSeconds(.4f);
+            yield return new WaitForSeconds(.4f);
             Assert.That(Mathf.Abs(Mathf.DeltaAngle(yaw,player.Weapon.turrets[0].LocalYaw)),Is.GreaterThan(.1f));
             Vector3 chosen=aim.PlayerAimPoint;fire.Lock(target);Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftShift));yield return new WaitForSeconds(1.5f);
