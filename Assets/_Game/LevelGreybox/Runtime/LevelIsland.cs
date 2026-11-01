@@ -5,13 +5,22 @@ namespace GrandNavigation.Gameplay.Levels
     {
         public Vector3 size=new Vector3(220,35,140);
         public Transform solid;
-        void OnEnable()=>Apply();
+        // Scene transforms are authoritative. Entering Play never repositions geometry.
+        void OnEnable()=>ApplySize();
         void OnValidate()=>Apply();
-        public void Apply()
+        bool ValidSolid()=>solid&&solid!=transform&&solid.parent==transform;
+        void ApplySize()
         {
             size=new Vector3(Mathf.Max(1,size.x),Mathf.Max(1,size.y),Mathf.Max(1,size.z));
-            if(!solid)return;
-            solid.localPosition=Vector3.up*size.y*.5f;solid.localRotation=Quaternion.identity;solid.localScale=size;
+            if(ValidSolid())solid.localScale=size;
+        }
+        public void Apply()
+        {
+            ApplySize();
+            if(Application.isPlaying||!ValidSolid())return;
+            // Height controls the vertical centre only; never erase authored horizontal positions.
+            Vector3 position=solid.localPosition;position.y=size.y*.5f;
+            if(solid.localPosition!=position)solid.localPosition=position;
         }
     }
 }
