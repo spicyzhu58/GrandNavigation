@@ -1,0 +1,1 @@
+{"name":"GrandNavigation.LevelGreybox.Editor","references":["GrandNavigation.LevelGreybox","GrandNavigation.ShipMovement","Unity.RenderPipelines.Universal.Runtime"],"includePlatforms":["Editor"]}

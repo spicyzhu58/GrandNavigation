@@ -28,7 +28,7 @@ namespace GrandNavigation.Gameplay
             }
             return false;
         }
-        public static bool Intercept(Vector3 origin,Vector3 target,Vector3 velocity,Vector3 platform,float speed,float gravity,float range,out Vector3 point,out float time)
+        public static bool Intercept(Vector3 origin,Vector3 target,Vector3 velocity,Vector3 platform,float speed,float gravity,float range,out Vector3 point,out float time,bool horizontalRange=false)
         {
             point=new Vector3(target.x,0,target.z);time=0;
             if(!Finite(velocity)||!Finite(range)||range<=0)return false;
@@ -36,7 +36,7 @@ namespace GrandNavigation.Gameplay
             {
                 if(!Solve(origin,point,platform,speed,gravity,out _,out float next))return false;
                 Vector3 p=target+velocity*next;p.y=0;
-                if(Vector3.Distance(p,point)<.002f){point=p;time=next;return Vector3.Distance(origin,point)<=range;}
+                if(Vector3.Distance(p,point)<.002f){point=p;time=next;return (horizontalRange?Vector3.ProjectOnPlane(point-origin,Vector3.up).magnitude:Vector3.Distance(origin,point))<=range;}
                 point=p;
             }
             return false;

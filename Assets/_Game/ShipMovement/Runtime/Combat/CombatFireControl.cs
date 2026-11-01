@@ -29,7 +29,7 @@ namespace GrandNavigation.Gameplay
             if(observation.Velocity.sqrMagnitude>.01f)ObservedHeading=observation.Velocity.normalized;
             var w=player.Weapon;Vector3 origin=reference?reference.position:player.WorldPosition+Vector3.up*3;
             Vector3 point=Vector3.zero;float time=0;
-            Valid=observation.Valid&&CombatBallistics.Intercept(origin,observation.Estimate(Time.timeAsDouble),observation.Velocity,player.WorldVelocity,w.muzzleSpeed,w.gravity,w.maximumRange,out point,out time);
+            Valid=observation.Valid&&CombatBallistics.Intercept(origin,observation.Estimate(Time.timeAsDouble),observation.Velocity,player.WorldVelocity,w.muzzleSpeed,w.gravity,w.maximumRange,out point,out time,w.horizontalRange);
             if(Valid){PredictedIntercept=point;FlightTime=time;}
         }
     }

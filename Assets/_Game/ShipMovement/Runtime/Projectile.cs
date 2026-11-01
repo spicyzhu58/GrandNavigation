@@ -6,6 +6,7 @@ namespace GrandNavigation.Gameplay
     {
         [Min(.01f)] public float radius=.18f;
         [Min(1)] public float lifetime=15;
+        [Min(0),Tooltip("Optional absolute X/Z cleanup limit; zero disables it for old prototypes.")] public float worldBounds;
         public bool Activated {get;private set;} public bool Resolved {get;private set;}
         public Vector3 InitialVelocity {get;private set;} public Vector3 Origin {get;private set;}
         public Vector3 ImpactPoint {get;private set;}
@@ -49,7 +50,7 @@ namespace GrandNavigation.Gameplay
             transform.position=to;age=next;
             var velocity=InitialVelocity+Vector3.down*gravity*age;if(velocity.sqrMagnitude>.001f)transform.rotation=Quaternion.LookRotation(velocity);
             if(water){Resolved=true;ImpactPoint=to;SplashCount++;CombatEffects.Splash(to);Destroy(gameObject);}
-            else if(age>lifetime){Resolved=true;Destroy(gameObject);}
+            else if(age>lifetime||(worldBounds>0&&(Mathf.Abs(to.x)>worldBounds||Mathf.Abs(to.z)>worldBounds))){Resolved=true;Destroy(gameObject);}
         }
     }
 }

@@ -11,6 +11,7 @@ namespace GrandNavigation.Gameplay
         [Min(1)] public float maximumRange=300;
         [Min(1)] public int damage=25;
         public bool friendlyFire;
+        [Tooltip("Use horizontal distance for effective range; enabled by the large-map scene only.")] public bool horizontalRange;
         [Header("Gaussian sea-plane dispersion, independent of fire control")]
         public bool dispersionEnabled=true;
         [Min(0)] public float baseSigma=1,sigmaPer100m=.8f;
@@ -26,8 +27,9 @@ namespace GrandNavigation.Gameplay
         public bool Solve(Vector3 origin,Vector3 point,out Vector3 relative,out float time)
         {
             relative=Vector3.zero;time=0;
-            return Owner&&Vector3.Distance(origin,point)<=maximumRange&&CombatBallistics.Solve(origin,point,Owner.WorldVelocity,muzzleSpeed,gravity,out relative,out time);
+            return Owner&&InRange(origin,point)&&CombatBallistics.Solve(origin,point,Owner.WorldVelocity,muzzleSpeed,gravity,out relative,out time);
         }
+        public bool InRange(Vector3 origin,Vector3 point)=> (horizontalRange?Vector3.ProjectOnPlane(point-origin,Vector3.up).magnitude:Vector3.Distance(origin,point))<=maximumRange;
         public Vector2 Scatter(float distance)=>dispersionEnabled?GunneryMath.Gaussian(random,Mathf.Max(0,baseSigma)+Mathf.Max(0,distance)*Mathf.Max(0,sigmaPer100m)/100):Vector2.zero;
         public virtual bool TryFire()
         {
