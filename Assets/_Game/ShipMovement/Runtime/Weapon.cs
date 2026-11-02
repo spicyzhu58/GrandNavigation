@@ -31,6 +31,17 @@ namespace GrandNavigation.Gameplay
         }
         public bool InRange(Vector3 origin,Vector3 point)=> (horizontalRange?Vector3.ProjectOnPlane(point-origin,Vector3.up).magnitude:Vector3.Distance(origin,point))<=maximumRange;
         public Vector2 Scatter(float distance)=>dispersionEnabled?GunneryMath.Gaussian(random,Mathf.Max(0,baseSigma)+Mathf.Max(0,distance)*Mathf.Max(0,sigmaPer100m)/100):Vector2.zero;
+        public void ClearAim() => HasAim = false;
+        // AI supplies an extra per-turret gate; the player immediate-fire path is unchanged.
+        public bool TryFireAimed(System.Predicate<CombatTurret> ready)
+        {
+            LastSalvoCount=0;
+            if(!enabled||!Owner||!Owner.IsAlive||!projectile||!HasAim||ready==null)return false;
+            LastSalvoCentre=AimPoint;
+            for(int i=0;i<Mathf.Min(3,turrets.Length);i++)
+                if(turrets[i] && ready(turrets[i]))LastSalvoCount+=turrets[i].Fire(LastSalvoCentre);
+            return LastSalvoCount>0;
+        }
         public virtual bool TryFire()
         {
             LastSalvoCount=0;

@@ -22,7 +22,7 @@ namespace GrandNavigation.Gameplay
             transform.position=origin;Activated=true;SpawnedCount++;
         }
         public static Vector3 ComposeWorldVelocity(Vector3 relative,Vector3 platform)=>relative+platform;
-        public void ResolveHit(IDamageable target,int amount){if(Resolved)return;Resolved=true;target?.TakeDamage(amount);}
+        public void ResolveHit(IDamageable target,int amount){if(Resolved)return;Resolved=true;if(target is Ship ship)ship.TakeDamage(amount,owner);else target?.TakeDamage(amount);}
         void FixedUpdate()
         {
             if(!Activated||Resolved||gravity<=0)return;

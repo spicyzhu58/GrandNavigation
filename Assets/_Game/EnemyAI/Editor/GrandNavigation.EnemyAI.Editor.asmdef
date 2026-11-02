@@ -1,0 +1,1 @@
+{"name":"GrandNavigation.EnemyAI.Editor","references":["GrandNavigation.EnemyAI","GrandNavigation.ShipMovement","GrandNavigation.LevelGreybox"],"includePlatforms":["Editor"]}

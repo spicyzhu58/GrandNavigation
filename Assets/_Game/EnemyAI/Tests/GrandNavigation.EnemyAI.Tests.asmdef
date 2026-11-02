@@ -1,0 +1,1 @@
+{"name":"GrandNavigation.EnemyAI.Tests","references":["GrandNavigation.EnemyAI","GrandNavigation.ShipMovement","GrandNavigation.LevelGreybox"],"optionalUnityReferences":["TestAssemblies"]}

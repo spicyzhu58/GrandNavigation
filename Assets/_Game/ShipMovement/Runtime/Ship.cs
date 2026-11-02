@@ -22,6 +22,15 @@ namespace GrandNavigation.Gameplay
             Movement=GetComponent<ShipMovement>();
         }
         protected virtual void Reset() { healthSystem=GetComponent<HealthSystem>();weapon=GetComponent<Weapon>(); }
-        public void TakeDamage(int damage) { if(healthSystem)healthSystem.TakeDamage(damage); }
+        public event System.Action<int, Ship> Damaged;
+        public void TakeDamage(int damage) => TakeDamage(damage, null);
+        // Optional source preserves IDamageable and existing anonymous damage callers.
+        public void TakeDamage(int damage, Ship source)
+        {
+            if (!healthSystem || !IsAlive || damage <= 0) return;
+            int before = healthSystem.CurrentHealth;
+            healthSystem.TakeDamage(damage);
+            Damaged?.Invoke(before - healthSystem.CurrentHealth, source);
+        }
     }
 }

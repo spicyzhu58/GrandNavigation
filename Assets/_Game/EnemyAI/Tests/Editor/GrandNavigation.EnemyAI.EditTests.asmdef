@@ -1,0 +1,1 @@
+{"name":"GrandNavigation.EnemyAI.EditTests","references":["GrandNavigation.EnemyAI","GrandNavigation.ShipMovement"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"]}
