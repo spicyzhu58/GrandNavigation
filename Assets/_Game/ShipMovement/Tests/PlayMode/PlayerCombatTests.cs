@@ -36,6 +36,8 @@ namespace GrandNavigation.Gameplay.Tests
             yield return new WaitForSeconds(.4f);
             Assert.That(Mathf.Abs(Mathf.DeltaAngle(yaw,player.Weapon.turrets[0].LocalYaw)),Is.GreaterThan(.1f));
             Vector3 chosen=aim.PlayerAimPoint;fire.Lock(target);Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
+            // Keep an already-visible manual correction when entering the destination frame.
+            chosen=target.WorldPosition+Vector3.right*2;chosen.y=0;aim.SetPoint(chosen);
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftShift));yield return new WaitForSeconds(1.5f);
             Assert.IsTrue(aim.IsAiming);Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
             var rig=Object.FindFirstObjectByType<CombatCamera>();var expected=target.WorldPosition+Vector3.up*(rig.targetFocusHeight+rig.aimingHeight)-rig.ViewingDirection*rig.aimingDistance;
@@ -53,7 +55,7 @@ namespace GrandNavigation.Gameplay.Tests
             yield return new WaitForFixedUpdate();yield return null;
             fire.Lock(target);Vector3 chosen=aim.PlayerAimPoint;
             var rig=Object.FindFirstObjectByType<CombatCamera>();
-            aim.SetAiming(true);rig.SetAiming(true);
+            aim.SetAiming(true);rig.SetAiming(true);chosen=aim.PlayerAimPoint;
             Assert.That(Vector3.Distance(rig.ViewingDirection,Vector3.left),Is.LessThan(.01f));
             yield return new WaitForSeconds(2);
             Vector3 bearing=rig.ViewingDirection;
@@ -72,6 +74,29 @@ namespace GrandNavigation.Gameplay.Tests
             Assert.That(Vector3.Dot((aim.PlayerAimPoint-before).normalized,Vector3.Cross(Vector3.up,rig.ViewingDirection)),Is.GreaterThan(.99f));
             targetBody.isKinematic=false;target.TakeDamage(150);yield return null;yield return null;
             Assert.IsFalse(aim.IsAiming);
+        }
+        [UnityTest]public IEnumerator AimEntryRecentersOnceWithoutSnappingTurretsOrFollowingPrediction()
+        {
+            combatInput.enabled=false;player.GetComponent<PlayerShipInput>().enabled=false;player.Movement.enabled=false;target.Movement.enabled=false;
+            fire.Lock(target);var rig=Object.FindFirstObjectByType<CombatCamera>();
+            aim.SetPoint(player.WorldPosition+Vector3.left*1000);
+            Quaternion barrel=player.Weapon.turrets[0].muzzles[0].rotation;
+            aim.SetAiming(true);rig.SetAiming(true);
+            Vector3 centre=target.WorldPosition+Vector3.up*rig.targetFocusHeight;
+            Vector3 position=centre+Vector3.up*rig.aimingHeight-rig.ViewingDirection*rig.aimingDistance;
+            Quaternion rotation=Quaternion.LookRotation(centre-position);
+            Vector3 expected=CombatCamera.EntrySeaPoint(position,rotation,target.WorldPosition,5000);
+            Assert.That(Vector3.Distance(expected,aim.PlayerAimPoint),Is.LessThan(.001f));
+            Assert.That(Quaternion.Angle(barrel,player.Weapon.turrets[0].muzzles[0].rotation),Is.LessThan(.001f));
+            aim.Adjust(new Vector2(20,10));Vector3 manual=aim.PlayerAimPoint;
+            yield return new WaitForSeconds(1.5f);
+            Assert.AreEqual(manual,aim.PlayerAimPoint,"Camera blend and fire-control refresh cannot overwrite manual aim");
+            aim.SetAiming(false);rig.SetAiming(false);aim.SetAiming(true);rig.SetAiming(true);
+            Assert.AreEqual(manual,aim.PlayerAimPoint,"Visible manual correction survives re-entry");
+            aim.SetPoint(player.WorldPosition+Vector3.left*1000);manual=aim.PlayerAimPoint;
+            rig.SetAiming(true);yield return null;Assert.AreEqual(manual,aim.PlayerAimPoint,"Holding Shift never recenters again");
+            aim.SetAiming(false);rig.SetAiming(false);aim.SetAiming(true);rig.SetAiming(true);
+            Assert.AreNotEqual(manual,aim.PlayerAimPoint,"A new entry restores an offscreen aim");
         }
         [UnityTest]public IEnumerator ActualImpactHudGroupsFrontAndMergesOnlyAllBarrels()
         {

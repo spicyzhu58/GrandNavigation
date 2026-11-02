@@ -4,6 +4,20 @@ namespace GrandNavigation.Gameplay.Tests
 {
     public class CombatMathTests
     {
+        [Test]public void AimEntryProjectionAndBoundedSeaFallback()
+        {
+            var pose=new Vector3(0,10,-20);var rotation=Quaternion.LookRotation(-pose);
+            Assert.IsTrue(CombatCamera.InsideEntryFrame(Vector3.zero,pose,rotation,36,16f/9,.8f));
+            Assert.IsFalse(CombatCamera.InsideEntryFrame(Vector3.right*100,pose,rotation,36,16f/9,.8f));
+            Assert.IsFalse(CombatCamera.InsideEntryFrame(pose-rotation*Vector3.forward,pose,rotation,36,16f/9,.8f));
+            float edge=10*Mathf.Tan(18*Mathf.Deg2Rad)*.8f;
+            Assert.IsTrue(CombatCamera.InsideEntryFrame(new Vector3(edge*.99f,0,10),Vector3.zero,Quaternion.identity,36,1,.8f));
+            Assert.IsFalse(CombatCamera.InsideEntryFrame(new Vector3(edge*1.01f,0,10),Vector3.zero,Quaternion.identity,36,1,.8f));
+            Assert.That(CombatCamera.EntrySeaPoint(pose,rotation,Vector3.one,5000).magnitude,Is.LessThan(.001f));
+            var fallback=new Vector3(25,0,80);
+            Assert.AreEqual(fallback,CombatCamera.EntrySeaPoint(pose,Quaternion.identity,fallback,5000));
+            Assert.AreEqual(fallback,CombatCamera.EntrySeaPoint(pose,rotation,fallback,1));
+        }
         [TestCase(0,0)][TestCase(0,25)][TestCase(0,-8)][TestCase(20,10)]
         public void MovingPlatformRetainsFixedRelativeSpeedAndImpact(float x,float z)
         {

@@ -10,6 +10,9 @@ namespace GrandNavigation.Gameplay
         [Min(10)] public float aimingDistance=65;
         [Min(3)] public float aimingHeight=35;
         [Tooltip("Observation centre above the target hull.")] public float targetFocusHeight=1.5f;
+        [Header("Aim entry visibility")]
+        [SerializeField,Range(.1f,1),Tooltip("Keep the existing world aim inside this central fraction of the destination camera frame. Outside points are recentered once on entry.")] float entrySafeViewportFraction=.8f;
+        [SerializeField,Min(1),Tooltip("Maximum centre-ray distance to the sea. Invalid / near-horizontal rays fall back to the observed target sea position, not the predicted intercept.")] float maximumEntryRayDistance=5000;
         public Vector3 ViewingDirection {get;private set;}=Vector3.forward;
         [Range(1,10)] public float zoomDegreesPerNotch=2;
         [Range(10,55)] public float minimumAimFov=18,maximumAimFov=55;
@@ -26,9 +29,38 @@ namespace GrandNavigation.Gameplay
                 ViewingDirection=Vector3.ProjectOnPlane(fireControl.Target.WorldPosition-aim.player.WorldPosition,Vector3.up).normalized;
                 if(ViewingDirection.sqrMagnitude<.01f)ViewingDirection=aim.player.WorldForward;
                 aim.SetViewBasis(ViewingDirection);
+                GetAimDestination(out var position,out var rotation);
+                if(!InsideEntryFrame(aim.PlayerAimPoint,position,rotation,aimingFov,view.aspect,entrySafeViewportFraction))
+                    aim.SetPoint(EntrySeaPoint(position,rotation,fireControl.Target.WorldPosition,maximumEntryRayDistance));
                 returning=false;Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;
             }
         }
+        void GetAimDestination(out Vector3 position,out Quaternion rotation)
+        {
+            Vector3 centre=fireControl.Target.WorldPosition+Vector3.up*targetFocusHeight;
+            position=centre+Vector3.up*aimingHeight-ViewingDirection*aimingDistance;
+            position.y=Mathf.Max(2,position.y);
+            rotation=Quaternion.LookRotation(centre-position,Vector3.up);
+        }
+        // Evaluate the final pose, not the still-blending observation camera.
+        public static bool InsideEntryFrame(Vector3 point,Vector3 position,Quaternion rotation,float fov,float aspect,float safeFraction)
+        {
+            Vector3 local=Quaternion.Inverse(rotation)*(point-position);
+            if(!CombatBallistics.Finite(local)||local.z<=.001f||!float.IsFinite(aspect)||aspect<=0)return false;
+            float halfHeight=local.z*Mathf.Tan(Mathf.Clamp(fov,1,179)*.5f*Mathf.Deg2Rad)*Mathf.Clamp(safeFraction,.1f,1);
+            return Mathf.Abs(local.y)<=halfHeight && Mathf.Abs(local.x)<=halfHeight*aspect;
+        }
+        public static Vector3 EntrySeaPoint(Vector3 position,Quaternion rotation,Vector3 fallback,float maximumDistance)
+        {
+            var ray=new Ray(position,rotation*Vector3.forward);
+            if(new Plane(Vector3.up,Vector3.zero).Raycast(ray,out float distance) && float.IsFinite(distance) && distance<=maximumDistance)
+            {
+                Vector3 point=ray.GetPoint(distance);
+                if(CombatBallistics.Finite(point)){point.y=0;return point;}
+            }
+            return new Vector3(fallback.x,0,fallback.z);
+        }
+        void OnValidate(){entrySafeViewportFraction=Mathf.Clamp(entrySafeViewportFraction,.1f,1);maximumEntryRayDistance=Mathf.Max(1,maximumEntryRayDistance);}
         void LateUpdate()
         {
             if(aiming&&(!fireControl.Target||!fireControl.Target.IsAlive)){aim.SetAiming(false);SetAiming(false);}
