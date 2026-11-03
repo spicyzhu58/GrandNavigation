@@ -42,7 +42,7 @@ namespace GrandNavigation.Gameplay
             if(!player)return;GUI.color=Color.white;GUI.Box(new Rect(12,12,440,235),"");
             var w=player.Weapon;string reload="";for(int i=0;i<w.turrets.Length;i++){var t=w.turrets[i];reload+=$"T{i+1}: {(t.ReloadRemaining>0?t.ReloadRemaining.ToString("F1")+"s":t.Aligned?"READY / ON TARGET":"READY / TRAVERSING")}  ";}
             GUI.Label(new Rect(24,24,420,220),$"PLAYER COMBAT V0.1    HP {player.Health.CurrentHealth}/{player.Health.maximumHealth}\nSpeed {player.Movement.ActualSpeed:F1}  Target {player.Movement.TargetSpeed:F1} m/s\nRudder {player.Movement.RudderAngle:F0} deg\n"+
-                (fireControl.Target?$"LOCK: {fireControl.Target.name}  HP {fireControl.Target.Health.CurrentHealth}/{fireControl.Target.Health.maximumHealth}  {Vector3.ProjectOnPlane(fireControl.Target.WorldPosition-player.WorldPosition,Vector3.up).magnitude:F0} UU\n":"NO TARGET\n")+
+                (fireControl.HasVisibleTarget?$"LOCK: {fireControl.Target.name}  HP {fireControl.Target.Health.CurrentHealth}/{fireControl.Target.Health.maximumHealth}  {Vector3.ProjectOnPlane(fireControl.Target.WorldPosition-player.WorldPosition,Vector3.up).magnitude:F0} UU\n":(fireControl.State==CombatFireControl.LockState.Occluded?"TARGET OCCLUDED\n":"NO TARGET\n"))+
                 (fireControl.Valid?$"Observation {fireControl.SampleAge:F2}s / {fireControl.observationInterval:F1}s\n":"NO VALID PREDICTION / OUT OF RANGE\n")+reload+"\n"+w.Status+"\nWASD drive | RMB lock at centre reticle | Hold Shift aim\nMouse aims turrets / orbit | Wheel zoom | LMB salvo | Esc unlock\nR reset orbit | Yellow: prediction area | Gray: aim command | Blue: barrel impacts");
             DrawAim(aim.PlayerAimPoint,new Color(.8f,.8f,.8f));
             if(ImpactsMerged)DrawAim((FrontImpact*2+RearImpact)/3,Color.cyan,true);
@@ -51,7 +51,7 @@ namespace GrandNavigation.Gameplay
                 if(frontValid)DrawAim(FrontImpact,Color.cyan,false,"F");
                 if(rearValid)DrawAim(RearImpact,Color.cyan,false,"R");
             }
-            if(fireControl.Target)
+            if(fireControl.HasVisibleTarget)
             {
                 var p=view.WorldToScreenPoint(fireControl.Target.WorldPosition+Vector3.up*4);
                 if(p.z>0)

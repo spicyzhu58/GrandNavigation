@@ -13,7 +13,7 @@ namespace GrandNavigation.Gameplay
         public void SetPoint(Vector3 point){if(!CombatBallistics.Finite(point))return;PlayerAimPoint=new Vector3(point.x,0,point.z);player.Weapon.SetAim(PlayerAimPoint);}
         public void SetAiming(bool value)
         {
-            value=value&&player.IsAlive&&fireControl.Target&&fireControl.Target.IsAlive;
+            value=value&&player&&player.IsAlive;
             if(value==IsAiming)return;
             IsAiming=value;
             if(value)

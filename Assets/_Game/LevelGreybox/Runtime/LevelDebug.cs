@@ -54,7 +54,7 @@ namespace GrandNavigation.Gameplay.Levels
         {
             if(!showHUD||!player)return;
             Vector3 p=player.WorldPosition;
-            string distance=fire.Target?Vector3.ProjectOnPlane(fire.Target.WorldPosition-p,Vector3.up).magnitude.ToString("F0")+" UU":"--";
+            string distance=fire.HasVisibleTarget?Vector3.ProjectOnPlane(fire.Target.WorldPosition-p,Vector3.up).magnitude.ToString("F0")+" UU":"--";
             GUI.Box(new Rect(12,Screen.height-105,500,93),"LEVEL GREYBOX  |  2560 x 2560  |  Core +/-600");
             GUI.Label(new Rect(24,Screen.height-82,475,65),
                 $"Speed {player.Movement.ActualSpeed:F2} UU/s  Heading {player.transform.eulerAngles.y:F0} deg\nPosition ({p.x:F1}, {p.y:F1}, {p.z:F1})  Target {distance}\nF5: reset player   F6: reset targets   F7: debug HUD");

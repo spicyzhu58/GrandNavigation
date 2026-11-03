@@ -73,7 +73,7 @@ namespace GrandNavigation.Gameplay.Tests
             Vector3 before=aim.PlayerAimPoint;aim.Adjust(Vector2.right);
             Assert.That(Vector3.Dot((aim.PlayerAimPoint-before).normalized,Vector3.Cross(Vector3.up,rig.ViewingDirection)),Is.GreaterThan(.99f));
             targetBody.isKinematic=false;target.TakeDamage(150);yield return null;yield return null;
-            Assert.IsFalse(aim.IsAiming);
+            Assert.IsTrue(aim.IsAiming,"Target loss retains held free aim");Assert.IsFalse(rig.TrackingTarget);
         }
         [UnityTest]public IEnumerator AimEntryRecentersOnceWithoutSnappingTurretsOrFollowingPrediction()
         {
@@ -167,7 +167,7 @@ namespace GrandNavigation.Gameplay.Tests
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftShift));yield return null;yield return null;Assert.That(aim.PlayerAimPoint,Is.EqualTo(chosen));
             Assert.That(player.GetComponents<Ship>().Length,Is.EqualTo(1));Assert.IsInstanceOf<EnemyShip>(target);Assert.IsNotNull(player.Weapon);Assert.IsNotNull(player.Health);Assert.IsNotNull(player.Movement);
             ((IDamageable)target).TakeDamage(150);yield return null;yield return null;
-            Assert.IsNull(fire.Target);Assert.IsFalse(fire.Valid);Assert.IsFalse(fire.observation.Valid);Assert.IsFalse(target.Movement.enabled);Assert.IsFalse(target.Weapon.enabled);Assert.IsFalse(aim.IsAiming);
+            Assert.IsNull(fire.Target);Assert.IsFalse(fire.Valid);Assert.IsFalse(fire.observation.Valid);Assert.IsFalse(target.Movement.enabled);Assert.IsFalse(target.Weapon.enabled);Assert.IsTrue(aim.IsAiming,"Held Shift remains free aim after target death");Assert.IsFalse(combatInput.cameraRig.TrackingTarget);
         }
         [UnityTest]public IEnumerator SweptProjectileDealsOneHitAndRejectsFriendlyDamage()
         {

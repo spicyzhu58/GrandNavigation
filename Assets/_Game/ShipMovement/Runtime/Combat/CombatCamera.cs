@@ -18,26 +18,36 @@ namespace GrandNavigation.Gameplay
         [Range(10,55)] public float minimumAimFov=18,maximumAimFov=55;
         [Min(.01f)] public float aimResponse=5;
         public void Zoom(float scroll){if(aiming)aimingFov=Mathf.Clamp(aimingFov-scroll*zoomDegreesPerNotch,minimumAimFov,maximumAimFov);}
+        [Header("Free aim / camera obstruction")]
+        [SerializeField,Min(.01f)] float freeAimDegreesPerPixel=.12f;
+        [SerializeField,Min(.1f)] float collisionRadius=.5f;
+        Vector3 freePosition,previousPlayerPosition;Quaternion freeRotation;bool tracking;
+        public bool TrackingTarget=>aiming&&tracking&&fireControl.HasVisibleTarget;
         bool aiming,returning;float normalFov,returnAge,returnFov;Vector3 returnPosition;Quaternion returnRotation;
         void Awake()=>normalFov=view.fieldOfView;
         public void SetAiming(bool value)
         {
-            value=value&&fireControl&&fireControl.Target&&fireControl.Target.IsAlive&&aim&&aim.player&&aim.player.IsAlive;
+            value=value&&fireControl&&aim&&aim.player&&aim.player.IsAlive;
             if(aiming==value)return;aiming=value;orbit.SetControlActive(!value);
             if(!value){returning=true;returnAge=0;returnPosition=view.transform.position;returnRotation=view.transform.rotation;returnFov=view.fieldOfView;}
             else {
-                ViewingDirection=Vector3.ProjectOnPlane(fireControl.Target.WorldPosition-aim.player.WorldPosition,Vector3.up).normalized;
+                tracking=fireControl.HasVisibleTarget;
+                if(tracking)
+                {
+                ViewingDirection=Vector3.ProjectOnPlane(fireControl.LastVisiblePosition-aim.player.WorldPosition,Vector3.up).normalized;
                 if(ViewingDirection.sqrMagnitude<.01f)ViewingDirection=aim.player.WorldForward;
                 aim.SetViewBasis(ViewingDirection);
                 GetAimDestination(out var position,out var rotation);
                 if(!InsideEntryFrame(aim.PlayerAimPoint,position,rotation,aimingFov,view.aspect,entrySafeViewportFraction))
-                    aim.SetPoint(EntrySeaPoint(position,rotation,fireControl.Target.WorldPosition,maximumEntryRayDistance));
+                    aim.SetPoint(EntrySeaPoint(position,rotation,fireControl.LastVisiblePosition,maximumEntryRayDistance));
+                }
+                else CaptureFreePose();
                 returning=false;Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;
             }
         }
         void GetAimDestination(out Vector3 position,out Quaternion rotation)
         {
-            Vector3 centre=fireControl.Target.WorldPosition+Vector3.up*targetFocusHeight;
+            Vector3 centre=fireControl.LastVisiblePosition+Vector3.up*targetFocusHeight;
             position=centre+Vector3.up*aimingHeight-ViewingDirection*aimingDistance;
             position.y=Mathf.Max(2,position.y);
             rotation=Quaternion.LookRotation(centre-position,Vector3.up);
@@ -63,22 +73,64 @@ namespace GrandNavigation.Gameplay
         void OnValidate(){entrySafeViewportFraction=Mathf.Clamp(entrySafeViewportFraction,.1f,1);maximumEntryRayDistance=Mathf.Max(1,maximumEntryRayDistance);}
         void LateUpdate()
         {
-            if(aiming&&(!fireControl.Target||!fireControl.Target.IsAlive)){aim.SetAiming(false);SetAiming(false);}
+            if(aiming&&(!aim.player||!aim.player.IsAlive)){aim.SetAiming(false);SetAiming(false);}
             if(!aiming)
             {
                 if(returning){returnAge+=Time.deltaTime;float t=Mathf.SmoothStep(0,1,Mathf.Clamp01(returnAge/Mathf.Max(.01f,smoothTime*4)));view.transform.position=Vector3.Lerp(returnPosition,view.transform.position,t);view.transform.rotation=Quaternion.Slerp(returnRotation,view.transform.rotation,t);view.fieldOfView=Mathf.Lerp(returnFov,normalFov,t);if(t>=1)returning=false;}
                 return;
             }
-            // Freeze the engagement bearing on entry; track only the target position.
-            // The manual impact point never affects the zoom camera's framing or distance.
-            Vector3 centre=fireControl.Target.WorldPosition+Vector3.up*targetFocusHeight;
-            Vector3 desired=centre+Vector3.up*aimingHeight-ViewingDirection*aimingDistance;
+            bool visible=fireControl.HasVisibleTarget;
+            if(visible!=tracking)
+            {
+                if(!visible)CaptureFreePose();
+                else
+                {
+                    ViewingDirection=Vector3.ProjectOnPlane(fireControl.LastVisiblePosition-aim.player.WorldPosition,Vector3.up).normalized;
+                    if(ViewingDirection.sqrMagnitude<.01f)ViewingDirection=aim.player.WorldForward;
+                    aim.SetViewBasis(ViewingDirection);
+                }
+                tracking=visible;
+            }
+            Vector3 desired;Quaternion rotation;
+            if(tracking)GetAimDestination(out desired,out rotation);
+            else
+            {
+                freePosition+=aim.player.WorldPosition-previousPlayerPosition;
+                previousPlayerPosition=aim.player.WorldPosition;desired=freePosition;rotation=freeRotation;
+            }
+            // Tactical visibility and the camera use the same solid mask. Never blend through an island.
+            desired=ConstrainCamera(fireControl.ObserverPosition,desired);
             float blend=1-Mathf.Exp(-Time.deltaTime*aimResponse);
-            view.transform.position=Vector3.Lerp(view.transform.position,desired,blend);
+            Vector3 next=Vector3.Lerp(view.transform.position,desired,blend);
+            view.transform.position=ConstrainCamera(view.transform.position,next);
             view.transform.position=new Vector3(view.transform.position.x,Mathf.Max(2,view.transform.position.y),view.transform.position.z);
-            var rotation=Quaternion.LookRotation(centre-view.transform.position,Vector3.up);
+            if(tracking)rotation=Quaternion.LookRotation(fireControl.LastVisiblePosition+Vector3.up*targetFocusHeight-view.transform.position,Vector3.up);
             view.transform.rotation=Quaternion.Slerp(view.transform.rotation,rotation,blend);
             view.fieldOfView=Mathf.Lerp(view.fieldOfView,aimingFov,blend);
+        }
+        void CaptureFreePose()
+        {
+            freePosition=view.transform.position;freeRotation=view.transform.rotation;previousPlayerPosition=aim.player.WorldPosition;
+        }
+        public void AdjustFreeAim(Vector2 delta)
+        {
+            if(!aiming||fireControl.HasVisibleTarget||delta.sqrMagnitude==0)return;
+            if(tracking){CaptureFreePose();tracking=false;}
+            var angles=freeRotation.eulerAngles;
+            float pitch=Mathf.Clamp(Mathf.DeltaAngle(0,angles.x)-delta.y*freeAimDegreesPerPixel,5,80);
+            freeRotation=Quaternion.Euler(pitch,angles.y+delta.x*freeAimDegreesPerPixel,0);
+            aim.SetPoint(EntrySeaPoint(view.transform.position,freeRotation,aim.PlayerAimPoint,maximumEntryRayDistance));
+        }
+        Vector3 ConstrainCamera(Vector3 origin,Vector3 desired)
+        {
+            Vector3 delta=desired-origin;float length=delta.magnitude;if(length<.001f)return desired;
+            float allowed=length;
+            foreach(var hit in Physics.SphereCastAll(origin,collisionRadius,delta/length,length,fireControl.obstructionMask,QueryTriggerInteraction.Ignore))
+            {
+                if(hit.collider.GetComponentInParent<Ship>()==aim.player)continue;
+                allowed=Mathf.Min(allowed,Mathf.Max(0,hit.distance-.1f));
+            }
+            return origin+delta/length*allowed;
         }
         void OnDisable(){if(orbit)orbit.SetControlActive(true);if(view)view.fieldOfView=normalFov;}
     }

@@ -17,7 +17,7 @@ namespace GrandNavigation.Gameplay
         }
         void LateUpdate()
         {
-            bool visible=fireControl.Valid&&fireControl.Target;surface.enabled=visible;if(!visible){displayed=null;return;}
+            bool visible=fireControl.Valid&&fireControl.HasVisibleTarget;surface.enabled=visible;if(!visible){displayed=null;return;}
             float desired=Mathf.Atan2(fireControl.ObservedHeading.x,fireControl.ObservedHeading.z)*Mathf.Rad2Deg;
             if(displayed!=fireControl.Target){displayed=fireControl.Target;centre=fireControl.PredictedIntercept;velocity=Vector3.zero;heading=desired;}
             else {centre=Vector3.SmoothDamp(centre,fireControl.PredictedIntercept,ref velocity,smoothTime);heading=Mathf.LerpAngle(heading,desired,1-Mathf.Exp(-Time.deltaTime/smoothTime));}

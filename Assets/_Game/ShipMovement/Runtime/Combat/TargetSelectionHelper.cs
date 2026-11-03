@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace GrandNavigation.Gameplay
 {
-    // Called only on selection input. No target tracking or aim-point writes.
+    // Shared tactical visibility and on-demand screen selection; never writes aim points.
     public static class TargetSelectionHelper
     {
         public static bool Eligible(Ship target,Ship player,float range,bool enemiesOnly)
@@ -14,9 +14,10 @@ namespace GrandNavigation.Gameplay
         static bool LayerAllowed(Collider c,int mask)=>(mask&(1<<c.gameObject.layer))!=0;
         static bool Own(Collider c,Ship player)=>c.transform==player.transform||c.transform.IsChildOf(player.transform);
         public static Ship Select(Camera camera,Vector2 pointer,Ship player,float range,float rayDistance,float radius,
-            bool assist,bool occlusion,bool enemiesOnly,int targetMask,int obstructionMask)
+            bool assist,bool occlusion,bool enemiesOnly,int targetMask,int obstructionMask,Vector3? observer=null,bool partialVisibility=true)
         {
             if(!camera||!player||!player.IsAlive||!camera.pixelRect.Contains(pointer))return null;
+            Vector3 origin=observer??(player.WorldPosition+Vector3.up*6);
             var ray=camera.ScreenPointToRay(pointer);
             // Camera offset must not shorten the player-centred horizontal lock range.
             float length=Mathf.Max(rayDistance,range+Vector3.Distance(camera.transform.position,player.WorldPosition)+100);
@@ -26,7 +27,7 @@ namespace GrandNavigation.Gameplay
             {
                 if(Own(hit.collider,player))continue;
                 var ship=hit.collider.GetComponentInParent<Ship>();
-                if(LayerAllowed(hit.collider,targetMask)&&Eligible(ship,player,range,enemiesOnly))return ship;
+                if(LayerAllowed(hit.collider,targetMask)&&Eligible(ship,player,range,enemiesOnly) && (!occlusion||ShipVisible(origin,ship,player,obstructionMask,partialVisibility,targetMask)))return ship;
                 if(occlusion&&LayerAllowed(hit.collider,obstructionMask))break;
             }
             if(!assist)return null;
@@ -40,7 +41,7 @@ namespace GrandNavigation.Gameplay
                     if(!collider.enabled||collider.isTrigger||!LayerAllowed(collider,targetMask))continue;
                     float d=ScreenDistance(camera,pointer,collider.bounds);
                     if(d>radius||d>=distance)continue;
-                    if(occlusion&&!Visible(camera.transform.position,collider,ship,player,obstructionMask))continue;
+                    if(occlusion&&!ShipVisible(origin,ship,player,obstructionMask,partialVisibility,targetMask))continue;
                     distance=d;
                 }
                 if(distance>radius)continue;
@@ -93,12 +94,20 @@ namespace GrandNavigation.Gameplay
             return inside?0:distance;
         }
         static float Cross(Vector2 a,Vector2 b)=>a.x*b.y-a.y*b.x;
-        static bool Visible(Vector3 origin,Collider collider,Ship ship,Ship player,int mask)
+        public static bool ShipVisible(Vector3 origin,Ship ship,Ship player,int mask,bool partial=true,int targetMask=~((1<<2)|(1<<4)|(1<<5)))
+        {
+            if(!ship||!player)return false;
+            foreach(var collider in ship.GetComponentsInChildren<Collider>())
+                if(collider.enabled&&!collider.isTrigger&&LayerAllowed(collider,targetMask)&&Visible(origin,collider,ship,player,mask,partial))return true;
+            return false;
+        }
+        static bool Visible(Vector3 origin,Collider collider,Ship ship,Ship player,int mask,bool partial)
         {
             Bounds b=collider.bounds;
             // Centre plus face/edge/corner samples; closest-point keeps samples on real geometry.
             for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++)for(int z=-1;z<=1;z++)
             {
+                if(!partial && (x!=0||y!=0||z!=0))continue;
                 Vector3 point=collider.ClosestPoint(b.center+Vector3.Scale(b.extents,new Vector3(x,y,z)*.9f));
                 Vector3 delta=point-origin;float length=delta.magnitude;if(length<.001f)return true;
                 bool blocked=false;

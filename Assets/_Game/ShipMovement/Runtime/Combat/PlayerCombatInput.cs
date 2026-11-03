@@ -8,20 +8,17 @@ namespace GrandNavigation.Gameplay
         public PlayerShip player;public Camera view;public CombatFireControl fireControl;public CombatAimController aim;public CombatCamera cameraRig;
         [Header("Target selection")]
         [SerializeField,Min(0),Tooltip("Screen pixels from the projected hull, independent of firing aim.")] float lockAssistRadius=55;
-        [SerializeField,Min(1),Tooltip("Player-to-target horizontal distance in world units.")] float maximumLockDistance=1200;
         [SerializeField,Min(1200),Tooltip("Exact selection ray length; extended if required by camera offset.")] float preciseRayDistance=2000;
         [SerializeField] bool enableLockAssist=true;
-        [SerializeField] bool checkLockOcclusion=true;
         [SerializeField] bool enemiesOnly=true;
         [SerializeField,Tooltip("Selectable ship colliders; Ignore Raycast, Water and UI excluded by default.")] LayerMask targetLayers=~((1<<2)|(1<<4)|(1<<5));
-        [SerializeField,Tooltip("Solid vision blockers; triggers ignored. Put nonblocking helpers on Ignore Raycast or Water.")] LayerMask obstructionLayers=~((1<<2)|(1<<4)|(1<<5));
-        void OnValidate(){lockAssistRadius=Mathf.Max(0,lockAssistRadius);maximumLockDistance=Mathf.Max(1,maximumLockDistance);preciseRayDistance=Mathf.Max(1200,preciseRayDistance);}
+        void OnValidate(){lockAssistRadius=Mathf.Max(0,lockAssistRadius);preciseRayDistance=Mathf.Max(1200,preciseRayDistance);}
         public Ship SelectTargetAt(Vector2 pointer)
         {
-            Ship selected=TargetSelectionHelper.Select(view,pointer,player,maximumLockDistance,preciseRayDistance,lockAssistRadius,
-                enableLockAssist,checkLockOcclusion,enemiesOnly,targetLayers,obstructionLayers);
+            Ship selected=TargetSelectionHelper.Select(view,pointer,player,fireControl.maximumLockDistance,preciseRayDistance,lockAssistRadius,
+                enableLockAssist,fireControl.requireLineOfSight,enemiesOnly,targetLayers,fireControl.obstructionMask,fireControl.ObserverPosition,fireControl.partialVisibilityAllowed);
             if(selected)fireControl.Lock(selected);
-            else if(fireControl.Target&&!TargetSelectionHelper.Eligible(fireControl.Target,player,maximumLockDistance,enemiesOnly))fireControl.Lock(null);
+            else if(fireControl.Target&&!TargetSelectionHelper.Eligible(fireControl.Target,player,fireControl.maximumLockDistance,enemiesOnly))fireControl.Lock(null);
             return selected;
         }
         bool observeMouse,fireRequested;
@@ -39,7 +36,7 @@ namespace GrandNavigation.Gameplay
             aim.SetAiming(held);cameraRig.SetAiming(aim.IsAiming);
             if(mouse!=null)
             {
-                if(aim.IsAiming){aim.Adjust(mouse.delta.ReadValue());cameraRig.Zoom(mouse.scroll.ReadValue().y);}
+                if(aim.IsAiming){if(fireControl.HasVisibleTarget)aim.Adjust(mouse.delta.ReadValue());else cameraRig.AdjustFreeAim(mouse.delta.ReadValue());cameraRig.Zoom(mouse.scroll.ReadValue().y);}
                 else observeMouse=!wasAiming&&mouse.delta.ReadValue().sqrMagnitude>0;
                 fireRequested=mouse.leftButton.wasPressedThisFrame;
             }
