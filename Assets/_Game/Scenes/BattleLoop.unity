@@ -2688,6 +2688,7 @@ MonoBehaviour:
   title: {fileID: 389539939}
   retryButton: {fileID: 2076695603}
   mainMenuButton: {fileID: 1420622507}
+  sceneRoutes: {fileID: 11400000, guid: 786539c659d843149b5eb765e7aacc81, type: 2}
 --- !u!114 &1302607618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3058,7 +3059,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1420622508}
   m_OnClick:
     m_PersistentCalls:

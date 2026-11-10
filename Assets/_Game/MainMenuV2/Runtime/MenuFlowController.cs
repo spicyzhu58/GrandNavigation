@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using GrandNavigation.GameFlow;
 namespace GrandNavigation.MainMenuV2
 {
     public sealed class MenuFlowController : MonoBehaviour
@@ -12,10 +14,11 @@ namespace GrandNavigation.MainMenuV2
         public GameObject menuPanel,preparationPanel;
         public Button startButton,exitButton,goButton,backButton;
         public Text message;
-        public string gameplaySceneName="Gameplay";
+        public GameSceneRoutes sceneRoutes;
+        bool loading;
         void Awake()
         {
-            Application.runInBackground=true;
+            Application.runInBackground=true;Time.timeScale=1;
             Cursor.lockState=CursorLockMode.None;Cursor.visible=true;
             startButton.onClick.AddListener(StartPreparation);backButton.onClick.AddListener(Back);
             goButton.onClick.AddListener(Go);exitButton.onClick.AddListener(Exit);
@@ -36,7 +39,7 @@ namespace GrandNavigation.MainMenuV2
         }
         public void Back()
         {
-            if(State!=MenuState.ShipPreparation)return;
+            if(State!=MenuState.ShipPreparation || loading)return;
             StartCoroutine(Transition(false));
         }
         IEnumerator Transition(bool forward)
@@ -50,9 +53,12 @@ namespace GrandNavigation.MainMenuV2
         }
         public void Go()
         {
-            if(State!=MenuState.ShipPreparation)return;
-            // Navigation boundary: a future gameplay implementation can use gameplaySceneName here.
-            message.text="Gameplay scene not implemented yet.";
+            if(State!=MenuState.ShipPreparation || loading)return;
+            if(!sceneRoutes || string.IsNullOrEmpty(sceneRoutes.gameplayScene) || !Application.CanStreamedLevelBeLoaded(sceneRoutes.gameplayScene))
+            { message.text="Gameplay scene is not configured in Scenes In Build."; return; }
+            loading=true;goButton.interactable=false;backButton.interactable=false;
+            Time.timeScale=1;
+            SceneManager.LoadSceneAsync(sceneRoutes.gameplayScene,LoadSceneMode.Single);
         }
         public void Exit()
         {

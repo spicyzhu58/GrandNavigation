@@ -15,9 +15,14 @@ namespace GrandNavigation.MainMenuV2.Tests
     public class MenuFlowTests
     {
         MenuFlowController flow;Mouse mouse;
+        InputSettings.BackgroundBehavior background;
+        InputSettings.EditorInputBehaviorInPlayMode routing;
         readonly List<InputDevice> native=new List<InputDevice>();
         [UnitySetUp]public IEnumerator Setup()
         {
+background=InputSystem.settings.backgroundBehavior;routing=InputSystem.settings.editorInputBehaviorInPlayMode;
+            InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+            InputSystem.settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
 #if UNITY_EDITOR
             EditorSceneManager.LoadSceneInPlayMode("Assets/_Game/Scenes/MainMenuV2.unity",new LoadSceneParameters(LoadSceneMode.Single));
 #endif
@@ -32,7 +37,7 @@ namespace GrandNavigation.MainMenuV2.Tests
         {
             if(mouse!=null)InputSystem.RemoveDevice(mouse);
             foreach(var d in native)if(d.added)InputSystem.EnableDevice(d);
-            native.Clear();yield return null;
+            native.Clear();InputSystem.settings.backgroundBehavior=background;InputSystem.settings.editorInputBehaviorInPlayMode=routing;yield return null;
         }
         IEnumerator Click(Button button)
         {
@@ -70,9 +75,7 @@ namespace GrandNavigation.MainMenuV2.Tests
             Assert.IsTrue(flow.preparationPanel.activeSelf);Assert.IsFalse(flow.menuPanel.activeSelf);
             Assert.That(flow.cameraRig.view,Is.SameAs(camera));Assert.That(GameObject.Find("ShipRoot"),Is.SameAs(ship));
             Assert.That((int)SceneManager.GetActiveScene().handle,Is.EqualTo(scene));
-            yield return Click(flow.goButton);
-            Assert.That(flow.message.text,Is.EqualTo("Gameplay scene not implemented yet."));
-            Assert.That((int)SceneManager.GetActiveScene().handle,Is.EqualTo(scene));
+            // Real GO scene navigation is covered by GameIntegrationTests.
             yield return Click(flow.backButton);yield return AwaitState(MenuFlowController.MenuState.MainMenu);
             Assert.That(Vector3.Distance(camera.transform.position,flow.cameraRig.menuPose.transform.position),Is.LessThan(.001));
             yield return Click(flow.startButton);yield return AwaitState(MenuFlowController.MenuState.ShipPreparation);

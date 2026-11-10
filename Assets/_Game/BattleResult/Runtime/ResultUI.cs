@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using GrandNavigation.GameFlow;
 namespace GrandNavigation.Gameplay.Battle
 {
     public sealed class ResultUI : MonoBehaviour
@@ -8,13 +9,15 @@ namespace GrandNavigation.Gameplay.Battle
         public GameObject panel;
         public Text title;
         public Button retryButton, mainMenuButton;
+        public GameSceneRoutes sceneRoutes;
         bool loading, shown;
         public int ShowCount { get; private set; }
         void Awake()
         {
             panel.SetActive(false);
             retryButton.onClick.AddListener(Retry);
-            mainMenuButton.interactable = false;
+            mainMenuButton.onClick.AddListener(ReturnToMainMenu);
+            mainMenuButton.interactable = sceneRoutes && !string.IsNullOrEmpty(sceneRoutes.mainMenuScene) && Application.CanStreamedLevelBeLoaded(sceneRoutes.mainMenuScene);
         }
         public void Show(BattleState state)
         {
@@ -28,12 +31,17 @@ namespace GrandNavigation.Gameplay.Battle
             if (!shown || loading) return;
             var scene = gameObject.scene;
             if (!Application.CanStreamedLevelBeLoaded(scene.path)) { Debug.LogError("Battle scene is missing from Scenes In Build.", this); return; }
-            loading = true; retryButton.interactable = false;
+            loading = true; retryButton.interactable = mainMenuButton.interactable = false;
             Time.timeScale = 1;
-            SceneManager.LoadScene(scene.path);
+            SceneManager.LoadSceneAsync(scene.path,LoadSceneMode.Single);
         }
-        // Integration point only. No guessed scene name or navigation until menu integration.
-        public void ReturnToMainMenu() { }
-        void OnDestroy() { if (retryButton) retryButton.onClick.RemoveListener(Retry); }
+        public void ReturnToMainMenu()
+        {
+            if (!shown || loading || !sceneRoutes || string.IsNullOrEmpty(sceneRoutes.mainMenuScene) || !Application.CanStreamedLevelBeLoaded(sceneRoutes.mainMenuScene)) return;
+            loading = true; retryButton.interactable = mainMenuButton.interactable = false;
+            Time.timeScale = 1;
+            SceneManager.LoadSceneAsync(sceneRoutes.mainMenuScene,LoadSceneMode.Single);
+        }
+        void OnDestroy() { if (retryButton) retryButton.onClick.RemoveListener(Retry); if(mainMenuButton) mainMenuButton.onClick.RemoveListener(ReturnToMainMenu); }
     }
 }

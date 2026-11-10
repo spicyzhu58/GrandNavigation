@@ -83,11 +83,12 @@ namespace GrandNavigation.Gameplay.Battle.Tests
                 manager.player.FireWeapon();
                 manager.player.TakeDamage(int.MaxValue);yield return null;yield return null;
                 Assert.AreEqual(BattleState.Defeat,manager.State);
-                Assert.IsFalse(manager.resultUI.mainMenuButton.interactable);
-                manager.resultUI.ReturnToMainMenu();Assert.AreEqual(0,Time.timeScale);
+                Assert.IsTrue(manager.resultUI.mainMenuButton.interactable);
+                Assert.AreEqual(0,Time.timeScale);
                 var pointer=new PointerEventData(EventSystem.current){button=PointerEventData.InputButton.Left};
                 ExecuteEvents.Execute(manager.resultUI.retryButton.gameObject,pointer,ExecuteEvents.pointerClickHandler);
-                yield return null;yield return null;yield return null;
+                yield return new WaitUntil(()=>!manager);
+                yield return null;yield return null;
                 manager=Object.FindFirstObjectByType<BattleManager>();
                 Assert.AreEqual(1,Time.timeScale);Assert.AreEqual(BattleState.Playing,manager.State);
                 Assert.AreEqual(3,manager.RemainingEnemies);Assert.AreEqual(0,manager.resultUI.ShowCount);

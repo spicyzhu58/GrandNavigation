@@ -405,7 +405,7 @@ MonoBehaviour:
   goButton: {fileID: 1984368123}
   backButton: {fileID: 1781028441}
   message: {fileID: 294032195}
-  gameplaySceneName: Gameplay
+  sceneRoutes: {fileID: 11400000, guid: 786539c659d843149b5eb765e7aacc81, type: 2}
 --- !u!4 &508160362
 Transform:
   m_ObjectHideFlags: 0
