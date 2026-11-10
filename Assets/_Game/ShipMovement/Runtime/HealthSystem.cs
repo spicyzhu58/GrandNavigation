@@ -7,11 +7,13 @@ namespace GrandNavigation.Gameplay
         public int CurrentHealth {get;private set;}
         public bool IsAlive=>CurrentHealth>0;
         public event System.Action Died;
+        // Battle lifecycle gate; default false preserves all existing prototype behavior.
+        public bool DamageBlocked { get; set; }
         void Awake()=>Restore();
         public void Restore()=>CurrentHealth=Mathf.Max(1,maximumHealth);
         public void TakeDamage(int damage)
         {
-            if(damage<=0||!IsAlive)return;
+            if(DamageBlocked||damage<=0||!IsAlive)return;
             CurrentHealth=(int)System.Math.Max(0L,(long)CurrentHealth-damage);
             if(CurrentHealth==0)Died?.Invoke();
         }
