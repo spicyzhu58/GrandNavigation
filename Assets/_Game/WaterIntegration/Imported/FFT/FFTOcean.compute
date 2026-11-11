@@ -1,0 +1,215 @@
+// FFT 海洋 Compute Shader（Tessendorf 方法 + Phillips 频谱）
+// 流程：InitSpectrum（初始化一次） -> 每帧 TimeSpectrum -> FFTHorizontal / FFTVertical -> Assemble
+
+#pragma kernel InitSpectrum
+#pragma kernel TimeSpectrum
+#pragma kernel FFTHorizontal
+#pragma kernel FFTVertical
+#pragma kernel Assemble
+
+// 纹理分辨率，必须是 2 的幂，并且和 FFTOcean.cs 中的 N 保持一致
+// 改成 512 时：SIZE 512, LOG_SIZE 9
+#define SIZE 256
+#define LOG_SIZE 8
+
+#define PI 3.14159265358979
+#define G 9.81
+
+// ---------------- 参数 ----------------
+float _PatchSize;      // 一块海面贴图覆盖的世界尺寸（米）
+float _WindSpeed;      // 风速（米/秒）
+float2 _WindDir;       // 风向（已归一化）
+float _Amplitude;      // Phillips 频谱振幅常数 A
+uint _Seed;            // 随机种子
+
+float _OceanTime;      // 当前时间（秒）
+float _DeltaTime;
+float _Choppiness;     // 水平位移强度（浪尖尖锐程度）
+float _FoamThreshold;  // 雅可比行列式小于该值时产生泡沫
+float _FoamScale;
+float _FoamDecay;      // 泡沫每秒衰减量
+
+// ---------------- 纹理 ----------------
+RWTexture2D<float4> _H0;           // xy = h0(k), zw = conj(h0(-k))
+RWTexture2D<float4> _Spec1;        // 频域数据 1（打包两组复数）
+RWTexture2D<float4> _Spec2;        // 频域数据 2（打包两组复数）
+RWTexture2D<float4> _Target;       // FFT 的输入/输出
+RWTexture2D<float4> _Displacement; // xyz = 顶点位移
+RWTexture2D<float4> _Normal;       // xyz = 法线, w = 泡沫
+
+// ---------------- 工具函数 ----------------
+float2 CMul(float2 a, float2 b) { return float2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
+float2 MulI(float2 a) { return float2(-a.y, a.x); } // 乘以虚数单位 i
+float2 Conj(float2 a) { return float2(a.x, -a.y); }
+
+// 纹理坐标 -> 波矢 k。索引 m 对应频率 n = m - SIZE/2
+float2 WaveVector(uint2 id)
+{
+    float2 n = float2(id) - SIZE * 0.5;
+    return n * (2.0 * PI / _PatchSize);
+}
+
+// PCG 哈希，用来在 GPU 上生成随机数
+uint Hash(uint x)
+{
+    uint state = x * 747796405u + 2891336453u;
+    uint word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+    return (word >> 22u) ^ word;
+}
+
+float Rand(inout uint s)
+{
+    s = Hash(s);
+    return (float(s) + 1.0) / 4294967296.0; // (0, 1]，避免 log(0)
+}
+
+// Box-Muller：一对标准正态分布随机数
+float2 Gaussian(uint2 id)
+{
+    uint s = Hash(id.x + id.y * SIZE + _Seed * SIZE * SIZE);
+    float u1 = Rand(s);
+    float u2 = Rand(s);
+    float r = sqrt(-2.0 * log(u1));
+    return float2(r * cos(2.0 * PI * u2), r * sin(2.0 * PI * u2));
+}
+
+// Phillips 频谱
+float Phillips(float2 k)
+{
+    float kLen = length(k);
+    if (kLen < 1e-6) return 0;
+
+    float L = _WindSpeed * _WindSpeed / G; // 风速能产生的最大波长
+    float k2 = kLen * kLen;
+    float kDotW = dot(k / kLen, _WindDir);
+
+    float p = _Amplitude * exp(-1.0 / (k2 * L * L)) / (k2 * k2) * kDotW * kDotW;
+    if (kDotW < 0) p *= 0.07;  // 削弱逆风方向的波
+
+    float l = L * 0.001;       // 抑制过小的波，减少高频噪点
+    return p * exp(-k2 * l * l);
+}
+
+float2 H0(uint2 id)
+{
+    float dk = 2.0 * PI / _PatchSize;
+    return Gaussian(id) * dk * sqrt(Phillips(WaveVector(id)) * 0.5);
+}
+
+// ---------------- Kernel 1：初始频谱（参数变化时运行一次） ----------------
+[numthreads(8, 8, 1)]
+void InitSpectrum(uint3 id : SV_DispatchThreadID)
+{
+    uint2 minusK = (SIZE - id.xy) % SIZE; // -k 对应的索引
+    float2 h0k = H0(id.xy);
+    float2 h0mk = H0(minusK);
+    _H0[id.xy] = float4(h0k, Conj(h0mk));
+}
+
+// ---------------- Kernel 2：随时间演化的频谱 ----------------
+// 同时计算高度、水平位移、以及求法线和泡沫所需的各阶导数（都在频域完成）
+[numthreads(8, 8, 1)]
+void TimeSpectrum(uint3 id : SV_DispatchThreadID)
+{
+    float2 k = WaveVector(id.xy);
+    float kLen = length(k);
+    float invK = kLen > 1e-6 ? 1.0 / kLen : 0.0;
+
+    float4 h0 = _H0[id.xy];
+    float w = sqrt(G * kLen) * _OceanTime; // 深水色散关系 ω = sqrt(g·k)
+    float2 e = float2(cos(w), sin(w));
+
+    // h(k,t) = h0(k)·e^{iωt} + conj(h0(-k))·e^{-iωt}
+    float2 h = CMul(h0.xy, e) + CMul(h0.zw, Conj(e));
+
+    float2 ih = MulI(h);
+    float2 dx    = ih * (k.x * invK);            // 水平位移 X
+    float2 dz    = ih * (k.y * invK);            // 水平位移 Z
+    float2 dhdx  = ih * k.x;                     // 高度对 x 的偏导
+    float2 dhdz  = ih * k.y;                     // 高度对 z 的偏导
+    float2 dDxdx = h * (-k.x * k.x * invK);      // 用于雅可比（泡沫）
+    float2 dDzdz = h * (-k.y * k.y * invK);
+    float2 dDxdz = h * (-k.x * k.y * invK);
+
+    // 结果都是实数信号，所以可以把两个信号打包成一个复数：A + iB
+    // IFFT 之后实部是 A 的结果，虚部是 B 的结果，FFT 次数减半
+    _Spec1[id.xy] = float4(dx + MulI(h), dz + MulI(dDxdz));
+    _Spec2[id.xy] = float4(dhdx + MulI(dhdz), dDxdx + MulI(dDzdz));
+}
+
+// ---------------- Kernel 3/4：一维 IFFT（共享内存 + Cooley-Tukey） ----------------
+// 每个线程组处理一整行（或一整列），每个线程负责一个元素
+groupshared float4 buffer[2][SIZE];
+
+float4 CMul2(float4 a, float2 w) { return float4(CMul(a.xy, w), CMul(a.zw, w)); }
+
+float4 IFFT(uint i, float4 input)
+{
+    // 位反转排序
+    buffer[0][reversebits(i) >> (32 - LOG_SIZE)] = input;
+    GroupMemoryBarrierWithGroupSync();
+
+    uint src = 0;
+    [unroll]
+    for (uint size = 2; size <= SIZE; size <<= 1)
+    {
+        uint halfSize = size >> 1;
+        uint j = i & (size - 1);        // 在当前子块中的位置
+        uint blockStart = i - j;
+        uint jj = j & (halfSize - 1);
+
+        float4 even = buffer[src][blockStart + jj];
+        float4 odd  = buffer[src][blockStart + jj + halfSize];
+
+        float angle = 2.0 * PI * (float)jj / (float)size; // 逆变换用正指数
+        float4 t = CMul2(odd, float2(cos(angle), sin(angle)));
+
+        buffer[src ^ 1][i] = (j < halfSize) ? even + t : even - t;
+        src ^= 1;
+        GroupMemoryBarrierWithGroupSync();
+    }
+    return buffer[src][i];
+}
+
+[numthreads(SIZE, 1, 1)]
+void FFTHorizontal(uint3 gtid : SV_GroupThreadID, uint3 gid : SV_GroupID)
+{
+    uint2 coord = uint2(gtid.x, gid.y);
+    _Target[coord] = IFFT(gtid.x, _Target[coord]);
+}
+
+[numthreads(SIZE, 1, 1)]
+void FFTVertical(uint3 gtid : SV_GroupThreadID, uint3 gid : SV_GroupID)
+{
+    uint2 coord = uint2(gid.y, gtid.x);
+    _Target[coord] = IFFT(gtid.x, _Target[coord]);
+}
+
+// ---------------- Kernel 5：整理结果，输出位移/法线/泡沫 ----------------
+[numthreads(8, 8, 1)]
+void Assemble(uint3 id : SV_DispatchThreadID)
+{
+    // 频率索引从 -N/2 开始，等价于结果乘以 (-1)^(x+y)
+    float sign = ((id.x + id.y) & 1) ? -1.0 : 1.0;
+    float4 a = _Spec1[id.xy] * sign;
+    float4 c = _Spec2[id.xy] * sign;
+
+    float Dx = a.x, height = a.y, Dz = a.z, dDxdz = a.w;
+    float dhdx = c.x, dhdz = c.y, dDxdx = c.z, dDzdz = c.w;
+
+    _Displacement[id.xy] = float4(_Choppiness * Dx, height, _Choppiness * Dz, 0);
+
+    float3 n = normalize(float3(-dhdx, 1.0, -dhdz));
+
+    // 雅可比行列式 < 1 表示表面被挤压（浪尖），越小越可能翻卷产生泡沫
+    float jxx = 1.0 + _Choppiness * dDxdx;
+    float jzz = 1.0 + _Choppiness * dDzdz;
+    float jxz = _Choppiness * dDxdz;
+    float J = jxx * jzz - jxz * jxz;
+
+    float newFoam = saturate((_FoamThreshold - J) * _FoamScale);
+    float prevFoam = _Normal[id.xy].w;
+    float foam = max(newFoam, prevFoam - _FoamDecay * _DeltaTime); // 泡沫随时间慢慢消散
+
+    _Normal[id.xy] = float4(n, saturate(foam));
+}

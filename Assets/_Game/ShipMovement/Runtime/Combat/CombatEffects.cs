@@ -6,6 +6,9 @@ namespace GrandNavigation.Gameplay
         public Material flashMaterial,splashMaterial;
         [Min(.1f)] public float splashLifetime=1.5f;
         static CombatEffects current;
+        // Optional scene-local water integration. Ballistics and damage stay unchanged.
+        public static event System.Action<Vector3> WaterImpact;
+        public static System.Func<Vector3,Vector3> WaterVisualPosition;
         void Awake()=>current=this;
         void OnDestroy(){if(current==this)current=null;}
         public static void Flash(Vector3 position,Color color,float size,float duration)
@@ -16,6 +19,8 @@ namespace GrandNavigation.Gameplay
         }
         public static void Splash(Vector3 p)
         {
+            if(WaterVisualPosition!=null)p=WaterVisualPosition(p);
+            WaterImpact?.Invoke(p);
             if(!current)return;var go=GameObject.CreatePrimitive(PrimitiveType.Cylinder);go.name="Water column";Destroy(go.GetComponent<Collider>());
             go.transform.position=p+Vector3.up*1.8f;go.transform.localScale=new Vector3(.65f,1.8f,.65f);go.GetComponent<Renderer>().sharedMaterial=current.splashMaterial;
             Destroy(go,current.splashLifetime);

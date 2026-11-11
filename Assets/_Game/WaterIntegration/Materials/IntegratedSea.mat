@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: IntegratedSea
+  m_Shader: {fileID: 4800000, guid: 32ecbeeb96df32b4fa7a4734d43f1bc2, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CausticsTex:
+        m_Texture: {fileID: 2800000, guid: aab4937ec6db9a443b1a3922373f6f61, type: 3}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 5dacc48b3570ef542889e8c5a502420e, type: 3}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 605b54f406dccf5469b32fda4f00448d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ReflectMap:
+        m_Texture: {fileID: 8900000, guid: 6fafa0f05c423e340bb9abc3da098dcb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CausticsIntensity: 25
+    - _CausticsRange: 2.76
+    - _CausticsScale: 25
+    - _FoamBlend: 0.2
+    - _FoamDissolve: 0.92
+    - _FoamFrequency: 10
+    - _FoamRange: 1.18
+    - _FoamSpeed: 4
+    - _FoamWidth: 0.16
+    - _FresnelPower: 10
+    - _Glossy: 274
+    - _NoiseIntensity: 0.5
+    - _NormalScale: 80
+    - _ReflectDistort: 0.6
+    - _ReflectIntensity: 4.74
+    - _ReflectPower: 5.12
+    - _SSRIntensity: 0.867
+    - _ShoreEdgeIntensity: 0.05
+    - _ShoreEdgeWidth: 0.596
+    - _ShoreOpacity: 0.208
+    - _ShoreRange: 0.98
+    - _SpecularIntensity: 1
+    - _SpecularMaskMax: 1
+    - _SpecularMaskMin: 0
+    - _SpecularNormalStrength: 0.798
+    - _SpecularmaskMax: 1
+    - _SpecularmaskMin: 0.907
+    - _UnderWaterDistort: 0.8
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CausticsSpeed: {r: 11.5, g: 16.6, b: 2.01, a: 0}
+    - _DeepColor: {r: 0.14582083, g: 0.2968411, b: 0.63522, a: 0.98039216}
+    - _DeepRange: {r: -5.05, g: 10.18, b: 0, a: 0}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamNoiseSize: {r: 528, g: 422.4, b: 135.9, a: 0}
+    - _FresnelColor: {r: 0.46855342, g: 0.7096393, b: 1, a: 0.9098039}
+    - _NoiseColor: {r: 0.6509433, g: 1, b: 0.99652636, a: 0.56078434}
+    - _NoiseScale: {r: 0.85, g: 1.72, b: 1, a: 1}
+    - _NoiseSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _NormalSpeed: {r: 6, g: 8, b: 0, a: 0}
+    - _ShallowColor: {r: 0.04772343, g: 0.7356259, b: 0.7987421, a: 0.9529412}
+    - _ShoreColor: {r: 0.023278272, g: 0.57590765, b: 0.67295593, a: 0.9019608}
+    - _SpecularColor: {r: 5.656854, g: 5.4926496, b: 5.069822, a: 0.8745098}
+    - _TestParameter: {r: 3.34, g: 0, b: 0, a: 1}
+    - _WaveA: {r: 1, g: 0.2, b: 1.17, a: 15.8}
+    - _WaveB: {r: 0.6, g: 1, b: 0.39, a: 9.09}
+    - _WaveC: {r: -0.8, g: 0.8, b: 0.75, a: 5.59}
+    - _WaveColor: {r: 1, g: 0.8372552, b: 0.15408784, a: 0.35686275}
+    - _WaveHeightRange: {r: 0.15, g: 0.4, b: 0, a: 0}
+    - _WaveMaskRange: {r: 14.8, g: 9.1, b: 0, a: 0}
+    - _WaveMaskScale: {r: 100, g: 100, b: 100, a: 100}
+    - _WaveSpeed: {r: 2.21, g: 3.14, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

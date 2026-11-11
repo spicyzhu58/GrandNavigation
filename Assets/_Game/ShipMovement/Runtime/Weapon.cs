@@ -38,7 +38,7 @@ namespace GrandNavigation.Gameplay
             LastSalvoCount=0;
             if(!enabled||!Owner||!Owner.IsAlive||!projectile||!HasAim||ready==null)return false;
             LastSalvoCentre=AimPoint;
-            for(int i=0;i<Mathf.Min(3,turrets.Length);i++)
+            for(int i=0;i<turrets.Length;i++)
                 if(turrets[i] && ready(turrets[i]))LastSalvoCount+=turrets[i].Fire(LastSalvoCentre);
             return LastSalvoCount>0;
         }
@@ -47,8 +47,9 @@ namespace GrandNavigation.Gameplay
             LastSalvoCount=0;
             if(!enabled||!Owner||!Owner.IsAlive||!projectile||!HasAim){Status="CANNOT FIRE: no weapon / invalid aim";return false;}
             LastSalvoCentre=AimPoint;
-            for(int i=0;i<Mathf.Min(3,turrets.Length);i++)if(turrets[i])LastSalvoCount+=turrets[i].Fire(LastSalvoCentre);
-            Status=LastSalvoCount>0?$"SALVO {LastSalvoCount}/6 (actual barrel directions)":"CANNOT FIRE: reloading / unsafe barrels / invalid solution";
+            int capacity=0;
+            for(int i=0;i<turrets.Length;i++)if(turrets[i]){capacity+=Mathf.Min(turrets[i].barrels.Length,turrets[i].muzzles.Length);LastSalvoCount+=turrets[i].Fire(LastSalvoCentre);}
+            Status=LastSalvoCount>0?$"SALVO {LastSalvoCount}/{capacity} (actual barrel directions)":"CANNOT FIRE: reloading / unsafe barrels / invalid solution";
             return LastSalvoCount>0;
         }
         public void Spawn(Transform muzzle)

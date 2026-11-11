@@ -1,0 +1,427 @@
+{
+  "ship": "Bismarck",
+  "length": 32,
+  "turrets": [
+    {
+      "position": [
+        0.0,
+        0.7775159365419616,
+        8.907510169447699
+      ],
+      "yaw": 0,
+      "barrels": [
+        {
+          "position": [
+            -0.2361832773727277,
+            0.18611262799034559,
+            0.6707603635837144
+          ],
+          "length": 1.5814837442451815
+        },
+        {
+          "position": [
+            0.2361832773727277,
+            0.18611262799034559,
+            0.6707603635837144
+          ],
+          "length": 1.5814837442451815
+        }
+      ]
+    },
+    {
+      "position": [
+        0.0,
+        1.1833731455944887,
+        6.671705478703511
+      ],
+      "yaw": 0,
+      "barrels": [
+        {
+          "position": [
+            -0.2361832773727277,
+            0.18611253789357535,
+            0.6707603635837144
+          ],
+          "length": 1.5814837442451815
+        },
+        {
+          "position": [
+            0.2361832773727277,
+            0.18611253789357535,
+            0.6707603635837144
+          ],
+          "length": 1.5814837442451815
+        }
+      ]
+    },
+    {
+      "position": [
+        0.0,
+        1.1988656456239954,
+        -7.15181819336695
+      ],
+      "yaw": 180,
+      "barrels": [
+        {
+          "position": [
+            -0.2361832773727277,
+            0.1861124477968051,
+            0.6707603635837144
+          ],
+          "length": 1.5814844650193434
+        },
+        {
+          "position": [
+            0.2361832773727277,
+            0.1861124477968051,
+            0.6707603635837144
+          ],
+          "length": 1.5814844650193434
+        }
+      ]
+    },
+    {
+      "position": [
+        0.0,
+        0.7824272015844057,
+        -9.451110113839972
+      ],
+      "yaw": 180,
+      "barrels": [
+        {
+          "position": [
+            -0.2361832773727277,
+            0.18611235770003487,
+            0.6707603635837144
+          ],
+          "length": 1.5814830234710195
+        },
+        {
+          "position": [
+            0.2361832773727277,
+            0.18611235770003487,
+            0.6707603635837144
+          ],
+          "length": 1.5814830234710195
+        }
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Turret_0_Housing",
+      "vertices": 3598,
+      "triangles": 1282
+    },
+    {
+      "name": "Turret_0_Barrel_0",
+      "vertices": 514,
+      "triangles": 189
+    },
+    {
+      "name": "Turret_0_Barrel_1",
+      "vertices": 526,
+      "triangles": 190
+    },
+    {
+      "name": "Turret_1_Housing",
+      "vertices": 4546,
+      "triangles": 1632
+    },
+    {
+      "name": "Turret_1_Barrel_0",
+      "vertices": 529,
+      "triangles": 189
+    },
+    {
+      "name": "Turret_1_Barrel_1",
+      "vertices": 531,
+      "triangles": 188
+    },
+    {
+      "name": "Turret_2_Housing",
+      "vertices": 4521,
+      "triangles": 1630
+    },
+    {
+      "name": "Turret_2_Barrel_0",
+      "vertices": 519,
+      "triangles": 189
+    },
+    {
+      "name": "Turret_2_Barrel_1",
+      "vertices": 524,
+      "triangles": 190
+    },
+    {
+      "name": "Turret_3_Housing",
+      "vertices": 4556,
+      "triangles": 1632
+    },
+    {
+      "name": "Turret_3_Barrel_0",
+      "vertices": 516,
+      "triangles": 189
+    },
+    {
+      "name": "Turret_3_Barrel_1",
+      "vertices": 505,
+      "triangles": 188
+    },
+    {
+      "name": "Hull",
+      "vertices": 877621,
+      "triangles": 321936
+    }
+  ],
+  "materials": [
+    {
+      "name": "_default_",
+      "texture": ""
+    },
+    {
+      "name": "CM004_Barbette_Out_307",
+      "texture": "cm004_barbette_out_a.jpg"
+    },
+    {
+      "name": "GM502_Captains_Gig_9m_404",
+      "texture": "gm502_captains_gig_9m_a.jpg"
+    },
+    {
+      "name": "GM856_Masthead_light_453",
+      "texture": "gm856_masthead_light_a.jpg"
+    },
+    {
+      "name": "GM002_Fog_Horn_461",
+      "texture": "gm002_fog_horn_a.jpg"
+    },
+    {
+      "name": "GM853_Signal_Lamp_477",
+      "texture": "gm853_signal_lamp_a.jpg"
+    },
+    {
+      "name": "GM003_Reels_1_500",
+      "texture": "gm003_reels_1_a.jpg"
+    },
+    {
+      "name": "GM604_Switch_Box_5_540",
+      "texture": "gm604_switch_box_5_a.jpg"
+    },
+    {
+      "name": "GM017_Siren_556",
+      "texture": "gm017_siren_a.jpg"
+    },
+    {
+      "name": "GM015_Clock_569",
+      "texture": "gm015_clock_a.jpg"
+    },
+    {
+      "name": "GM020_Loading_mashine_2_579",
+      "texture": "gm020_loading_mashine_2_a.jpg"
+    },
+    {
+      "name": "GM019_642",
+      "texture": "gm019_a.jpg"
+    },
+    {
+      "name": "GM024_Night_Indicator_659",
+      "texture": "gm024_night_indicator_a.jpg"
+    },
+    {
+      "name": "CM056_Ships_bell_673",
+      "texture": "cm056_ships_bell_a.jpg"
+    },
+    {
+      "name": "GM702_AmmoBox_691",
+      "texture": "gm702_ammobox_a.jpg"
+    },
+    {
+      "name": "CM001_Propeller_695",
+      "texture": "cm001_propeller_a.jpg"
+    },
+    {
+      "name": "GGA008_20mm_Flack_38_quad_732",
+      "texture": "gga008_20mm_flack_38_quad_a.jpg"
+    },
+    {
+      "name": "GGA007_20mm_Flak_38_752",
+      "texture": "gga007_20mm_flak_38_a.jpg"
+    },
+    {
+      "name": "GGA043_37mm_Flak_M42_Zwilling_774",
+      "texture": "gga043_37mm_flak_m42_zwilling_a.jpg"
+    },
+    {
+      "name": "GM007_LifeBuoy_805",
+      "texture": "gm007_lifebuoy_a.jpg"
+    },
+    {
+      "name": "GGM059_380mm_SKC_34_RF_skinned_691",
+      "texture": "ggm059_380mm_skc_34_rf_a.jpg"
+    },
+    {
+      "name": "GM025_Cooling_tube_727",
+      "texture": "gm025_cooling_tube_a.jpg"
+    },
+    {
+      "name": "GM026_Gun_Deck_1_736",
+      "texture": "gm026_gun_deck_1_a.jpg"
+    },
+    {
+      "name": "CM096_Ladder_778",
+      "texture": "cm096_ladder_a.jpg"
+    },
+    {
+      "name": "GGS001_150mm_SKC_28_skinned_819",
+      "texture": "ggs001_150mm_skc_28_a.jpg"
+    },
+    {
+      "name": "GGS004_105_mm_SKC_37_skinned_854",
+      "texture": "ggs004_105_mm_skc_37_a.jpg"
+    },
+    {
+      "name": "GGS002_150mm_SKC_28_RF_skinned_91",
+      "texture": "ggs002_150mm_skc_28_rf_a.jpg"
+    },
+    {
+      "name": "GGS003_105_mm_SKC_33_skinned_138",
+      "texture": "ggs003_105_mm_skc_33_a.jpg"
+    },
+    {
+      "name": "GD008_Zeilsaule_C38_Night_Dir_skinned_205",
+      "texture": "gd008_zeilsaule_c38_night_dir_a.jpg"
+    },
+    {
+      "name": "GF005_4m_Rangefinder_Type_SL_8_218",
+      "texture": "gf005_4m_rangefinder_type_sl_8_a.jpg"
+    },
+    {
+      "name": "GF001_10_5m_Rangefinders_241",
+      "texture": "gf001_10_5m_rangefinders_a.jpg"
+    },
+    {
+      "name": "GF004_3m_Rangefinder_Night_HA_256",
+      "texture": "gf004_3m_rangefinder_night_ha_a.jpg"
+    },
+    {
+      "name": "GM010_Binocular_314",
+      "texture": "gm010_binocular_a.jpg"
+    },
+    {
+      "name": "GM014_Sleeve_319",
+      "texture": "gm014_sleeve_a.jpg"
+    },
+    {
+      "name": "GM601_Switch_Box_2_324",
+      "texture": "gm601_switch_box_2_a.jpg"
+    },
+    {
+      "name": "GM507_Boat_329",
+      "texture": "gm507_boat_a.jpg"
+    },
+    {
+      "name": "CM052_Fender_365",
+      "texture": "cm052_fender_a.jpg"
+    },
+    {
+      "name": "GM503_Long_Boat_8m_375",
+      "texture": "gm503_long_boat_8m_a.jpg"
+    },
+    {
+      "name": "GSB001_Bismarck_1941_hull_500",
+      "texture": "gsb001_bismarck_1941_hull_a.jpg"
+    },
+    {
+      "name": "GSB001_Bismarck_1941_hull_wire_500",
+      "texture": "gsb001_bismarck_1941_hull_a.jpg"
+    },
+    {
+      "name": "GM505_Long_Boat_845",
+      "texture": "gm505_long_boat_a.jpg"
+    },
+    {
+      "name": "CM010_Fire_Hose_Reel_850",
+      "texture": "cm010_fire_hose_reel_a.jpg"
+    },
+    {
+      "name": "GM001_Paravane_885",
+      "texture": "gm001_paravane_a.jpg"
+    },
+    {
+      "name": "GM500_Admiral_Gig_11m_912",
+      "texture": "gm500_admiral_gig_11m_a.jpg"
+    },
+    {
+      "name": "GM011_Pelorus_924",
+      "texture": "gm011_pelorus_a.jpg"
+    },
+    {
+      "name": "GM612_Target_Giver_958",
+      "texture": "gm612_target_giver_a.jpg"
+    },
+    {
+      "name": "GM009_Siren_978",
+      "texture": "gm009_siren_a.jpg"
+    },
+    {
+      "name": "GM850_Searchlight_994",
+      "texture": "gm850_searchlight_a.jpg"
+    },
+    {
+      "name": "GM701_AmmoBox_3",
+      "texture": "gm701_ammobox_a.jpg"
+    },
+    {
+      "name": "GSB001_Bismarck_1941_DeckHouse_578",
+      "texture": "gsb001_bismarck_1941_deckhouse_a.jpg"
+    },
+    {
+      "name": "GM700_AmmoBox_96",
+      "texture": "gm700_ammobox_a.jpg"
+    },
+    {
+      "name": "GM501_Lauch_11m_184",
+      "texture": "gm501_lauch_11m_a.jpg"
+    },
+    {
+      "name": "transparent_glass_alpha_185",
+      "texture": "transparent_glass_alpha_a.png"
+    },
+    {
+      "name": "GM900_Crane_335",
+      "texture": "gm900_crane_a.jpg"
+    },
+    {
+      "name": "GM506_Dinghy_4m_722",
+      "texture": "gm506_dinghy_4m_a.jpg"
+    },
+    {
+      "name": "GC001_Catapult_1_skinned_462",
+      "texture": "gc001_catapult_1_a.jpg"
+    },
+    {
+      "name": "GF003_7m_Rangefinder_480",
+      "texture": "gf003_7m_rangefinder_a.jpg"
+    },
+    {
+      "name": "GF002_radar_542",
+      "texture": "gf002_radar_a.jpg"
+    },
+    {
+      "name": "C001_Net_alpha_543",
+      "texture": "c001_net_alpha_a.jpg"
+    },
+    {
+      "name": "GM027_FUMO27_640",
+      "texture": "gm027_fumo27_a.jpg"
+    },
+    {
+      "name": "C010_Grid_8_alpha_642",
+      "texture": "c010_grid_8_alpha_a.png"
+    },
+    {
+      "name": "CM093_Rope_684",
+      "texture": "cm093_rope_a.jpg"
+    }
+  ]
+}

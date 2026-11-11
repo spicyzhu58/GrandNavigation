@@ -23,6 +23,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Game/Scenes/BattleLoop.unity
     guid: aab69f0cbf4f7b646b21d72372eef36a
+  - enabled: 1
+    path: Assets/_Game/Scenes/TropicalNavalBattle.unity
+    guid: 54d27cf0ca70a34468fb996238194bb5
+  - enabled: 1
+    path: Assets/_Game/Scenes/WaterIntegrationTest.unity
+    guid: 34abe10aa36ee5644b511b74101eac27
+  - enabled: 1
+    path: Assets/_Game/Scenes/FreeNavalBattle.unity
+    guid: ab3c828e250085148b84a2ce28c62855
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,0 +1,1 @@
+{"name":"GrandNavigation.WaterIntegration.Tests","references":["GrandNavigation.WaterIntegration","GrandNavigation.ShipMovement","GrandNavigation.EnemyAI","Unity.RenderPipelines.Core.Runtime","Unity.RenderPipelines.Universal.Runtime","Unity.Collections"],"optionalUnityReferences":["TestAssemblies"]}

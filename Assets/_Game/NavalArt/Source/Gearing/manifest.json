@@ -1,0 +1,346 @@
+{
+  "ship": "Gearing",
+  "length": 20,
+  "turrets": [
+    {
+      "position": [
+        0.00422886050439976,
+        0.9410452308266629,
+        6.725372832087183
+      ],
+      "yaw": 0,
+      "barrels": [
+        {
+          "position": [
+            -0.18159204109928187,
+            0.3644278917373754,
+            0.0796023870894705
+          ],
+          "length": 0.7885567434784099
+        },
+        {
+          "position": [
+            0.17786068661797583,
+            0.3644278917373754,
+            0.0796023870894705
+          ],
+          "length": 0.7885567434784099
+        }
+      ]
+    },
+    {
+      "position": [
+        0.0004975208501195034,
+        1.2731346676359667,
+        5.151989587584736
+      ],
+      "yaw": 0,
+      "barrels": [
+        {
+          "position": [
+            -0.18159204109928187,
+            0.36442801035358163,
+            0.0796023870894705
+          ],
+          "length": 0.7885572179432349
+        },
+        {
+          "position": [
+            0.17786068661797583,
+            0.36442801035358163,
+            0.0796023870894705
+          ],
+          "length": 0.7885572179432349
+        }
+      ]
+    },
+    {
+      "position": [
+        -0.00422886050439976,
+        0.6684074227554659,
+        -6.890795942262945
+      ],
+      "yaw": 180,
+      "barrels": [
+        {
+          "position": [
+            -0.18159204109928187,
+            0.36442777312116914,
+            0.07960191262464547
+          ],
+          "length": 0.7885572179432349
+        },
+        {
+          "position": [
+            0.17786068661797583,
+            0.36442777312116914,
+            0.07960191262464547
+          ],
+          "length": 0.7885572179432349
+        }
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Turret_0_Housing",
+      "vertices": 2127,
+      "triangles": 800
+    },
+    {
+      "name": "Turret_0_Barrel_0",
+      "vertices": 352,
+      "triangles": 133
+    },
+    {
+      "name": "Turret_0_Barrel_1",
+      "vertices": 361,
+      "triangles": 133
+    },
+    {
+      "name": "Turret_1_Housing",
+      "vertices": 2102,
+      "triangles": 800
+    },
+    {
+      "name": "Turret_1_Barrel_0",
+      "vertices": 364,
+      "triangles": 133
+    },
+    {
+      "name": "Turret_1_Barrel_1",
+      "vertices": 378,
+      "triangles": 133
+    },
+    {
+      "name": "Turret_2_Housing",
+      "vertices": 2146,
+      "triangles": 800
+    },
+    {
+      "name": "Turret_2_Barrel_0",
+      "vertices": 388,
+      "triangles": 133
+    },
+    {
+      "name": "Turret_2_Barrel_1",
+      "vertices": 385,
+      "triangles": 133
+    },
+    {
+      "name": "Hull",
+      "vertices": 220037,
+      "triangles": 82661
+    }
+  ],
+  "materials": [
+    {
+      "name": "_default_",
+      "texture": ""
+    },
+    {
+      "name": "AM068_Hatch_3_664",
+      "texture": "am068_hatch_3_a.jpg"
+    },
+    {
+      "name": "AM029_Ammunition_Box_687",
+      "texture": "am029_ammunition_box_a.jpg"
+    },
+    {
+      "name": "AM045_Running_Lights_F_692",
+      "texture": "am045_running_lights_f_a.jpg"
+    },
+    {
+      "name": "CM004_Barbette_Out_698",
+      "texture": "cm004_barbette_out_a.jpg"
+    },
+    {
+      "name": "AM070_Loading_Machine_821",
+      "texture": "am070_loading_machine_a.jpg"
+    },
+    {
+      "name": "CM010_Fire_Hose_Reel_855",
+      "texture": "cm010_fire_hose_reel_a.jpg"
+    },
+    {
+      "name": "AM063_Wind_Direction_864",
+      "texture": "am063_wind_direction_a.jpg"
+    },
+    {
+      "name": "AM114_Freon_Cylinder_acetylene_867",
+      "texture": "am114_freon_cylinder_acetylene_a.jpg"
+    },
+    {
+      "name": "AM045_Running_Lights_F_wire_874",
+      "texture": "am045_running_lights_f_a.jpg"
+    },
+    {
+      "name": "AM080_Whips_Antenna_876",
+      "texture": "am080_whips_antenna_a.jpg"
+    },
+    {
+      "name": "AM080_Whips_Antenna_wire_876",
+      "texture": "am080_whips_antenna_a.jpg"
+    },
+    {
+      "name": "AM115_RDF_884",
+      "texture": "am115_rdf_a.jpg"
+    },
+    {
+      "name": "AM006_Reels_1_896",
+      "texture": "am006_reels_1_a.jpg"
+    },
+    {
+      "name": "AM091_motor_boats_913",
+      "texture": "am091_motor_boats_a.jpg"
+    },
+    {
+      "name": "AM037_Searchlight_900mm_918",
+      "texture": "am037_searchlight_900mm_a.jpg"
+    },
+    {
+      "name": "AM129_Turtles_box_921",
+      "texture": "am129_turtles_box_a.jpg"
+    },
+    {
+      "name": "CM001_Propeller_962",
+      "texture": "cm001_propeller_a.jpg"
+    },
+    {
+      "name": "AGA003_20mm_Oerlikon_MK4_2",
+      "texture": "aga003_20mm_oerlikon_mk4_a.jpg"
+    },
+    {
+      "name": "AGA002_40mm_Bofors_Mk1_49",
+      "texture": "aga002_40mm_bofors_mk1_a.jpg"
+    },
+    {
+      "name": "AD001_Director_Mk37_162",
+      "texture": "ad001_director_mk37_a.jpg"
+    },
+    {
+      "name": "AD003_Director_Mk51_174",
+      "texture": "ad003_director_mk51_a.jpg"
+    },
+    {
+      "name": "AD035_Torpedo_Director_27_skinned_183",
+      "texture": "ad035_torpedo_director_27_a.jpg"
+    },
+    {
+      "name": "ARS004_Radar_SG_skinned_187",
+      "texture": "ars004_radar_sg_a.jpg"
+    },
+    {
+      "name": "ARS006_Radar_SK_skinned_244",
+      "texture": "ars006_radar_sk_a.jpg"
+    },
+    {
+      "name": "C004_Grid_1_alpha_skinned_245",
+      "texture": "c004_grid_1_alpha_a.png"
+    },
+    {
+      "name": "AGT004_21in_MK14_Torpedo_Tubes_351",
+      "texture": "agt004_21in_mk14_torpedo_tubes_a.jpg"
+    },
+    {
+      "name": "AM003_Fairlead_1_512",
+      "texture": "am003_fairlead_1_a.jpg"
+    },
+    {
+      "name": "CM006_Anchor_2_569",
+      "texture": "cm006_anchor_2_a.jpg"
+    },
+    {
+      "name": "AM019_Ventilators_1_577",
+      "texture": "am019_ventilators_1_a.jpg"
+    },
+    {
+      "name": "AM073_Floater_Net_Basket_619",
+      "texture": "am073_floater_net_basket_a.jpg"
+    },
+    {
+      "name": "C008_Grid_5_alpha_620",
+      "texture": "c008_grid_5_alpha_a.jpg"
+    },
+    {
+      "name": "AM132_Flag_Box_638",
+      "texture": "am132_flag_box_a.jpg"
+    },
+    {
+      "name": "ASD020_Gearing_1945_742",
+      "texture": "asd020_gearing_1945_a.jpg"
+    },
+    {
+      "name": "ASD020_Gearing_1945_wire_743",
+      "texture": "asd020_gearing_1945_a.jpg"
+    },
+    {
+      "name": "AM099_Conditioner_763",
+      "texture": "am099_conditioner_a.jpg"
+    },
+    {
+      "name": "AM133_Boat_7_778",
+      "texture": "am133_boat_7_a.jpg"
+    },
+    {
+      "name": "AM065_Ammunition_Box_6_786",
+      "texture": "am065_ammunition_box_6_a.jpg"
+    },
+    {
+      "name": "CM008_Life_Buoy_1_885",
+      "texture": "cm008_life_buoy_1_a.jpg"
+    },
+    {
+      "name": "AM105_Signal_Lamp_3_893",
+      "texture": "am105_signal_lamp_3_a.jpg"
+    },
+    {
+      "name": "AM067_Speaker_2_895",
+      "texture": "am067_speaker_2_a.jpg"
+    },
+    {
+      "name": "AM130_Acetilen_Cylinder_907",
+      "texture": "am130_acetilen_cylinder_a.jpg"
+    },
+    {
+      "name": "AM012_Depth_Charge_Roller_Rack_912",
+      "texture": "am012_depth_charge_roller_rack_a.jpg"
+    },
+    {
+      "name": "CM016_Boat_Stowage_2_992",
+      "texture": "cm016_boat_stowage_2_a.jpg"
+    },
+    {
+      "name": "AM069_Crane_1_995",
+      "texture": "am069_crane_1_a.jpg"
+    },
+    {
+      "name": "AM016_Davit_1_2",
+      "texture": "am016_davit_1_a.jpg"
+    },
+    {
+      "name": "AM100_Spare_barrel_tube_84",
+      "texture": "am100_spare_barrel_tube_a.jpg"
+    },
+    {
+      "name": "AM001_Bollard_2_290",
+      "texture": "am001_bollard_2_a.jpg"
+    },
+    {
+      "name": "AGS011_5in38_Mk38_Mod0_skinned_401",
+      "texture": "ags011_5in38_mk38_mod0_a.jpg"
+    },
+    {
+      "name": "ARS033_Radar_SF_495",
+      "texture": "ars033_radar_sf_a.jpg"
+    },
+    {
+      "name": "AGA056_40mm_Bofors_543",
+      "texture": "aga056_40mm_bofors_a.jpg"
+    },
+    {
+      "name": "AGA056_40mm_Bofors_wire_544",
+      "texture": "aga056_40mm_bofors_a.jpg"
+    }
+  ]
+}

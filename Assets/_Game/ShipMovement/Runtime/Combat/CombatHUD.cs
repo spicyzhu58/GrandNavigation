@@ -6,7 +6,7 @@ namespace GrandNavigation.Gameplay
         public PlayerShip player;public CombatFireControl fireControl;public CombatAimController aim;public Camera view;
         [Range(16,100)] public float aimEdgeMargin=30;
         [Header("Actual barrel impact markers")]
-        [Tooltip("Maximum separation of ALL six impact points to merge, in metres.")]
+        [Tooltip("Maximum separation of all main-battery impact points to merge, in metres.")]
         [Min(.1f)] public float mergeDistance=3;
         [Min(.1f)] public float splitDistance=4.5f;
         [Min(0)] public float mergeDelay=.15f;
@@ -14,25 +14,32 @@ namespace GrandNavigation.Gameplay
         public bool ImpactsMerged {get;private set;}
         public Vector3 FrontImpact {get;private set;}
         public Vector3 RearImpact {get;private set;}
-        readonly Vector3[] impacts=new Vector3[6];
+        readonly System.Collections.Generic.List<Vector3> impacts=new System.Collections.Generic.List<Vector3>();
+        Vector3 mergedImpact;
         bool frontValid,rearValid;float mergeAge;
         void LateUpdate()
         {
             frontValid=rearValid=false;
-            if(!player||!player.IsAlive||!player.Weapon||player.Weapon.turrets.Length<3){ImpactsMerged=false;mergeAge=0;return;}
+            if(!player||!player.IsAlive||!player.Weapon||player.Weapon.turrets.Length==0){ImpactsMerged=false;mergeAge=0;return;}
             var turrets=player.Weapon.turrets;
-            bool all=true;
-            for(int i=0;i<3;i++)
+            bool all=true,frontOK=true,rearOK=true;int frontCount=0,rearCount=0;
+            FrontImpact=RearImpact=mergedImpact=Vector3.zero;impacts.Clear();
+            for(int i=0;i<turrets.Length;i++)
             {
-                bool valid=turrets[i]&&turrets[i].TryGetImpact(0,out impacts[i*2]);
-                valid=turrets[i]&&turrets[i].TryGetImpact(1,out impacts[i*2+1])&&valid;
-                if(i==0)frontValid=valid;else if(i==1)frontValid&=valid;else rearValid=valid;
-                all&=valid;
+                var t=turrets[i];if(!t||t.muzzles==null||t.muzzles.Length==0){all=false;continue;}
+                bool rear=Mathf.Abs(Mathf.DeltaAngle(0,t.neutralYaw))>90;
+                for(int j=0;j<t.muzzles.Length;j++)
+                {
+                    bool valid=t.TryGetImpact(j,out var point);all&=valid;
+                    if(rear){rearOK&=valid;RearImpact+=point;rearCount++;}else{frontOK&=valid;FrontImpact+=point;frontCount++;}
+                    impacts.Add(point);mergedImpact+=point;
+                }
             }
-            FrontImpact=(impacts[0]+impacts[1]+impacts[2]+impacts[3])*.25f;
-            RearImpact=(impacts[4]+impacts[5])*.5f;
+            frontValid=frontOK&&frontCount>0;rearValid=rearOK&&rearCount>0;
+            if(frontCount>0)FrontImpact/=frontCount;if(rearCount>0)RearImpact/=rearCount;
+            if(impacts.Count>0)mergedImpact/=impacts.Count;else all=false;
             float separation=0;
-            if(all)for(int i=0;i<6;i++)for(int j=i+1;j<6;j++)separation=Mathf.Max(separation,Vector3.Distance(impacts[i],impacts[j]));
+            if(all)for(int i=0;i<impacts.Count;i++)for(int j=i+1;j<impacts.Count;j++)separation=Mathf.Max(separation,Vector3.Distance(impacts[i],impacts[j]));
             if(!all||separation>(ImpactsMerged?splitDistance:mergeDistance)){ImpactsMerged=false;mergeAge=0;}
             else {mergeAge+=Time.deltaTime;if(mergeAge>=mergeDelay)ImpactsMerged=true;}
         }
@@ -45,7 +52,7 @@ namespace GrandNavigation.Gameplay
                 (fireControl.HasVisibleTarget?$"LOCK: {fireControl.Target.name}  HP {fireControl.Target.Health.CurrentHealth}/{fireControl.Target.Health.maximumHealth}  {Vector3.ProjectOnPlane(fireControl.Target.WorldPosition-player.WorldPosition,Vector3.up).magnitude:F0} UU\n":(fireControl.State==CombatFireControl.LockState.Occluded?"TARGET OCCLUDED\n":"NO TARGET\n"))+
                 (fireControl.Valid?$"Observation {fireControl.SampleAge:F2}s / {fireControl.observationInterval:F1}s\n":"NO VALID PREDICTION / OUT OF RANGE\n")+reload+"\n"+w.Status+"\nWASD drive | RMB lock at centre reticle | Hold Shift aim\nMouse aims turrets / orbit | Wheel zoom | LMB salvo | Esc unlock\nR reset orbit | Yellow: prediction area | Gray: aim command | Blue: barrel impacts");
             DrawAim(aim.PlayerAimPoint,new Color(.8f,.8f,.8f));
-            if(ImpactsMerged)DrawAim((FrontImpact*2+RearImpact)/3,Color.cyan,true);
+            if(ImpactsMerged)DrawAim(mergedImpact,Color.cyan,true);
             else
             {
                 if(frontValid)DrawAim(FrontImpact,Color.cyan,false,"F");

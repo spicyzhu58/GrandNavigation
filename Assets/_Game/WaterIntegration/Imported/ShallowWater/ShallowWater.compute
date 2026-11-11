@@ -1,0 +1,138 @@
+#pragma kernel ClearState
+#pragma kernel Inject
+#pragma kernel UpdateVelocity
+#pragma kernel UpdateHeight
+#pragma kernel SampleHeights
+
+// 线性浅水方程（恒定静水深 H，无对流项）：
+// dη/dt = -H(du/dx + dv/dz), du/dt = -g dη/dx, dv/dt = -g dη/dz。
+// R=格心水位 η（米），G=右侧面速度 u，B=上侧面速度 v（米/秒），A=保留。
+// 速度放在格子边界，水位放在格心，避免中心差分的奇偶格解耦。
+Texture2D<float4> _StateRead;
+RWTexture2D<float4> _StateWrite;
+Texture2D<float> _ContactNow;
+Texture2D<float> _ContactPrevious;
+int _Resolution;
+float4 _Domain; // minX,minZ,sizeX,sizeZ
+float4 _Cell;   // dx,dz,1/dx,1/dz
+float _DeltaTime;
+float _Gravity;
+float _WaterDepth;
+float _Damping;
+float _BoundaryWidth;   // 米
+float _BoundaryDamping;
+float _MaxHeight;       // 防止极端输入破坏小振幅假设
+int _ImpulseCount;
+float4 _ImpulsePositionRadius[64]; // worldX,worldZ,radius,deltaHeight
+StructuredBuffer<float2> _HeightQueryPositions;
+RWStructuredBuffer<float> _HeightQueryResults;
+int _HeightQueryCount;
+float _HeightQueryEdgeFade;
+
+bool Outside(uint2 p) { return any(p >= (uint)_Resolution); }
+
+float DampingFactor(int2 p)
+{
+    float2 toEdge = min(float2(p) + 0.5, _Resolution - float2(p) - 0.5) * _Cell.xy;
+    float edge = 1.0 - saturate(min(toEdge.x, toEdge.y) / max(_BoundaryWidth, 1e-5));
+    // 海绵边界逐渐消耗能量；最外层依然是无通量封闭边界，并非严格无反射边界。
+    float absorption = _BoundaryWidth > 0.0 ? _BoundaryDamping * edge * edge : 0.0;
+    return exp(-(_Damping + absorption) * _DeltaTime);
+}
+
+[numthreads(8, 8, 1)]
+void ClearState(uint3 id : SV_DispatchThreadID)
+{
+    if (Outside(id.xy)) return;
+    _StateWrite[id.xy] = 0;
+}
+
+[numthreads(8, 8, 1)]
+void Inject(uint3 id : SV_DispatchThreadID)
+{
+    if (Outside(id.xy)) return;
+    int2 p = int2(id.xy);
+    float4 state = _StateRead[p];
+    // 只用轮廓变化作为源项。静止物体不会每帧重复施力，离开时产生相反扰动。
+    // 每帧只执行一次 Inject，CFL 子步不能重复注入。
+    state.r += _ContactNow[p] - _ContactPrevious[p];
+    float2 worldXZ = _Domain.xy + (float2(p) + 0.5) * _Cell.xy;
+    for (int i = 0; i < _ImpulseCount; i++)
+    {
+        float4 impulse = _ImpulsePositionRadius[i];
+        float q = saturate(1.0 - length(worldXZ - impulse.xy) / impulse.z);
+        // 紧支撑光滑核：中心为 1，半径外为 0。这里是一次性水位变化，不乘 dt。
+        state.r += impulse.w * q * q * (3.0 - 2.0 * q);
+    }
+    state.r = clamp(state.r, -_MaxHeight, _MaxHeight);
+    _StateWrite[p] = state;
+}
+
+[numthreads(8, 8, 1)]
+void UpdateVelocity(uint3 id : SV_DispatchThreadID)
+{
+    if (Outside(id.xy)) return;
+    int2 p = int2(id.xy);
+    float4 state = _StateRead[p];
+    int2 right = min(p + int2(1, 0), int2(_Resolution - 1, _Resolution - 1));
+    int2 up = min(p + int2(0, 1), int2(_Resolution - 1, _Resolution - 1));
+    float2 gradient = float2(_StateRead[right].r - state.r, _StateRead[up].r - state.r) * _Cell.zw;
+    state.gb = (state.gb - _Gravity * _DeltaTime * gradient) * DampingFactor(p);
+    if (p.x == _Resolution - 1) state.g = 0;
+    if (p.y == _Resolution - 1) state.b = 0;
+    _StateWrite[p] = state;
+}
+
+[numthreads(8, 8, 1)]
+void UpdateHeight(uint3 id : SV_DispatchThreadID)
+{
+    if (Outside(id.xy)) return;
+    int2 p = int2(id.xy);
+    float4 state = _StateRead[p];
+    float leftU = 0.0;
+    float downV = 0.0;
+    // 左/下边界没有面速度，显式置零，不依赖纹理 Clamp 的隐式行为。
+    if (p.x > 0) leftU = _StateRead[p - int2(1, 0)].g;
+    if (p.y > 0) downV = _StateRead[p - int2(0, 1)].b;
+    float divergence = (state.g - leftU) * _Cell.z + (state.b - downV) * _Cell.w;
+    state.r = clamp((state.r - _WaterDepth * _DeltaTime * divergence) * DampingFactor(p), -_MaxHeight, _MaxHeight);
+    _StateWrite[p] = state;
+}
+
+[numthreads(64, 1, 1)]
+void SampleHeights(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= (uint)_HeightQueryCount) return;
+    float2 uv = (_HeightQueryPositions[id.x] - _Domain.xy) / _Domain.zw;
+    if (any(uv <= 0.0) || any(uv >= 1.0))
+    {
+        _HeightQueryResults[id.x] = 0.0;
+        return;
+    }
+    // 与 ShallowWaterSampling.hlsl 的双线性采样及边缘淡出一致。
+    // 只读取当前状态，不需要回读整张 RT，也不改动求解数据。
+    float2 pixel = uv * _Resolution - 0.5;
+    int2 basePixel = int2(floor(pixel));
+    float2 f = frac(pixel);
+    int2 lower = int2(0, 0);
+    int2 upper = int2(_Resolution - 1, _Resolution - 1);
+    float h00 = _StateRead[clamp(basePixel, lower, upper)].r;
+    float h10 = _StateRead[clamp(basePixel + int2(1, 0), lower, upper)].r;
+    float h01 = _StateRead[clamp(basePixel + int2(0, 1), lower, upper)].r;
+    float h11 = _StateRead[clamp(basePixel + int2(1, 1), lower, upper)].r;
+    float height = lerp(lerp(h00, h10, f.x), lerp(h01, h11, f.x), f.y);
+    float2 toEdge = min(uv, 1.0 - uv) * _Domain.zw;
+    float fade = smoothstep(0.0, max(_HeightQueryEdgeFade, 1e-4), min(toEdge.x, toEdge.y));
+    _HeightQueryResults[id.x] = height * fade;
+}
+
+// Preserve world-space waves when the local interaction window moves by whole texels.
+#pragma kernel ScrollState
+int2 _ScrollOffset;
+[numthreads(8,8,1)]
+void ScrollState(uint3 id:SV_DispatchThreadID)
+{
+    if(Outside(id.xy))return;
+    int2 old=int2(id.xy)+_ScrollOffset;
+    _StateWrite[id.xy]=(any(old<0)||any(old>=_Resolution))?float4(0,0,0,0):_StateRead[old];
+}

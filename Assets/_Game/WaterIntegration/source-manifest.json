@@ -1,0 +1,107 @@
+[
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\Water.shader",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\Water.shader",
+    "sha256": "4fa41ef55099a7be197da969bf9111dc259674a10adf24166e6aeb7b2d006196"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\Water_Sea_Mat.mat",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\Water_Sea_Mat.mat",
+    "sha256": "906a9df39946fb6279d8f6a0c01814c76556cd0476b9f0fda06bf49c0b302937"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\SSR\\WaterSSR.hlsl",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\SSR\\WaterSSR.hlsl",
+    "sha256": "17e94c2d74f711e94653d7595acc32e44390e53d1dcf6bdf4b229e7e3b271f4a"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\SSR\\WaterSSRRendererFeature.cs",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\SSR\\WaterSSRRendererFeature.cs",
+    "sha256": "46bbdf987c7a9220426c5c79dc0b2d1ff6fbe38ed62479ed67fe152196363740"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\SSR\\WaterWaves.hlsl",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\SSR\\WaterWaves.hlsl",
+    "sha256": "cb70652a159c185ebadf530a1d8fb0f3400a3dc01435d4f5e8065edc7137127c"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWater.compute",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWater.compute",
+    "sha256": "a5f2cb297725cb5e33dc99eb57672b94f7b184b64a3e0fe1d18fa14d48a34c36"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterBuoyancy.cs",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterBuoyancy.cs",
+    "sha256": "a47599ffaaf6dab66bd004204d1c90414f84ef797714944a97e9eb009ed389d3"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterBuoyancyPreview.cs",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterBuoyancyPreview.cs",
+    "sha256": "fd88fa42dd5bce941738f4251a7070f60f630f03d5b29c5a120c82330cd3ecee"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterCapture.shader",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterCapture.shader",
+    "sha256": "5763fc2d79354898649f0cfc06501ab1c53116d0c598a20df5aeb9c1f9a98d35"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterContactBlur.hlsl",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterContactBlur.hlsl",
+    "sha256": "866a58ffca24ad0b22bef589cacfe09c6dad66f92e8c70fae4c0988d5f9a2194"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterHeightQueries.cs",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterHeightQueries.cs",
+    "sha256": "8ae5a2a1953faea49f1fd883d82b1302dbf7c3ccb923fb212d28896e2ad369b7"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterInteractor.cs",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterInteractor.cs",
+    "sha256": "720ceb7c3b99f06a279d14fa56d6c39ce75034eab168ba7cccf0e109858ca807"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterRendererFeature.cs",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterRendererFeature.cs",
+    "sha256": "12becde39977c5c921780e3196436c997e68c352d9b041a04b39ff9cc4b4249f"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterSampling.hlsl",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterSampling.hlsl",
+    "sha256": "7f00599927fdcd32fe3f8c91b159b25385e942997ee4e0d6b701db97c0ab289f"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\ShallowWaterSimulation.cs",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\ShallowWaterSimulation.cs",
+    "sha256": "d8e29e8f58f23f8e9ffd5bf6334a50e11b260ee03281a1c2c8d270bcc42049e0"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Shader\\ShallowWater\\WaterWaveSampling.cs",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\ShallowWater\\WaterWaveSampling.cs",
+    "sha256": "30a5179c390dd2fbea27f6e622776234b31d4ccd608b20c9f383218e66b0cdf8"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Texture\\Water\\IntersectionNoise.png",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\Textures\\IntersectionNoise.png",
+    "sha256": "451267b89684405511cdcac2eda4d82a99117ad318c642099dd7a2f33d845ca3"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Texture\\Water\\ReflectTexture.exr",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\Textures\\ReflectTexture.exr",
+    "sha256": "1d70fabaf1d73316b116f5402d4817fec0c9d558a5330fb09765a939b59c14ba"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Texture\\Water\\T_Caustics02.png",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\Textures\\T_Caustics02.png",
+    "sha256": "a1df8ba7ebc5c7e3cbba9251060534e80e416d1f23e0099b129e5c1f866cfa6e"
+  },
+  {
+    "source": "E:\\Unity\\Stylized Water\\Assets\\Texture\\Water\\T_WaveNormal03.png",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\Textures\\T_WaveNormal03.png",
+    "sha256": "af06ba7d1d45c7a85bd4dcc2269309c0572e1fa50a286d493bae70d2659a271f"
+  },
+  {
+    "source": "E:\\Unity\\Water Asset\\Assets\\FFTOcean\\FFTOcean.compute",
+    "destination": "Assets\\_Game\\WaterIntegration\\Imported\\FFT\\FFTOcean.compute",
+    "sha256": "53cebf72d9de06514cd5cfee9cd72fd9493ada098aa85bbf70c6a0d92b7b2421"
+  }
+]
