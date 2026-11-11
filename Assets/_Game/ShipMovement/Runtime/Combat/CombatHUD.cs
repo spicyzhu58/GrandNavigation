@@ -71,7 +71,26 @@ namespace GrandNavigation.Gameplay
                     GUI.Label(new Rect(x-42,y-55,120,22),fireControl.Target.Health.CurrentHealth+" HP");
                 }
             }
-            GUI.color=Color.white;
+            DrawPrediction();GUI.color=Color.white;
+        }
+        public bool PredictionVisible => fireControl && fireControl.Valid && fireControl.HasVisibleTarget;
+        void DrawPrediction()
+        {
+            if(!PredictionVisible || !view)return;
+            Vector3 centre=fireControl.PredictedIntercept;
+            Vector3 forward=Vector3.ProjectOnPlane(fireControl.ObservedHeading,Vector3.up).normalized;
+            if(forward.sqrMagnitude<.01f)forward=Vector3.forward;
+            Vector3 right=Vector3.Cross(Vector3.up,forward);
+            GUI.color=new Color(1,.85f,.05f,1);
+            // Tactical overlay is drawn after the water, independent of wave depth and transparency sorting.
+            for(int i=0;i<64;i++)
+            {
+                if(i%4>=2)continue;
+                float a=i*Mathf.PI*2/64,b=(i+1)*Mathf.PI*2/64;
+                var p=view.WorldToScreenPoint(centre+right*Mathf.Cos(a)*4+forward*Mathf.Sin(a)*8);
+                var q=view.WorldToScreenPoint(centre+right*Mathf.Cos(b)*4+forward*Mathf.Sin(b)*8);
+                if(p.z>view.nearClipPlane&&q.z>view.nearClipPlane)DrawLine(new Vector2(p.x,Screen.height-p.y),new Vector2(q.x,Screen.height-q.y));
+            }
         }
         static void DrawLine(Vector2 a,Vector2 b)
         {

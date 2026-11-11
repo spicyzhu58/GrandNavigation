@@ -24,7 +24,7 @@ namespace GrandNavigation.Gameplay.Water
         readonly List<Ship> ships=new List<Ship>();
         void OnEnable()
         {
-            if(!pipeline)return;
+            if(!pipeline||!Application.isPlaying)return;
             previous=QualitySettings.renderPipeline;QualitySettings.renderPipeline=pipeline;ownsPipeline=true;
             if(Application.isPlaying)
             {
