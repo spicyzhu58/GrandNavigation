@@ -61,7 +61,7 @@ namespace GrandNavigation.Gameplay
             cameraPivotHeight=Mathf.Max(0,cameraPivotHeight);cameraCollisionRadius=Mathf.Max(.05f,cameraCollisionRadius);
             cameraCollisionPadding=Mathf.Max(0,cameraCollisionPadding);minimumSeaClearance=Mathf.Max(cameraCollisionRadius,minimumSeaClearance);
         }
-        void Start(){Initialize();UpdateCursor();}
+        void Start(){if(!initialized)Initialize();UpdateCursor();}
         void Initialize()
         {
             if(!followTarget)return;
@@ -69,6 +69,24 @@ namespace GrandNavigation.Gameplay
             RequestReset();yaw=requestedYaw;pitch=requestedPitch;distance=requestedDistance;
             pivotPosition=followTarget.position+Vector3.up*cameraPivotHeight;
             pivotVelocity=Vector3.zero;yawVelocity=pitchVelocity=zoomVelocity=0;collisionDistance=distance;collisionVelocity=0;initialized=true;
+        }
+        // Flow handoff uses the same orbit geometry as LateUpdate, including sight elevation.
+        public void GetDefaultView(out Vector3 position,out Quaternion rotation)
+        {
+            Vector3 centre=followTarget.position+Vector3.up*cameraPivotHeight;
+            position=centre+Quaternion.Euler(defaultPitch,followTarget.eulerAngles.y+defaultYaw,0)*Vector3.back*defaultDistance;
+            rotation=Quaternion.LookRotation(centre-position,Vector3.up)*Quaternion.Euler(-observationSightElevation,0,0);
+        }
+        public void AdoptCurrentView()
+        {
+            Initialize();
+            pivotPosition=followTarget.position+Vector3.up*cameraPivotHeight;
+            Vector3 offset=transform.position-pivotPosition;
+            distance=requestedDistance=offset.magnitude;
+            pitch=requestedPitch=Mathf.Asin(offset.normalized.y)*Mathf.Rad2Deg;
+            yaw=requestedYaw=Mathf.Atan2(-offset.x,-offset.z)*Mathf.Rad2Deg;
+            collisionDistance=distance;collisionVelocity=0;cursorReleased=false;
+            SetControlActive(true);
         }
         public void RequestReset()
         {

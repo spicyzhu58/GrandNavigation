@@ -1,0 +1,1 @@
+{"name": "GrandNavigation.Seamless", "references": ["GrandNavigation.MainMenuV2", "GrandNavigation.BattleResult", "GrandNavigation.ShipMovement", "GrandNavigation.EnemyAI", "GrandNavigation.GameFlow", "Unity.ugui"]}
