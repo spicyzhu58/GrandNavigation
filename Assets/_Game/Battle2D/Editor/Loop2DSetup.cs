@@ -17,6 +17,7 @@ namespace GrandNavigation.Battle2D.Editor
             var canvas=new GameObject("2D Game UI",typeof(Canvas),typeof(CanvasScaler),typeof(GraphicRaycaster));canvas.GetComponent<Canvas>().renderMode=RenderMode.ScreenSpaceOverlay;
             var scaler=canvas.GetComponent<CanvasScaler>();scaler.uiScaleMode=CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1280,720);
             manager.startPanel=Panel(canvas.transform,"Start Panel");Text(manager.startPanel.transform,"GRAND NAVIGATION 2D",70,40);manager.startButton=Button(manager.startPanel.transform,"Start Game",-30);
+            manager.quitButton=Button(manager.startPanel.transform,"Quit",-120);
             manager.resultPanel=Panel(canvas.transform,"Result Panel");manager.title=Text(manager.resultPanel.transform,"VICTORY",70,48);manager.retryButton=Button(manager.resultPanel.transform,"RETRY",-30);manager.resultPanel.SetActive(false);
             new GameObject("EventSystem",typeof(EventSystem),typeof(InputSystemUIInputModule));
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());AssetDatabase.SaveAssets();

@@ -13,7 +13,7 @@ namespace GrandNavigation.Battle2D
         public ShipActor2D player;
         public ShipActor2D[] enemies;
         public GameObject startPanel,resultPanel;
-        public Button startButton,retryButton;
+        public Button startButton,retryButton,quitButton;
         public Text title;
         public BattleState State {get;private set;}=BattleState.Playing;
         public bool Started {get;private set;}
@@ -43,6 +43,15 @@ namespace GrandNavigation.Battle2D
             }
             if(roster.Count==0)Debug.LogWarning("Battle2D has no participating enemies; automatic victory disabled.",this);
             startPanel.SetActive(true);resultPanel.SetActive(false);startButton.onClick.AddListener(Begin);retryButton.onClick.AddListener(Retry);
+            if(quitButton)quitButton.onClick.AddListener(Quit);
+        }
+        public void Quit()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying=false;
+#else
+            Application.Quit();
+#endif
         }
         public void Begin()
         {
