@@ -1,0 +1,1 @@
+{"name": "GrandNavigation.Battle2D", "references": ["GrandNavigation.ShipMovement", "GrandNavigation.EnemyAI", "Unity.InputSystem", "Unity.ugui", "GrandNavigation.BattleResult"]}
