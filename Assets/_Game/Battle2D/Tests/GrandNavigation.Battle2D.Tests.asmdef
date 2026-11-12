@@ -1,0 +1,1 @@
+{"name": "GrandNavigation.Battle2D.Tests", "references": ["GrandNavigation.Battle2D", "GrandNavigation.ShipMovement", "GrandNavigation.EnemyAI", "GrandNavigation.BattleResult", "Unity.ugui", "Unity.InputSystem"], "optionalUnityReferences": ["TestAssemblies"]}
