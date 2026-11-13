@@ -8458,7 +8458,7 @@ Transform:
   m_GameObject: {fileID: 291501714}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 359, y: 0, z: 922}
+  m_LocalPosition: {x: 835, y: 0, z: 922}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11894,7 +11894,7 @@ Transform:
   m_GameObject: {fileID: 421311085}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 359, y: 0, z: 442}
+  m_LocalPosition: {x: 714, y: 0, z: 281}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13243,7 +13243,7 @@ Transform:
   m_GameObject: {fileID: 465629378}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 605, y: 0, z: -640}
+  m_LocalPosition: {x: -92, y: 0, z: -640}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17882,7 +17882,7 @@ Transform:
   m_GameObject: {fileID: 613404229}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 59, y: 0, z: 442}
+  m_LocalPosition: {x: 59, y: 0, z: -215}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43536,7 +43536,7 @@ Transform:
   m_GameObject: {fileID: 1439900342}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -518, y: 0, z: -216}
+  m_LocalPosition: {x: -797, y: 0, z: -353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -49846,7 +49846,7 @@ MonoBehaviour:
   slots:
   - prefab: {fileID: 3357993861733820760, guid: df97ff77e4df0a34da9a1e2260aaf6d0, type: 3}
     instance: {fileID: 8449371554314850352}
-    position: {x: -518, y: 1, z: 24}
+    position: {x: -800, y: 1, z: -500}
     euler: {x: -0, y: 90, z: -0}
     route:
     - {fileID: 1521187939}
@@ -49855,7 +49855,7 @@ MonoBehaviour:
     - {fileID: 1439900343}
   - prefab: {fileID: 3901237898132192179, guid: 2ea0a9390006b5841b462d11c9154138, type: 3}
     instance: {fileID: 8535014132237706411}
-    position: {x: 605, y: 1, z: -400}
+    position: {x: 605, y: 1, z: 367}
     euler: {x: -0, y: 90, z: -0}
     route:
     - {fileID: 392216160}
@@ -49864,7 +49864,7 @@ MonoBehaviour:
     - {fileID: 465629379}
   - prefab: {fileID: 7904633529209520091, guid: 9f44914315d1af54c9ed9b85f47d9b2f, type: 3}
     instance: {fileID: 8535014133551484611}
-    position: {x: 59, y: 1, z: 682}
+    position: {x: -160, y: 1, z: 700}
     euler: {x: -0, y: 90, z: -0}
     route:
     - {fileID: 1024767363}
@@ -59446,7 +59446,7 @@ Transform:
   m_GameObject: {fileID: 1975877198}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 905, y: 0, z: -640}
+  m_LocalPosition: {x: 905, y: 0, z: -1257}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -64758,7 +64758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GrandNavigation.EnemyAI::GrandNavigation.Gameplay.AI.EnemyNavigation
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 4294967243
+    m_Bits: 3
   mapHalfExtent: 1280
   steeringAngle: 35
   recoveryDuration: 3
@@ -65185,7 +65185,7 @@ Transform:
   m_GameObject: {fileID: 39439755500473695}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 59, y: 1, z: 682}
+  m_LocalPosition: {x: -160, y: 1, z: 700}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -65201,7 +65201,7 @@ Transform:
   m_GameObject: {fileID: 39439756548089655}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 605, y: 1, z: -400}
+  m_LocalPosition: {x: 605, y: 1, z: 367}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -65274,7 +65274,7 @@ Transform:
   m_GameObject: {fileID: 3979460493291488031}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -518, y: 1, z: 24}
+  m_LocalPosition: {x: -800, y: 1, z: -500}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -65327,7 +65327,7 @@ MonoBehaviour:
   - {fileID: 1439900343}
   sightMask:
     serializedVersion: 2
-    m_Bits: 4294967243
+    m_Bits: 3
   drawGizmos: 1
 --- !u!114 &8535014132237706411
 MonoBehaviour:
@@ -65349,7 +65349,7 @@ MonoBehaviour:
   - {fileID: 465629379}
   sightMask:
     serializedVersion: 2
-    m_Bits: 4294967243
+    m_Bits: 3
   drawGizmos: 1
 --- !u!114 &8535014133551484611
 MonoBehaviour:
@@ -65371,7 +65371,7 @@ MonoBehaviour:
   - {fileID: 613404230}
   sightMask:
     serializedVersion: 2
-    m_Bits: 4294967243
+    m_Bits: 3
   drawGizmos: 1
 --- !u!114 &8552002934006836117
 MonoBehaviour:
@@ -65427,7 +65427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GrandNavigation.EnemyAI::GrandNavigation.Gameplay.AI.EnemyNavigation
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 4294967243
+    m_Bits: 3
   mapHalfExtent: 1280
   steeringAngle: 35
   recoveryDuration: 3
@@ -65447,7 +65447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GrandNavigation.EnemyAI::GrandNavigation.Gameplay.AI.EnemyNavigation
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 4294967243
+    m_Bits: 3
   mapHalfExtent: 1280
   steeringAngle: 35
   recoveryDuration: 3
