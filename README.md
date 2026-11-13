@@ -15,7 +15,7 @@ This README updates the [team-authored level-art README](https://github.com/spic
 
 | Member | Responsibilities recorded in the team README | Development branches / evidence |
 |---|---|---|
-| KONG JINCAN — G2601963A (`spicyzhu58`) | Gameplay requirements, movement, combat, enemy AI, flow and 2D adaptation | [feature/ship-movement](https://github.com/spicyzhu58/GrandNavigation/tree/feature/ship-movement), [feature/player-combat](https://github.com/spicyzhu58/GrandNavigation/tree/feature/player-combat), [feature/battle-2d](https://github.com/spicyzhu58/GrandNavigation/tree/feature/battle-2d), [feature/final-integration](https://github.com/spicyzhu58/GrandNavigation/tree/feature/final-integration) |
+| Kong Jincan — G2601963A (`spicyzhu58`) | Gameplay requirements, movement, combat, enemy AI, flow and 2D adaptation | [feature/ship-movement](https://github.com/spicyzhu58/GrandNavigation/tree/feature/ship-movement), [feature/player-combat](https://github.com/spicyzhu58/GrandNavigation/tree/feature/player-combat), [feature/battle-2d](https://github.com/spicyzhu58/GrandNavigation/tree/feature/battle-2d), [feature/final-integration](https://github.com/spicyzhu58/GrandNavigation/tree/feature/final-integration) |
 | Ye Kaixin — G2607926G (`yekaixin113`) | Technical art: local water prototypes, ship/turret adaptation, level layout and collision, rendering/effects integration, visual debugging and delivery verification | [level-art](https://github.com/spicyzhu58/GrandNavigation/tree/level-art); `38de1de`, `88f02ed`, `1e5fd09` |
 
 Responsibilities are retained from the contributor's README. Imported assets keep their original credits; commit history alone does not establish authorship of every asset. Each student must supply their own reflection and full AI history.
@@ -38,6 +38,8 @@ git clone https://github.com/spicyzhu58/GrandNavigation.git
 cd GrandNavigation
 git switch --detach final-submission
 ```
+
+The frozen gameplay tag predates this README and the final coursework documentation. Obtain README and Documentation from main separately when packaging the frozen source.
 
 In Unity Hub, **Add project from disk**, select the folder containing `Assets`, `Packages` and `ProjectSettings`, and open with Unity **6000.3.27f1**. Wait for package resolution and asset import. Open a scene below and press **Play**.
 
@@ -113,7 +115,7 @@ The final integration further makes PredictionRegion the source of overlay radii
 
 Design evidence: visual water and collision/ballistics have distinct responsibilities; scene-level rendering ownership is restored on unload; actual turret configuration replaces fixed battery assumptions. These are concrete separation and extensibility decisions, with a deliberate limit: ship components still depend on Unity and the 2D execution adapters remain separate. Imported shaders, new TA adapters, editor tools and scene wiring are outside the fixed 16-type CCR inventory, so that metric does not measure the total TA workload.
 
-Presentation: [current Canva deck](https://www.canva.com/d/3QiZXnjsSg5P35N). Its TA section documents local prototypes, WaterIntegrationTest, FreeNavalBattle and the Git integration milestones. The deck's previously edited 6.25% value compares cac76c4 to 1e5fd09; update the final-release slide to 12.5% if presenting 6274d85, and keep 6.25% only as the earlier milestone. The deck itself was not edited in this README update.
+Presentation: [current Canva deck](https://www.canva.com/d/3QiZXnjsSg5P35N). Its TA section documents local prototypes, WaterIntegrationTest, FreeNavalBattle and the Git integration milestones. The contributor reports that the deck is being updated to the final-release CCR of 12.5% (cac76c4 → 6274d85). The 6.25% value applies only to the earlier art endpoint 1e5fd09. Completion of the deck update has not been independently checked here.
 
 ## 7. Git versions, comparisons and integration evidence
 
@@ -174,7 +176,7 @@ Ye Kaixin's project-specific contribution includes turret pivots/muzzle bindings
 
 See [teammate asset register](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/AssetSources.md) and the committed [water source manifest](Assets/_Game/WaterIntegration/source-manifest.json). Water/FFT source licensing and complete redistribution permissions still require confirmation before distributing assets. Original local paths and hashes document provenance, not a license grant.
 
-Supporting coursework drafts on the teammate branch: [Class Maps](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/ClassMaps.md), [Change Map](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/ChangeMap.md), [adaptation file list](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/adaptation-files.tsv). These predate FinalIntegratedGame and must be reconciled with the final code/CCR before inclusion in the report. Kong Jincan's personal reflection draft is in the [contributor-updated README](https://github.com/spicyzhu58/GrandNavigation/blob/dd145d4/README.md#13-individual-reflections-and-ai-development-evidence); no new first-person reflection is written on another member's behalf here.
+Supporting coursework documents reconciled to final-submission / 6274d85: [final Class Maps](Documentation/ClassMaps.md), [final Change Map](Documentation/ChangeMap.md), [adaptation file list](Documentation/adaptation-files.tsv). The class maps include final flow/water responsibilities; the change map distinguishes historical snapshots from the 12.5% final endpoint. [Full final file comparison](Documentation/final-snapshot-files.tsv). Kong Jincan's personal reflection draft is in the [contributor-updated README](https://github.com/spicyzhu58/GrandNavigation/blob/dd145d4/README.md#13-individual-reflections-and-ai-development-evidence); no new first-person reflection is written on another member's behalf here.
 
 ## 10. AI records and submission checklist
 
@@ -182,8 +184,9 @@ ChatGPT/Codex assisted design discussion, implementation, inspection, debugging 
 
 | Required evidence | Current location / action |
 |---|---|
-| KONG JINCAN complete AI log | **Pending:** export actual ChatGPT/Codex history and add exact repository path or accessible linked location |
-| Ye Kaixin AI evidence | [Shared ChatGPT conversation supplied for the PPT](https://chatgpt.com/share/6af69795-9920-83ec-a96f-c75fed08cf6b); complete chronological archive coverage remains to be checked |
+| Kong Jincan complete AI log | **Pending:** export actual ChatGPT/Codex history and add exact repository path or accessible linked location |
+| Shared AI evidence (participant coverage to verify) | [Shared ChatGPT conversation supplied for the PPT](https://chatgpt.com/share/6af69795-9920-83ec-a96f-c75fed08cf6b); complete chronological archive coverage remains to be checked |
+| Ye Kaixin complete AI log | **Pending:** identify the complete personal archive and its coverage; the shared link alone is not verified as the full archive |
 | Group report PDF | **Pending:** supply actual path in submission ZIP; include final Class Maps, Change Map, CCR, tests and source references |
 | Individual reflections | Each member writes and verifies a named section in the PDF |
 | Declaration of Original Work | **Pending:** signed group form in ZIP |
