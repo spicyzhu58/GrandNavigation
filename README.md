@@ -13,10 +13,10 @@ Single-player naval combat in Unity, with playable 2D and 3D versions. Destroy a
 
 | Member | Main responsibilities | Contribution evidence |
 | --- | --- | --- |
-| spicyzhu58 — Full name: ______ / Student ID: ______ | Gameplay requirements, movement, combat, enemy AI, game flow and 2D adaptation | `649d532`, `8c30506`, `7e7c1cd`, `9c26a67`, `1e4d21a` |
-| yekaixin113 — Full name: ______ / Student ID: G2607926G | Ship and turret integration, environment, water, combat feedback, integration and delivery verification | `38de1de`, `88f02ed`, `1e5fd09` |
+| **KONG JINCAN — G2601963A** (`spicyzhu58`) | Gameplay requirements, movement, combat, enemy AI, game flow and 2D adaptation | `649d532`, `8c30506`, `7e7c1cd`, `9c26a67`, `1e4d21a` |
+| **YE KAIXIN — G2607926G** (`yekaixin113`) | Ship and turret integration, environment, water, combat feedback, integration and delivery verification | `38de1de`, `88f02ed`, `1e5fd09` |
 
-Both members review the design and prepare their own AI records, reflection and presentation material. These account-based responsibilities follow the project history; add real names before submission.
+Both students must submit their own complete AI logs, individual reflection, and presentation evidence. The assignments of work below distinguish gameplay/system design from technical art, water and visual integration; commits are supporting evidence, not proof of authorship of every imported asset.
 
 ## 2. Requirements and dependencies
 
@@ -44,7 +44,7 @@ Unity restores packages when opening the project; initial import may require net
 | Water integration | `Assets/_Game/Scenes/WaterIntegrationTest.unity` | Separate water test scene; see WaterIntegration notes |
 | Additional art scene | `Assets/_Game/Scenes/FreeNavalBattle.unity` | Final local art/water battlefield; see FreeBattle.md |
 
-**Final local art/water battlefield: `Assets/_Game/Scenes/FreeNavalBattle.unity`, included in `1e5fd09`.** The separate menu-flow entry is `IntegratedGame.unity`; the entry chosen for the submitted executable still needs to be recorded. Do not assume that the menu-flow baseline includes the latest water and ship art. The current build list starts with `IntegratedGame.unity` and also contains prototype and integration scenes.
+**Requested final 3D demonstration entry: `Final-Integration`.** Repository inspection on 13 November 2026 did **not** find a scene named `Final-Integration.unity` in `level-art` or the `3d-final` snapshot scene directory. The verified saved scenes are `Assets/_Game/Scenes/IntegratedGame.unity` (complete menu-to-combat flow) and `Assets/_Game/Scenes/FreeNavalBattle.unity` (latest art/water battlefield). `Final-Integration` must be committed/exported and its exact scene path recorded before it can be claimed as the runnable final entry. Until then use `IntegratedGame.unity` as the verified flow-demonstration scene and show `FreeNavalBattle.unity` separately for art/water; **do not silently describe these as one integrated scene**.
 
 ## 4. Controls
 
@@ -68,7 +68,7 @@ Locking provides targeting feedback and does not guarantee a hit. Reload, collis
 3. Build each version into a separate output directory. Keep the generated executable, data directory, Unity libraries and other generated files together.
 4. Launch the executable and verify start, movement, firing, victory, defeat and retry outside the Editor.
 
-Manual acceptance is team-confirmed. Standalone output paths, exact tested revisions and whether acceptance was in Editor or executable: **TODO**. No project executable was found in the inspected workspace. Archived GPU tests identify NVIDIA GeForce RTX 4070 Laptop GPU; this does not identify the later manual acceptance environment. The historical 2D README reports no standalone validation at the time it was written; any later packaging or run must be recorded separately.
+Manual acceptance was reported by the team on **13 November 2026**. Recorded source snapshots: `2d-final` (`cac76c4`) and `3d-final` (`1e5fd09`). **Acceptance environment (Unity Editor vs standalone executable), operator, build output paths and whether the tested project exactly matched each tag are not independently recorded**; fill in the evidence record below before submission. No final standalone binary has been verified in the repository. No project executable was found in the inspected workspace. Archived GPU tests identify NVIDIA GeForce RTX 4070 Laptop GPU; this does not identify the later manual acceptance environment. The historical 2D README reports no standalone validation at the time it was written; any later packaging or run must be recorded separately.
 
 ## 6. Shared rules, architecture and differences
 
@@ -92,7 +92,7 @@ The actual development order was **3D → 2D adaptation**. Route B asks for a fr
 
 The historical 2D adaptation defines CCR as modified or deleted baseline core types divided by a fixed set of 16 baseline core types, excluding newly added adapters. It reports **0 / 16 = 0%** for the 3D baseline `b3c5b41` to the 2D adaptation. Seven core types were directly shared and eight 2D execution components were added. This is neither a 100% reuse claim nor the final 2D-to-3D CCR required by the assignment.
 
-The final report must state the chosen comparison commits, type list, changes and calculation. Final snapshot CCR, using the same fixed 16-type inventory: **1/16 = 6.25%**, comparing `cac76c4` to `1e5fd09`. Only Weapon changes within that inventory: it removes the three-turret cap and replaces the fixed six-shell display with actual battery capacity. The other 15 inventory types are unchanged. This endpoint comparison does not establish chronological 2D-first development or measure all 2D adapter changes. Reproduce with `git diff cac76c4 1e5fd09 -- Assets/_Game/ShipMovement/Runtime Assets/_Game/EnemyAI/Runtime Assets/_Game/BattleResult/Runtime`; exclude presentation types outside the fixed inventory.
+The final report must state the chosen comparison commits, type list, changes and calculation. Final snapshot CCR, using the same fixed 16-type inventory but **different comparison endpoints and purpose**: **1/16 = 6.25%**, comparing `cac76c4` to `1e5fd09`. Only Weapon changes within that inventory: it removes the three-turret cap and replaces the fixed six-shell display with actual battery capacity. The other 15 inventory types are unchanged. This endpoint comparison does not establish chronological 2D-first development or measure all 2D adapter changes. Reproduce with `git diff cac76c4 1e5fd09 -- Assets/_Game/ShipMovement/Runtime Assets/_Game/EnemyAI/Runtime Assets/_Game/BattleResult/Runtime`; exclude presentation types outside the fixed inventory.
 
 ## 8. Version and GitHub evidence
 
@@ -157,13 +157,62 @@ ChatGPT assisted requirements and design discussion; Codex assisted implementati
 
 | Required material | Delivered location |
 | --- | --- |
-| spicyzhu58 complete AI communication log | **TODO: repository path / URL** |
-| yekaixin113 complete AI communication log | **TODO: repository path / URL** |
+| KONG JINCAN (`spicyzhu58`) complete chronological AI prompts and responses | **NOT YET ARCHIVED/VERIFIED — export full ChatGPT/Codex history and link exact repository path** |
+| YE KAIXIN (`yekaixin113`) complete chronological AI prompts and responses | **NOT YET ARCHIVED/VERIFIED — contributor must supply complete logs and link exact repository path** |
 | Group PDF report, both class maps, change map and CCR | **TODO: ZIP path / URL** |
-| Individually signed reflections | **TODO: report section references** |
+| Individual reflection sections | KONG JINCAN draft below; YE KAIXIN reflection to be authored by YE KAIXIN in the group PDF |
 | Group Declaration of Original Work | **TODO: ZIP path** |
 | Each member's Declaration on Use of Generative AI Assistance | **TODO: ZIP paths** |
 | 2D / 3D runnable project snapshots and builds | **TODO: ZIP paths and exact revisions** |
 | Presentation / demonstration evidence | **TODO: ZIP path / URL** |
 
 Submit one `AP6412_Group04.zip` for Group 4. Include the complete required project files, necessary assets and evidence; identify both playable version locations. Generated `Library`, `Temp` and local cache directories are not source deliverables. Some development evidence is under Git-ignored `Artifacts`; copy any cited evidence into the actual submission so reviewers can access it.
+
+
+## 12. Final acceptance record (required for submission)
+
+The final code labels identify **source snapshots**, not a verified Windows executable. The team's 13 November 2026 manual-pass statement and archived automated test reports must not be conflated with an independently validated standalone build.
+
+| Item | 2D | 3D |
+| --- | --- | --- |
+| Final tag | [`2d-final`](https://github.com/spicyzhu58/GrandNavigation/tree/2d-final) | [`3d-final`](https://github.com/spicyzhu58/GrandNavigation/tree/3d-final) |
+| Commit | `cac76c431e12decbdcdab842bc138dcec7ebc141` | `1e5fd09783eeee48eed29ecaa0e5fc91755fc4a6` |
+| Verified existing scene | `Assets/_Game/Scenes/Battle2D.unity` | `Assets/_Game/Scenes/IntegratedGame.unity` (flow); `Assets/_Game/Scenes/FreeNavalBattle.unity` (art/water) |
+| Requested final demonstration label | — | `Final-Integration` — **requested but not found as a saved scene; requires integration evidence** |
+| Reported manual acceptance date | 2026-11-13 (team statement) | 2026-11-13 (team statement) |
+| Actual test mode | **UNRECORDED: Editor / Standalone** | **UNRECORDED: Editor / Standalone** |
+| Tested revision and test operator | **UNRECORDED** | **UNRECORDED** |
+| Final package / standalone location | **UNRECORDED** | **UNRECORDED** |
+| Archived automated evidence | [2D merge and rerun reports](Documentation/Evidence/battle-2d-merge-tests.xml) | [22/22 final PlayMode tests](Documentation/Evidence/final-acceptance.xml) |
+| Existing screenshots | Add a 2D gameplay capture | [Play preview](Documentation/Evidence/play-preview.png), [terrain](Documentation/Evidence/terrain.png) |
+
+**Suggested acceptance procedure** (not a claim of completed testing): open the identified tag with Unity 6000.3.27f1, record the actual scene and Editor/Standalone mode, run start/movement/aim/lock/fire/AI/victory/defeat/retry cases, capture screenshots and a Unity Test Runner result, and note any failures and rerun results. For a standalone build, record its actual location and include executable and companion files in the submission ZIP. Do not put a hypothetical build path in the report.
+
+## 13. Individual reflections and AI-development evidence
+
+### KONG JINCAN — G2601963A — gameplay and systems design
+
+This was my first opportunity to take responsibility for the game-design workflow across a complete playable prototype. We chose a naval setting because my teammate, a technical artist, wanted to explore ocean rendering, lighting and visual effects. I adapted the class tank-battle concept into warship combat, taking inspiration from *World of Warships* to provide more meaningful steering, target selection and salvo decisions without reproducing its full complexity.
+
+I specified the control scheme, ship inertia and movement, fire-control rules, enemy behaviour, battle flow, and gameplay acceptance conditions. The major challenge was aiming. Automatic lead initially made locked targets too easy to hit; I therefore revised the design toward an approximate predicted-hit region, repeated prediction updates, projectile dispersion, target-occlusion handling and a constrained firing arc. Some ideas, including trial-fire as a separate mechanic, were removed to keep the implementation lightweight. The Bismarck battery and salvo count also had to be aligned with the configured turrets instead of hard-coded UI assumptions.
+
+The most useful lesson from AP6412 was to give AI **one well-scoped module or change at a time**, with explicit expected behaviour, boundary conditions and test criteria. AI assisted my C# implementation, code inspection, test planning and edge-case review, but it did not make the final design decisions. I reviewed results through gameplay tests and requested revisions when a technically functioning mechanic weakened player agency or integration stability. Object-oriented separation of ship, movement, weapon, health, AI and presentation responsibilities made these changes easier to reason about, although our 2D version still needed dedicated engine-specific adapters. The actual history went from 3D to an additive 2D adaptation, which must be disclosed rather than reconstructed as 2D-first.
+
+Selected **conversation topics for indexing only** (not full transcripts): ship movement specification and speed changes; fire-control V0.1 and subsequent lead/dispersion updates; target locking and occlusion; AI finite-state behaviour; 2D adaptation with shared health/math/AI helpers; final test and CCR review. Provide complete exported prompt-and-response logs from the original tools, with chronology, links and affected commits. Conversation summaries and this reflection **are not substitutes** for those logs.
+
+### YE KAIXIN — G2607926G — technical art and integration
+
+Contribution summary: ship/turret model adaptation and binding, art scene assembly, collision settings, water rendering and effects integration, and final visual delivery and testing support, as documented in [AssetSources.md](Documentation/AssetSources.md) and the art/water module notes. **Individual first-person learning/reflection and full AI conversation evidence must be supplied and verified by YE KAIXIN; they are not fabricated here.**
+
+## 14. Submission index and completion gate
+
+- **Final code:** `2d-final` and `3d-final`. The most recent working documentation is on [`level-art`](https://github.com/spicyzhu58/GrandNavigation/tree/level-art) and may not exist inside the frozen tag trees.
+- **Final class maps:** [Documentation/ClassMaps.md](Documentation/ClassMaps.md) (both 2D and 3D, core vs engine/presentation responsibilities).
+- **Change evidence:** [Documentation/ChangeMap.md](Documentation/ChangeMap.md), [historical file statuses](Documentation/adaptation-files.tsv), [final snapshot file statuses](Documentation/final-snapshot-files.tsv).
+- **CCR scope A (historical 3D-to-2D adaptation):** `b3c5b41 → cac76c4`, changed/deleted original 16 core types = **0/16 (0%)**; new 2D adapters are excluded.
+- **CCR scope B (final tagged endpoint comparison):** `cac76c4 → 1e5fd09`, changed/deleted fixed inventory types = **1/16 (6.25%)**; `Weapon` changed, 15 unchanged. This is not the same event or denominator scope of all changed files.
+- **Validation:** [final acceptance XML](Documentation/Evidence/final-acceptance.xml), [2D merge run](Documentation/Evidence/battle-2d-merge-tests.xml), [rerun](Documentation/Evidence/battle-2d-merge-recheck.xml), [play preview](Documentation/Evidence/play-preview.png), [terrain screenshot](Documentation/Evidence/terrain.png).
+- **Attribution:** [Documentation/AssetSources.md](Documentation/AssetSources.md), [WaterIntegration source manifest](Assets/_Game/WaterIntegration/source-manifest.json).
+- **Required before ZIP submission:** commit or precisely identify `Final-Integration`; enter the true final ZIP/build output path, actual tested version, test date, Editor vs standalone mode and operator; add missing gameplay screenshots; complete third-party licensing checks; archive **both students' full chronological AI logs**; include group PDF with each student's personal reflection and signed declarations.
+
+The proposed submission name is **`AP6412_Group04.zip`**. Its **actual file location remains unverified**. This README does not claim an executable or complete AI transcripts exist when the repository does not establish them.
