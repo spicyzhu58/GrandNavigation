@@ -16,7 +16,7 @@ This README updates the [team-authored level-art README](https://github.com/spic
 | Member | Responsibilities recorded in the team README | Development branches / evidence |
 |---|---|---|
 | KONG JINCAN — G2601963A (`spicyzhu58`) | Gameplay requirements, movement, combat, enemy AI, flow and 2D adaptation | [feature/ship-movement](https://github.com/spicyzhu58/GrandNavigation/tree/feature/ship-movement), [feature/player-combat](https://github.com/spicyzhu58/GrandNavigation/tree/feature/player-combat), [feature/battle-2d](https://github.com/spicyzhu58/GrandNavigation/tree/feature/battle-2d), [feature/final-integration](https://github.com/spicyzhu58/GrandNavigation/tree/feature/final-integration) |
-| YE KAIXIN — G2607926G (`yekaixin113`) | Ship/turret adaptation, environment, water, visual feedback and delivery verification | [level-art](https://github.com/spicyzhu58/GrandNavigation/tree/level-art); `38de1de`, `88f02ed`, `1e5fd09` |
+| Ye Kaixin — G2607926G (`yekaixin113`) | Technical art: local water prototypes, ship/turret adaptation, level layout and collision, rendering/effects integration, visual debugging and delivery verification | [level-art](https://github.com/spicyzhu58/GrandNavigation/tree/level-art); `38de1de`, `88f02ed`, `1e5fd09` |
 
 Responsibilities are retained from the contributor's README. Imported assets keep their original credits; commit history alone does not establish authorship of every asset. Each student must supply their own reflection and full AI history.
 
@@ -96,6 +96,25 @@ Final 3D prediction retains **0.5-second observations, per-frame extrapolation, 
 
 Detailed implementation notes: [2D and initial Class/Change Map](Assets/_Game/Battle2D/README.md), [final integration](Assets/_Game/FinalIntegration/README.md), [seamless flow](Assets/_Game/Seamless/README.md), [naval art](Assets/_Game/NavalArt/README.md), [water integration](Assets/_Game/WaterIntegration/README.md).
 
+### Ye Kaixin — technical-art development and integration
+
+The TA work followed **local prototype → isolated integration scene → playable art scene → final game-flow integration**. Ye Kaixin developed and assembled the local visual work, specified the integration constraints, reviewed the results and directed corrections with AI-assisted implementation. Local prototype activity is evidenced by the development conversations and source manifests; it must not be assigned invented Git commits. Third-party source art and code remain separately attributed.
+
+| Stage | Implemented work and design decision | Code / evidence |
+|---|---|---|
+| Local water prototypes | Combined the appearance, SSR and shallow-water interaction of the contributor's local Stylized Water project with FFT from the separate Water Asset project. Adapted the newer source rendering APIs to Unity 6000.3.27f1 / URP 17.3.0, preserving the game engine version. | [Source paths and hashes](Assets/_Game/WaterIntegration/source-manifest.json), [water implementation notes](Assets/_Game/WaterIntegration/README.md) |
+| Functional ship art | Built TropicalNavalBattle using Bismarck/Gearing visuals. Separated turret housings and barrels, set yaw/elevation pivots and muzzle references, adapted materials and retained gameplay components. Ye Kaixin explicitly approved all modelled main turrets firing: eight Bismarck shells and six Gearing shells. This drove the removal of the fixed three-turret/six-shell assumption. | [38de1de](https://github.com/spicyzhu58/GrandNavigation/commit/38de1de), [asset conversion](Tools/NavalArt/prepare_assets.py), [Weapon](Assets/_Game/ShipMovement/Runtime/Weapon.cs) |
+| WaterIntegrationTest | Ported water appearance first, then FFT and local ship/projectile interactions. NavalFFT schedules waves; WaterSceneContext connects rendering ownership and gameplay water events. Kept movement, damage and mean-sea-plane ballistics stable; no physical buoyancy was added. | [NavalFFT](Assets/_Game/WaterIntegration/Runtime/NavalFFT.cs), [WaterSceneContext](Assets/_Game/WaterIntegration/Runtime/WaterSceneContext.cs); historical module record: 11 tests passed |
+| FreeNavalBattle level assembly | Adapted source Terrain height data to three islands at the existing game scale, built 24 convex coastal collision sectors, checked spawn clearance and patrol routes, then added 195 terrain-grounded palms and 72 rock placements with three LOD levels. Refined cliff materials, shoreline attenuation, reflections and caustics. | [88f02ed](https://github.com/spicyzhu58/GrandNavigation/commit/88f02ed), [terrain builder](Assets/_Game/NavalArt/Editor/FreeBattleTerrainBuilder.cs), [finishing script](Assets/_Game/WaterIntegration/Editor/FreeBattleFinish.cs) |
+| Visual bug and lifecycle fixes | The yellow prediction region was hidden by displaced water. Moved its visible outline to a HUD overlay while preserving lock/visibility validity. A regression also exposed scene-specific pipeline settings leaking into global Editor configuration; restricted switching to Play mode and restored the previous pipeline on exit. | [FreeBattle notes](Assets/_Game/WaterIntegration/FreeBattle.md), [CombatHUD](Assets/_Game/ShipMovement/Runtime/Combat/CombatHUD.cs); historical final run: 22/22 passed after a 21/22 run and correction |
+| Project handoff and final integration | Ye Kaixin's art/water work was consolidated on level-art; 1e5fd09 merged the independent 2D version. Kong Jincan's final integration reused those visual hierarchies in the seamless menu/preparation/battle scene, preserved the original AI and added final flow/combat checks. Later scene-position adjustments are frozen in 6274d85. | [1e5fd09 merge](https://github.com/spicyzhu58/GrandNavigation/commit/1e5fd09), [5bf140b integration](https://github.com/spicyzhu58/GrandNavigation/commit/5bf140b), [final integration notes](Assets/_Game/FinalIntegration/README.md) |
+
+The final integration further makes PredictionRegion the source of overlay radii and smoothing and excludes water presentation from gameplay pausing in GameFlowController/BattleManager. These later integration changes are credited separately from Ye Kaixin's earlier TA work. Existing module test results are stage-specific; the 45-second AI/GPU check and Camera.Render timing do not certify standalone FPS.
+
+Design evidence: visual water and collision/ballistics have distinct responsibilities; scene-level rendering ownership is restored on unload; actual turret configuration replaces fixed battery assumptions. These are concrete separation and extensibility decisions, with a deliberate limit: ship components still depend on Unity and the 2D execution adapters remain separate. Imported shaders, new TA adapters, editor tools and scene wiring are outside the fixed 16-type CCR inventory, so that metric does not measure the total TA workload.
+
+Presentation: [current Canva deck](https://www.canva.com/d/3QiZXnjsSg5P35N). Its TA section documents local prototypes, WaterIntegrationTest, FreeNavalBattle and the Git integration milestones. The deck's previously edited 6.25% value compares cac76c4 to 1e5fd09; update the final-release slide to 12.5% if presenting 6274d85, and keep 6.25% only as the earlier milestone. The deck itself was not edited in this README update.
+
 ## 7. Git versions, comparisons and integration evidence
 
 | Evidence | Link / exact scope |
@@ -104,7 +123,7 @@ Detailed implementation notes: [2D and initial Class/Change Map](Assets/_Game/Ba
 | **Final accepted 2D + integrated 3D release** | [final-submission](https://github.com/spicyzhu58/GrandNavigation/tree/final-submission) → `6274d85` |
 | Independent 2D snapshot | [2d-final](https://github.com/spicyzhu58/GrandNavigation/tree/2d-final) → `cac76c4` |
 | Earlier 3D art snapshot (superseded for final delivery) | [3d-final](https://github.com/spicyzhu58/GrandNavigation/tree/3d-final) → `1e5fd09` |
-| Real pre-2D 3D baseline | [3d-pre-2d-adaptation](https://github.com/spicyzhu58/GrandNavigation/tree/3d-pre-2d-adaptation) → `b3c5b41` |
+| Real pre-2D 3D baseline | [b3c5b41 baseline commit](https://github.com/spicyzhu58/GrandNavigation/commit/b3c5b41280373e7d17e48f680f9daf84f6379cb1); the historical tag name is not present on the remote |
 | Initial adaptation change | [b3c5b41 → 1e4d21a](https://github.com/spicyzhu58/GrandNavigation/compare/b3c5b41...1e4d21a) |
 | Final endpoint file comparison | [cac76c4 → 6274d85](https://github.com/spicyzhu58/GrandNavigation/compare/cac76c4..6274d85) |
 | Final 3D integration changes | [1e5fd09 → 6274d85](https://github.com/spicyzhu58/GrandNavigation/compare/1e5fd09...6274d85) |
@@ -151,11 +170,11 @@ Retained from the contributor-authored README:
 | [Samidare destroyer](https://sketchfab.com/3d-models/samidare-destroyer-b37939147c854e61857f5b248f9efd29) | everlasting17th / everlastinggrey; contributor-reported destroyer basis. Project assets are named Gearing; the linked source is Samidare. Exact reused parts require contributor confirmation |
 | [Pirate Kit](https://kenney.nl/assets/pirate-kit) | Kenney; CC0 reported in contributor documentation; environment reference, not a blanket license for separately imported Tropical assets |
 
-YE KAIXIN's project-specific contribution includes turret pivots/muzzle bindings, scene layout, collision setup and water integration. Underlying third-party meshes, textures, terrain and shader code retain their separate provenance. The above source claims are preserved from teammate documentation, not independently reverified during this README edit.
+Ye Kaixin's project-specific contribution includes turret pivots/muzzle bindings, scene layout, collision setup and water integration. Underlying third-party meshes, textures, terrain and shader code retain their separate provenance. The above source claims are preserved from teammate documentation, not independently reverified during this README edit.
 
 See [teammate asset register](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/AssetSources.md) and the committed [water source manifest](Assets/_Game/WaterIntegration/source-manifest.json). Water/FFT source licensing and complete redistribution permissions still require confirmation before distributing assets. Original local paths and hashes document provenance, not a license grant.
 
-Supporting coursework drafts on the teammate branch: [Class Maps](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/ClassMaps.md), [Change Map](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/ChangeMap.md), [adaptation file list](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/adaptation-files.tsv). These predate FinalIntegratedGame and must be reconciled with the final code/CCR before inclusion in the report. The teammate's personal reflection draft remains in the [original README](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/README.md); no new first-person reflection is written on another member's behalf here.
+Supporting coursework drafts on the teammate branch: [Class Maps](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/ClassMaps.md), [Change Map](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/ChangeMap.md), [adaptation file list](https://github.com/spicyzhu58/GrandNavigation/blob/ab52e7b/Documentation/adaptation-files.tsv). These predate FinalIntegratedGame and must be reconciled with the final code/CCR before inclusion in the report. Kong Jincan's personal reflection draft is in the [contributor-updated README](https://github.com/spicyzhu58/GrandNavigation/blob/dd145d4/README.md#13-individual-reflections-and-ai-development-evidence); no new first-person reflection is written on another member's behalf here.
 
 ## 10. AI records and submission checklist
 
@@ -164,12 +183,12 @@ ChatGPT/Codex assisted design discussion, implementation, inspection, debugging 
 | Required evidence | Current location / action |
 |---|---|
 | KONG JINCAN complete AI log | **Pending:** export actual ChatGPT/Codex history and add exact repository path or accessible linked location |
-| YE KAIXIN complete AI log | **Pending:** contributor must supply and link their actual full history |
+| Ye Kaixin AI evidence | [Shared ChatGPT conversation supplied for the PPT](https://chatgpt.com/share/6af69795-9920-83ec-a96f-c75fed08cf6b); complete chronological archive coverage remains to be checked |
 | Group report PDF | **Pending:** supply actual path in submission ZIP; include final Class Maps, Change Map, CCR, tests and source references |
 | Individual reflections | Each member writes and verifies a named section in the PDF |
 | Declaration of Original Work | **Pending:** signed group form in ZIP |
 | Generative AI declarations | **Pending:** each member's supplied course form |
-| Presentation | Approximately 15 minutes; both members demonstrate their own contributions and explain code/evidence |
+| Presentation | [Canva deck](https://www.canva.com/d/3QiZXnjsSg5P35N); approximately 15 minutes; both members explain their contributions. Reconcile the final CCR endpoint as noted above. |
 | Standalone builds and screenshots | Record actual 2D/3D output paths, revisions, operator and test mode; do not invent build locations |
 | Route B chronology exception | Disclose 3D-first history and record teacher response |
 
