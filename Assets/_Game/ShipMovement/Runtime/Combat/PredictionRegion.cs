@@ -7,6 +7,12 @@ namespace GrandNavigation.Gameplay
         [Min(.1f)] public float longitudinalRadius=8,lateralRadius=4;
         [Min(.001f)] public float smoothTime=.12f;
         [Min(.02f)] public float borderWidth=.15f;
+        [Tooltip("Draw the smoothed region through CombatHUD instead of the world mesh.")]
+        public bool screenOverlay;
+        public bool Visible {get;private set;}
+        public Vector3 DisplayCentre=>centre;
+        public Vector3 DisplayForward=>Quaternion.Euler(0,heading,0)*Vector3.forward;
+        void OnDisable(){Visible=false;displayed=null;if(surface)surface.enabled=false;}
         Mesh mesh;MeshRenderer surface;Vector3 velocity,centre;float heading;Ship displayed;
         const int Segments=64;
         void Awake()
@@ -17,10 +23,11 @@ namespace GrandNavigation.Gameplay
         }
         void LateUpdate()
         {
-            bool visible=fireControl.Valid&&fireControl.HasVisibleTarget;surface.enabled=visible;if(!visible){displayed=null;return;}
+            bool visible=fireControl.Valid&&fireControl.HasVisibleTarget;Visible=visible;surface.enabled=visible&&!screenOverlay;if(!visible){displayed=null;return;}
             float desired=Mathf.Atan2(fireControl.ObservedHeading.x,fireControl.ObservedHeading.z)*Mathf.Rad2Deg;
             if(displayed!=fireControl.Target){displayed=fireControl.Target;centre=fireControl.PredictedIntercept;velocity=Vector3.zero;heading=desired;}
             else {centre=Vector3.SmoothDamp(centre,fireControl.PredictedIntercept,ref velocity,smoothTime);heading=Mathf.LerpAngle(heading,desired,1-Mathf.Exp(-Time.deltaTime/smoothTime));}
+            if(screenOverlay)return;
             Vector3 forward=Quaternion.Euler(0,heading,0)*Vector3.forward,right=Vector3.Cross(Vector3.up,forward);
             var vertices=new Vector3[Segments*2+1];var fill=new int[Segments*3];var edge=new System.Collections.Generic.List<int>();vertices[0]=centre+Vector3.up*.08f;
             for(int i=0;i<Segments;i++)

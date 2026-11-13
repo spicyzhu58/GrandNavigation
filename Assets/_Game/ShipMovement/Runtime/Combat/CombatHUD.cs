@@ -4,6 +4,7 @@ namespace GrandNavigation.Gameplay
     public sealed class CombatHUD : MonoBehaviour
     {
         public PlayerShip player;public CombatFireControl fireControl;public CombatAimController aim;public Camera view;
+        public PredictionRegion predictionRegion;
         [Range(16,100)] public float aimEdgeMargin=30;
         [Header("Actual barrel impact markers")]
         [Tooltip("Maximum separation of all main-battery impact points to merge, in metres.")]
@@ -17,6 +18,15 @@ namespace GrandNavigation.Gameplay
         readonly System.Collections.Generic.List<Vector3> impacts=new System.Collections.Generic.List<Vector3>();
         Vector3 mergedImpact;
         bool frontValid,rearValid;float mergeAge;
+        void Start()
+        {
+            // Older scenes may not serialize the optional overlay reference yet.
+            if(predictionRegion)return;
+            foreach(var region in FindObjectsByType<PredictionRegion>(FindObjectsSortMode.None))
+                if(region.fireControl==fireControl){predictionRegion=region;break;}
+            // Art test scenes deliberately disabled the water-occluded world mesh.
+            if(predictionRegion&&!predictionRegion.enabled){predictionRegion.screenOverlay=true;predictionRegion.enabled=true;}
+        }
         void LateUpdate()
         {
             frontValid=rearValid=false;
@@ -73,12 +83,12 @@ namespace GrandNavigation.Gameplay
             }
             DrawPrediction();GUI.color=Color.white;
         }
-        public bool PredictionVisible => fireControl && fireControl.Valid && fireControl.HasVisibleTarget;
+        public bool PredictionVisible => predictionRegion && predictionRegion.isActiveAndEnabled && predictionRegion.screenOverlay && predictionRegion.Visible && fireControl && fireControl.Valid && fireControl.HasVisibleTarget;
         void DrawPrediction()
         {
             if(!PredictionVisible || !view)return;
-            Vector3 centre=fireControl.PredictedIntercept;
-            Vector3 forward=Vector3.ProjectOnPlane(fireControl.ObservedHeading,Vector3.up).normalized;
+            Vector3 centre=predictionRegion.DisplayCentre;
+            Vector3 forward=predictionRegion.DisplayForward;
             if(forward.sqrMagnitude<.01f)forward=Vector3.forward;
             Vector3 right=Vector3.Cross(Vector3.up,forward);
             GUI.color=new Color(1,.85f,.05f,1);
@@ -87,8 +97,8 @@ namespace GrandNavigation.Gameplay
             {
                 if(i%4>=2)continue;
                 float a=i*Mathf.PI*2/64,b=(i+1)*Mathf.PI*2/64;
-                var p=view.WorldToScreenPoint(centre+right*Mathf.Cos(a)*4+forward*Mathf.Sin(a)*8);
-                var q=view.WorldToScreenPoint(centre+right*Mathf.Cos(b)*4+forward*Mathf.Sin(b)*8);
+                var p=view.WorldToScreenPoint(centre+right*Mathf.Cos(a)*predictionRegion.lateralRadius+forward*Mathf.Sin(a)*predictionRegion.longitudinalRadius);
+                var q=view.WorldToScreenPoint(centre+right*Mathf.Cos(b)*predictionRegion.lateralRadius+forward*Mathf.Sin(b)*predictionRegion.longitudinalRadius);
                 if(p.z>view.nearClipPlane&&q.z>view.nearClipPlane)DrawLine(new Vector2(p.x,Screen.height-p.y),new Vector2(q.x,Screen.height-q.y));
             }
         }

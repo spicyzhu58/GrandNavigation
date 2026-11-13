@@ -1,0 +1,1 @@
+{"name": "GrandNavigation.FinalIntegration.Tests", "references": ["GrandNavigation.Seamless", "GrandNavigation.MainMenuV2", "GrandNavigation.BattleResult", "GrandNavigation.ShipMovement", "GrandNavigation.EnemyAI", "Unity.InputSystem", "Unity.ugui", "GrandNavigation.WaterIntegration"], "optionalUnityReferences": ["TestAssemblies"]}

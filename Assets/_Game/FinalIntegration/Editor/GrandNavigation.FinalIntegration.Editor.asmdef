@@ -1,0 +1,1 @@
+{"name":"GrandNavigation.FinalIntegration.Editor","references":["GrandNavigation.ShipMovement","GrandNavigation.EnemyAI","GrandNavigation.LevelGreybox","GrandNavigation.Seamless","GrandNavigation.MainMenuV2","GrandNavigation.BattleResult","GrandNavigation.GameFlow","GrandNavigation.WaterIntegration"],"includePlatforms":["Editor"]}

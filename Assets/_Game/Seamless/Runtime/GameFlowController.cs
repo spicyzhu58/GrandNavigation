@@ -40,7 +40,7 @@ namespace GrandNavigation.Seamless
             {
                 if(c.gameObject.scene!=gameObject.scene||!c.enabled)continue;
                 string ns=c.GetType().Namespace;
-                if(ns!=null&&ns.StartsWith("GrandNavigation.Gameplay")&&!(c is ResultUI)) {paused.Add(c);c.enabled=false;}
+                if(ns!=null&&ns.StartsWith("GrandNavigation.Gameplay")&&!ns.StartsWith("GrandNavigation.Gameplay.Water")&&!(c is ResultUI)) {paused.Add(c);c.enabled=false;}
             }
             startButton.onClick.AddListener(StartPreparation);goButton.onClick.AddListener(Go);backButton.onClick.AddListener(Back);exitButton.onClick.AddListener(Exit);
             battle.Ended+=OnResult;

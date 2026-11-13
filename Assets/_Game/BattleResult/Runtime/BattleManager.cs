@@ -49,7 +49,7 @@ namespace GrandNavigation.Gameplay.Battle
                 if (component.gameObject.scene != gameObject.scene) continue;
                 if (component is HealthSystem health) health.DamageBlocked = true;
                 var ns = component.GetType().Namespace;
-                if (ns != null && ns.StartsWith("GrandNavigation.Gameplay") && !ns.StartsWith("GrandNavigation.Gameplay.Battle")) component.enabled = false;
+                if (ns != null && ns.StartsWith("GrandNavigation.Gameplay") && !ns.StartsWith("GrandNavigation.Gameplay.Battle") && !ns.StartsWith("GrandNavigation.Gameplay.Water")) component.enabled = false;
             }
             Time.timeScale = 0; ownsPause = true;
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
