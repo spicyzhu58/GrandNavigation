@@ -182,17 +182,15 @@ Supporting coursework documents reconciled to final-submission / 6274d85: [final
 
 ChatGPT/Codex assisted design discussion, implementation, inspection, debugging and test execution. Human review included correcting aiming behaviour, integration references and test assumptions. Each student must archive **complete chronological prompts, responses, corrections and decisions**. Summaries, this README and selected examples are not substitutes for full records.
 
-| Required evidence | Current location / action |
+| Name / File | Evidence |
 |---|---|
-| Kong Jincan complete AI log | **Pending:** export actual ChatGPT/Codex history and add exact repository path or accessible linked location |
-| Shared AI evidence (participant coverage to verify) | [Shared ChatGPT conversation supplied for the PPT](https://chatgpt.com/share/6af69795-9920-83ec-a96f-c75fed08cf6b); complete chronological archive coverage remains to be checked |
-| Ye Kaixin complete AI log | **Pending:** identify the complete personal archive and its coverage; the shared link alone is not verified as the full archive |
-| Group report PDF | **Pending:** supply actual path in submission ZIP; include final Class Maps, Change Map, CCR, tests and source references |
-| Individual reflections | Each member writes and verifies a named section in the PDF |
+| Kong Jincan | (https://chatgpt.com/share/6af6a631-f5ec-83ec-a029-1b0be2a60e76?ogimg=plain) |
+| Shared AI evidence (participant coverage to verify) | (https://chatgpt.com/share/6af69795-9920-83ec-a96f-c75fed08cf6b) |
+| Ye Kaixin | (https://chatgpt.com/s/cx_6af6a6a036cc81919a1c6cc260d37f3b) |
+| Group report PDF | (https://drive.google.com/file/d/1VnR_Yryb6KOBg9dXkxCXY5MWWCsMNMC5/view?usp=sharing) |
+| Individual reflections | (https://drive.google.com/file/d/1VnR_Yryb6KOBg9dXkxCXY5MWWCsMNMC5/view?usp=sharing) |
 | Declaration of Original Work | **Pending:** signed group form in ZIP |
 | Generative AI declarations | **Pending:** each member's supplied course form |
-| Presentation | [Canva deck](https://www.canva.com/d/3QiZXnjsSg5P35N); approximately 15 minutes; both members explain their contributions. Reconcile the final CCR endpoint as noted above. |
-| Standalone builds and screenshots | Record actual 2D/3D output paths, revisions, operator and test mode; do not invent build locations |
-| Route B chronology exception | Disclose 3D-first history and record teacher response |
+| Presentation | [Canva deck](https://www.canva.com/d/3QiZXnjsSg5P35N) |
 
 One member submits **`AP6412_Group04.zip`** through NTULearn by the course deadline. Include the runnable Unity project/source/essential assets, clear 2D/3D version locations, README and GitHub evidence, report PDF, full AI logs and required declarations. Include any cited evidence that otherwise lives only in ignored local `Artifacts`. Actual final ZIP location is not recorded here.
