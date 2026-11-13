@@ -189,8 +189,8 @@ ChatGPT/Codex assisted design discussion, implementation, inspection, debugging 
 | Ye Kaixin | (https://chatgpt.com/s/cx_6af6a6a036cc81919a1c6cc260d37f3b) |
 | Group report PDF | (https://drive.google.com/file/d/1VnR_Yryb6KOBg9dXkxCXY5MWWCsMNMC5/view?usp=sharing) |
 | Individual reflections | (https://drive.google.com/file/d/1VnR_Yryb6KOBg9dXkxCXY5MWWCsMNMC5/view?usp=sharing) |
-| Declaration of Original Work | **Pending:** signed group form in ZIP |
-| Generative AI declarations | **Pending:** each member's supplied course form |
+| Declaration of Original Work | (https://docs.google.com/document/d/1FMu2LY5_ZKMG8Q3Mu8FeHu7De9k-3dQZ/edit?usp=sharing&ouid=114472334040921759834&rtpof=true&sd=true) |
+| Generative AI declarations | (https://drive.google.com/file/d/1vLHDNMXbUB8IhZg6mt7OeaPl5b9wY69M/view?usp=sharing) (https://drive.google.com/file/d/196UOUQAf7lwwlm9bZDt7vWe_f_NNgqMy/view?usp=sharing) |
 | Presentation | [Canva deck](https://www.canva.com/d/3QiZXnjsSg5P35N) |
 
 One member submits **`AP6412_Group04.zip`** through NTULearn by the course deadline. Include the runnable Unity project/source/essential assets, clear 2D/3D version locations, README and GitHub evidence, report PDF, full AI logs and required declarations. Include any cited evidence that otherwise lives only in ignored local `Artifacts`. Actual final ZIP location is not recorded here.
