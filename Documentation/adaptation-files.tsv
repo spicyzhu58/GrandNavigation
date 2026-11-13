@@ -1,0 +1,52 @@
+A	Assets/_Game/Battle2D.meta
+A	Assets/_Game/Battle2D/Editor.meta
+A	Assets/_Game/Battle2D/Editor/Battle2DBuilder.cs
+A	Assets/_Game/Battle2D/Editor/Battle2DBuilder.cs.meta
+A	Assets/_Game/Battle2D/Editor/Combat2DSetup.cs
+A	Assets/_Game/Battle2D/Editor/Combat2DSetup.cs.meta
+A	Assets/_Game/Battle2D/Editor/GrandNavigation.Battle2D.Editor.asmdef
+A	Assets/_Game/Battle2D/Editor/GrandNavigation.Battle2D.Editor.asmdef.meta
+A	Assets/_Game/Battle2D/Editor/Loop2DSetup.cs
+A	Assets/_Game/Battle2D/Editor/Loop2DSetup.cs.meta
+A	Assets/_Game/Battle2D/Prefabs.meta
+A	Assets/_Game/Battle2D/Prefabs/Shell2D.prefab
+A	Assets/_Game/Battle2D/Prefabs/Shell2D.prefab.meta
+A	Assets/_Game/Battle2D/Profiles.meta
+A	Assets/_Game/Battle2D/Profiles/Battleship.asset
+A	Assets/_Game/Battle2D/Profiles/Battleship.asset.meta
+A	Assets/_Game/Battle2D/Profiles/Destroyer A.asset
+A	Assets/_Game/Battle2D/Profiles/Destroyer A.asset.meta
+A	Assets/_Game/Battle2D/Profiles/Destroyer B.asset
+A	Assets/_Game/Battle2D/Profiles/Destroyer B.asset.meta
+A	Assets/_Game/Battle2D/README.md
+A	Assets/_Game/Battle2D/README.md.meta
+A	Assets/_Game/Battle2D/Runtime.meta
+A	Assets/_Game/Battle2D/Runtime/BattleManager2D.cs
+A	Assets/_Game/Battle2D/Runtime/BattleManager2D.cs.meta
+A	Assets/_Game/Battle2D/Runtime/Camera2D.cs
+A	Assets/_Game/Battle2D/Runtime/Camera2D.cs.meta
+A	Assets/_Game/Battle2D/Runtime/EnemyAI2D.cs
+A	Assets/_Game/Battle2D/Runtime/EnemyAI2D.cs.meta
+A	Assets/_Game/Battle2D/Runtime/GrandNavigation.Battle2D.asmdef
+A	Assets/_Game/Battle2D/Runtime/GrandNavigation.Battle2D.asmdef.meta
+A	Assets/_Game/Battle2D/Runtime/PlayerInput2D.cs
+A	Assets/_Game/Battle2D/Runtime/PlayerInput2D.cs.meta
+A	Assets/_Game/Battle2D/Runtime/Projectile2D.cs
+A	Assets/_Game/Battle2D/Runtime/Projectile2D.cs.meta
+A	Assets/_Game/Battle2D/Runtime/ShipActor2D.cs
+A	Assets/_Game/Battle2D/Runtime/ShipActor2D.cs.meta
+A	Assets/_Game/Battle2D/Runtime/ShipMovement2D.cs
+A	Assets/_Game/Battle2D/Runtime/ShipMovement2D.cs.meta
+A	Assets/_Game/Battle2D/Runtime/Weapon2D.cs
+A	Assets/_Game/Battle2D/Runtime/Weapon2D.cs.meta
+A	Assets/_Game/Battle2D/Sprites.meta
+A	Assets/_Game/Battle2D/Sprites/White.png
+A	Assets/_Game/Battle2D/Sprites/White.png.meta
+A	Assets/_Game/Battle2D/Tests.meta
+A	Assets/_Game/Battle2D/Tests/Battle2DTests.cs
+A	Assets/_Game/Battle2D/Tests/Battle2DTests.cs.meta
+A	Assets/_Game/Battle2D/Tests/GrandNavigation.Battle2D.Tests.asmdef
+A	Assets/_Game/Battle2D/Tests/GrandNavigation.Battle2D.Tests.asmdef.meta
+A	Assets/_Game/Scenes/Battle2D.unity
+A	Assets/_Game/Scenes/Battle2D.unity.meta
+M	ProjectSettings/EditorBuildSettings.asset

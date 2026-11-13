@@ -1,0 +1,1 @@
+45 seconds real-time AI/GPU soak completed. 10418 explicit 1280x720 renders; CPU Camera.Render mean 1.32 ms. This measures render submission, not GPU frame time or a standalone FPS guarantee. Allocated managed/native memory: 365 MiB. GPU NVIDIA GeForce RTX 4070 Laptop GPU.

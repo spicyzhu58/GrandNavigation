@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="22" result="Passed" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:42:51Z" duration="117.9182729">
+  <test-suite type="TestSuite" id="1126" name="GrandNavigation" fullname="GrandNavigation" runstate="Runnable" testcasecount="68" result="Passed" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:42:51Z" duration="117.918273" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1032" name="GrandNavigation.EnemyAI.Tests.dll" fullname="D:/ykx/NTU 26fall/AP6412 FOUNDATION FOR TECHNOLOGY &amp; CODING/GrandNavigation/Library/ScriptAssemblies/GrandNavigation.EnemyAI.Tests.dll" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:41:04Z" duration="10.771605" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="53652" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1033" name="GrandNavigation" fullname="GrandNavigation" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:41:04Z" duration="10.770889" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1034" name="Gameplay" fullname="GrandNavigation.Gameplay" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:41:04Z" duration="10.770260" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1035" name="AI" fullname="GrandNavigation.Gameplay.AI" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:41:04Z" duration="10.769687" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1036" name="Tests" fullname="GrandNavigation.Gameplay.AI.Tests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:41:04Z" duration="10.769071" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1026" name="PlayerOcclusionTests" fullname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests" classname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:41:04Z" duration="10.767465" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1030" name="CameraCannotBlendThroughCoverAndDestroyedReferenceClears" fullname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests.CameraCannotBlendThroughCoverAndDestroyedReferenceClears" methodname="CameraCannotBlendThroughCoverAndDestroyedReferenceClears" classname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests" runstate="Runnable" seed="1623339892" result="Passed" start-time="2026-11-11 12:40:53Z" end-time="2026-11-11 12:40:56Z" duration="2.496866" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1028" name="ContinuousLossGraceResetsAndPausedTimeDoesNotExpire" fullname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests.ContinuousLossGraceResetsAndPausedTimeDoesNotExpire" methodname="ContinuousLossGraceResetsAndPausedTimeDoesNotExpire" classname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests" runstate="Runnable" seed="1483431879" result="Passed" start-time="2026-11-11 12:40:56Z" end-time="2026-11-11 12:40:59Z" duration="3.089726" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1031" name="DeathCancelDestroyAndEachSavedIsland" fullname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests.DeathCancelDestroyAndEachSavedIsland" methodname="DeathCancelDestroyAndEachSavedIsland" classname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests" runstate="Runnable" seed="1699608215" result="Passed" start-time="2026-11-11 12:40:59Z" end-time="2026-11-11 12:40:59Z" duration="0.431619" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1027" name="ObserverBlocksHighCameraSelectionAndPartialHullRemainsVisible" fullname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests.ObserverBlocksHighCameraSelectionAndPartialHullRemainsVisible" methodname="ObserverBlocksHighCameraSelectionAndPartialHullRemainsVisible" classname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests" runstate="Runnable" seed="1806744877" result="Passed" start-time="2026-11-11 12:40:59Z" end-time="2026-11-11 12:41:00Z" duration="0.496740" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1029" name="OccludedCameraAndPredictionDoNotTrackButManualFireWorks" fullname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests.OccludedCameraAndPredictionDoNotTrackButManualFireWorks" methodname="OccludedCameraAndPredictionDoNotTrackButManualFireWorks" classname="GrandNavigation.Gameplay.AI.Tests.PlayerOcclusionTests" runstate="Runnable" seed="1287011871" result="Passed" start-time="2026-11-11 12:41:00Z" end-time="2026-11-11 12:41:04Z" duration="4.243014" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1104" name="GrandNavigation.ShipMovement.PlayTests.dll" fullname="D:/ykx/NTU 26fall/AP6412 FOUNDATION FOR TECHNOLOGY &amp; CODING/GrandNavigation/Library/ScriptAssemblies/GrandNavigation.ShipMovement.PlayTests.dll" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-11-11 12:41:04Z" end-time="2026-11-11 12:41:43Z" duration="39.038769" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="53652" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1105" name="GrandNavigation" fullname="GrandNavigation" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-11-11 12:41:04Z" end-time="2026-11-11 12:41:43Z" duration="39.038175" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1106" name="Gameplay" fullname="GrandNavigation.Gameplay" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-11-11 12:41:04Z" end-time="2026-11-11 12:41:43Z" duration="39.037615" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="SetUpFixture" id="1087" name="Tests" fullname="GrandNavigation.Gameplay.Tests.InputTestFocusScope" classname="GrandNavigation.Gameplay.Tests.InputTestFocusScope" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-11-11 12:41:04Z" end-time="2026-11-11 12:41:43Z" duration="39.037036" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1093" name="PlayerCombatTests" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-11 12:41:04Z" end-time="2026-11-11 12:41:43Z" duration="39.034860" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1097" name="ActualImpactHudGroupsFrontAndMergesOnlyAllBarrels" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.ActualImpactHudGroupsFrontAndMergesOnlyAllBarrels" methodname="ActualImpactHudGroupsFrontAndMergesOnlyAllBarrels" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="288940692" result="Passed" start-time="2026-11-11 12:41:04Z" end-time="2026-11-11 12:41:08Z" duration="3.960378" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1096" name="AimEntryRecentersOnceWithoutSnappingTurretsOrFollowingPrediction" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.AimEntryRecentersOnceWithoutSnappingTurretsOrFollowingPrediction" methodname="AimEntryRecentersOnceWithoutSnappingTurretsOrFollowingPrediction" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="901232563" result="Passed" start-time="2026-11-11 12:41:08Z" end-time="2026-11-11 12:41:10Z" duration="1.781712" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1102" name="AlignedSixShellSalvoActuallySinksLockedTarget" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.AlignedSixShellSalvoActuallySinksLockedTarget" methodname="AlignedSixShellSalvoActuallySinksLockedTarget" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="1355105486" result="Passed" start-time="2026-11-11 12:41:10Z" end-time="2026-11-11 12:41:18Z" duration="7.612482" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1098" name="ImmediateSalvoUsesActualBarrelsAndReloads" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.ImmediateSalvoUsesActualBarrelsAndReloads" methodname="ImmediateSalvoUsesActualBarrelsAndReloads" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="1386655756" result="Passed" start-time="2026-11-11 12:41:18Z" end-time="2026-11-11 12:41:23Z" duration="5.395983" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1100" name="LockShiftDriveManualAimAndSinkUseRealInputAndOop" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.LockShiftDriveManualAimAndSinkUseRealInputAndOop" methodname="LockShiftDriveManualAimAndSinkUseRealInputAndOop" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="105726953" result="Passed" start-time="2026-11-11 12:41:23Z" end-time="2026-11-11 12:41:24Z" duration="0.997929" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1103" name="MechanicalArcsNeverCrossForbiddenSector" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.MechanicalArcsNeverCrossForbiddenSector" methodname="MechanicalArcsNeverCrossForbiddenSector" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="1007114192" result="Passed" start-time="2026-11-11 12:41:24Z" end-time="2026-11-11 12:41:24Z" duration="0.290002" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1094" name="MouseAimsWithoutLockAndShiftUsesPrototypeCloseup" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.MouseAimsWithoutLockAndShiftUsesPrototypeCloseup" methodname="MouseAimsWithoutLockAndShiftUsesPrototypeCloseup" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="589898287" result="Passed" start-time="2026-11-11 12:41:24Z" end-time="2026-11-11 12:41:28Z" duration="3.390982" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1099" name="MovingAlignedSalvoHitsChosenWorldPoint" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.MovingAlignedSalvoHitsChosenWorldPoint" methodname="MovingAlignedSalvoHitsChosenWorldPoint" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="418594802" result="Passed" start-time="2026-11-11 12:41:28Z" end-time="2026-11-11 12:41:37Z" duration="9.806914" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1101" name="SweptProjectileDealsOneHitAndRejectsFriendlyDamage" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.SweptProjectileDealsOneHitAndRejectsFriendlyDamage" methodname="SweptProjectileDealsOneHitAndRejectsFriendlyDamage" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="919586953" result="Passed" start-time="2026-11-11 12:41:37Z" end-time="2026-11-11 12:41:38Z" duration="0.488909" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1095" name="TargetCameraFreezesBearingAndReanchorsOnNextEntry" fullname="GrandNavigation.Gameplay.Tests.PlayerCombatTests.TargetCameraFreezesBearingAndReanchorsOnNextEntry" methodname="TargetCameraFreezesBearingAndReanchorsOnNextEntry" classname="GrandNavigation.Gameplay.Tests.PlayerCombatTests" runstate="Runnable" seed="1889111350" result="Passed" start-time="2026-11-11 12:41:38Z" end-time="2026-11-11 12:41:43Z" duration="5.307093" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1118" name="GrandNavigation.WaterIntegration.Tests.dll" fullname="D:/ykx/NTU 26fall/AP6412 FOUNDATION FOR TECHNOLOGY &amp; CODING/GrandNavigation/Library/ScriptAssemblies/GrandNavigation.WaterIntegration.Tests.dll" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-11 12:41:43Z" end-time="2026-11-11 12:42:51Z" duration="68.099581" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="53652" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1119" name="GrandNavigation" fullname="GrandNavigation" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-11 12:41:43Z" end-time="2026-11-11 12:42:51Z" duration="68.099271" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1120" name="Gameplay" fullname="GrandNavigation.Gameplay" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-11 12:41:43Z" end-time="2026-11-11 12:42:51Z" duration="68.099018" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1121" name="Water" fullname="GrandNavigation.Gameplay.Water" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-11 12:41:43Z" end-time="2026-11-11 12:42:51Z" duration="68.098753" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1122" name="Tests" fullname="GrandNavigation.Gameplay.Water.Tests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-11 12:41:43Z" end-time="2026-11-11 12:42:51Z" duration="68.098454" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1108" name="FreeBattleAcceptanceTests" fullname="GrandNavigation.Gameplay.Water.Tests.FreeBattleAcceptanceTests" classname="GrandNavigation.Gameplay.Water.Tests.FreeBattleAcceptanceTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 12:41:43Z" end-time="2026-11-11 12:42:31Z" duration="47.553759" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1110" name="BattleSoakAndRenderBudget" fullname="GrandNavigation.Gameplay.Water.Tests.FreeBattleAcceptanceTests.BattleSoakAndRenderBudget" methodname="BattleSoakAndRenderBudget" classname="GrandNavigation.Gameplay.Water.Tests.FreeBattleAcceptanceTests" runstate="Runnable" seed="801000529" result="Passed" start-time="2026-11-11 12:41:43Z" end-time="2026-11-11 12:42:29Z" duration="46.055394" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1109" name="PredictionTracksVisibleLockAndHidesOnLoss" fullname="GrandNavigation.Gameplay.Water.Tests.FreeBattleAcceptanceTests.PredictionTracksVisibleLockAndHidesOnLoss" methodname="PredictionTracksVisibleLockAndHidesOnLoss" classname="GrandNavigation.Gameplay.Water.Tests.FreeBattleAcceptanceTests" runstate="Runnable" seed="135529287" result="Passed" start-time="2026-11-11 12:42:29Z" end-time="2026-11-11 12:42:31Z" duration="1.497603" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1111" name="FreeBattleTerrainTests" fullname="GrandNavigation.Gameplay.Water.Tests.FreeBattleTerrainTests" classname="GrandNavigation.Gameplay.Water.Tests.FreeBattleTerrainTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-11 12:42:31Z" end-time="2026-11-11 12:42:39Z" duration="8.419274" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1112" name="ShipsNavigateAndResetOnNewTerrain" fullname="GrandNavigation.Gameplay.Water.Tests.FreeBattleTerrainTests.ShipsNavigateAndResetOnNewTerrain" methodname="ShipsNavigateAndResetOnNewTerrain" classname="GrandNavigation.Gameplay.Water.Tests.FreeBattleTerrainTests" runstate="Runnable" seed="512426695" result="Passed" start-time="2026-11-11 12:42:31Z" end-time="2026-11-11 12:42:39Z" duration="8.418558" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1113" name="WaterIntegrationTests" fullname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests" classname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-11 12:42:39Z" end-time="2026-11-11 12:42:51Z" duration="12.124707" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1117" name="LeavingWaterSceneRestoresOriginalPipelineAndHooks" fullname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests.LeavingWaterSceneRestoresOriginalPipelineAndHooks" methodname="LeavingWaterSceneRestoresOriginalPipelineAndHooks" classname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests" runstate="Runnable" seed="844448815" result="Passed" start-time="2026-11-11 12:42:39Z" end-time="2026-11-11 12:42:41Z" duration="1.648380" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1116" name="RealSalvoTriggersWaterInteractionsWithoutChangingDamageOrReload" fullname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests.RealSalvoTriggersWaterInteractionsWithoutChangingDamageOrReload" methodname="RealSalvoTriggersWaterInteractionsWithoutChangingDamageOrReload" classname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests" runstate="Runnable" seed="1267975680" result="Passed" start-time="2026-11-11 12:42:41Z" end-time="2026-11-11 12:42:45Z" duration="3.933804" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1115" name="ShipWakeImpulseAndScrollingPreserveWorldSpaceHistory" fullname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests.ShipWakeImpulseAndScrollingPreserveWorldSpaceHistory" methodname="ShipWakeImpulseAndScrollingPreserveWorldSpaceHistory" classname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests" runstate="Runnable" seed="900436125" result="Passed" start-time="2026-11-11 12:42:45Z" end-time="2026-11-11 12:42:49Z" duration="4.549509" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1114" name="SourceAppearanceFFTAndReflectionsRenderOnCurrentURP" fullname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests.SourceAppearanceFFTAndReflectionsRenderOnCurrentURP" methodname="SourceAppearanceFFTAndReflectionsRenderOnCurrentURP" classname="GrandNavigation.Gameplay.Water.Tests.WaterIntegrationTests" runstate="Runnable" seed="485577102" result="Passed" start-time="2026-11-11 12:42:49Z" end-time="2026-11-11 12:42:51Z" duration="1.990982" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: C:/Users/13476/AppData/LocalLow/DefaultCompany/GrandNavigation\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

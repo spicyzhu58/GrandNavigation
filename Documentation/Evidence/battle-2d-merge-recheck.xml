@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-12 16:02:04Z" end-time="2026-11-12 16:02:14Z" duration="9.4326113">
+  <test-suite type="TestSuite" id="1136" name="GrandNavigation" fullname="GrandNavigation" runstate="Runnable" testcasecount="73" result="Passed" start-time="2026-11-12 16:02:04Z" end-time="2026-11-12 16:02:14Z" duration="9.432611" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1007" name="GrandNavigation.Battle2D.Tests.dll" fullname="D:/ykx/NTU 26fall/AP6412 FOUNDATION FOR TECHNOLOGY &amp; CODING/GrandNavigation/Library/ScriptAssemblies/GrandNavigation.Battle2D.Tests.dll" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 16:02:04Z" end-time="2026-11-12 16:02:14Z" duration="9.425644" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="63480" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1008" name="GrandNavigation" fullname="GrandNavigation" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 16:02:04Z" end-time="2026-11-12 16:02:14Z" duration="9.425252" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1009" name="Battle2D" fullname="GrandNavigation.Battle2D" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 16:02:04Z" end-time="2026-11-12 16:02:14Z" duration="9.425008" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1010" name="Tests" fullname="GrandNavigation.Battle2D.Tests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 16:02:04Z" end-time="2026-11-12 16:02:14Z" duration="9.424762" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="Battle2DTests" fullname="GrandNavigation.Battle2D.Tests.Battle2DTests" classname="GrandNavigation.Battle2D.Tests.Battle2DTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 16:02:04Z" end-time="2026-11-12 16:02:14Z" duration="9.424006" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1006" name="BothEnemyTypesMoveAndFireRealProjectiles" fullname="GrandNavigation.Battle2D.Tests.Battle2DTests.BothEnemyTypesMoveAndFireRealProjectiles" methodname="BothEnemyTypesMoveAndFireRealProjectiles" classname="GrandNavigation.Battle2D.Tests.Battle2DTests" runstate="Runnable" seed="654354247" result="Passed" start-time="2026-11-12 16:02:04Z" end-time="2026-11-12 16:02:14Z" duration="9.415216" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/13476/AppData/LocalLow/DefaultCompany/GrandNavigation\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

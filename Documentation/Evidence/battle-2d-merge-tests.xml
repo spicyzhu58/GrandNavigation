@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Failed(Child)" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-12 16:00:55Z" end-time="2026-11-12 16:01:29Z" duration="34.5743675">
+  <test-suite type="TestSuite" id="1136" name="GrandNavigation" fullname="GrandNavigation" runstate="Runnable" testcasecount="73" result="Failed" site="Child" start-time="2026-11-12 16:00:55Z" end-time="2026-11-12 16:01:29Z" duration="34.574368" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1007" name="GrandNavigation.Battle2D.Tests.dll" fullname="D:/ykx/NTU 26fall/AP6412 FOUNDATION FOR TECHNOLOGY &amp; CODING/GrandNavigation/Library/ScriptAssemblies/GrandNavigation.Battle2D.Tests.dll" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-12 16:00:55Z" end-time="2026-11-12 16:01:29Z" duration="34.567835" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="101140" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1008" name="GrandNavigation" fullname="GrandNavigation" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-12 16:00:55Z" end-time="2026-11-12 16:01:29Z" duration="34.567502" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1009" name="Battle2D" fullname="GrandNavigation.Battle2D" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-12 16:00:55Z" end-time="2026-11-12 16:01:29Z" duration="34.567313" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1010" name="Tests" fullname="GrandNavigation.Battle2D.Tests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-12 16:00:55Z" end-time="2026-11-12 16:01:29Z" duration="34.567113" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1001" name="Battle2DTests" fullname="GrandNavigation.Battle2D.Tests.Battle2DTests" classname="GrandNavigation.Battle2D.Tests.Battle2DTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-12 16:00:55Z" end-time="2026-11-12 16:01:29Z" duration="34.566278" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1006" name="BothEnemyTypesMoveAndFireRealProjectiles" fullname="GrandNavigation.Battle2D.Tests.Battle2DTests.BothEnemyTypesMoveAndFireRealProjectiles" methodname="BothEnemyTypesMoveAndFireRealProjectiles" classname="GrandNavigation.Battle2D.Tests.Battle2DTests" runstate="Runnable" seed="349573142" result="Failed" start-time="2026-11-12 16:00:55Z" end-time="2026-11-12 16:01:05Z" duration="10.203367" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: less than 600
+  But was:  600
+]]></message>
+                  <stack-trace><![CDATA[at GrandNavigation.Battle2D.Tests.Battle2DTests+<BothEnemyTypesMoveAndFireRealProjectiles>d__8.MoveNext () [0x00256] in D:\ykx\NTU 26fall\AP6412 FOUNDATION FOR TECHNOLOGY & CODING\GrandNavigation\Assets\_Game\Battle2D\Tests\Battle2DTests.cs:67
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@bd7f943e9647\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1004" name="MovementReverseTurnAndIslandCollision" fullname="GrandNavigation.Battle2D.Tests.Battle2DTests.MovementReverseTurnAndIslandCollision" methodname="MovementReverseTurnAndIslandCollision" classname="GrandNavigation.Battle2D.Tests.Battle2DTests" runstate="Runnable" seed="1454403777" result="Passed" start-time="2026-11-12 16:01:05Z" end-time="2026-11-12 16:01:20Z" duration="15.301203" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="RealInputThrottleSteeringLockFireAndZoom" fullname="GrandNavigation.Battle2D.Tests.Battle2DTests.RealInputThrottleSteeringLockFireAndZoom" methodname="RealInputThrottleSteeringLockFireAndZoom" classname="GrandNavigation.Battle2D.Tests.Battle2DTests" runstate="Runnable" seed="1196912538" result="Passed" start-time="2026-11-12 16:01:20Z" end-time="2026-11-12 16:01:22Z" duration="1.767225" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="RealShellDamageReloadAndIslandOcclusion" fullname="GrandNavigation.Battle2D.Tests.Battle2DTests.RealShellDamageReloadAndIslandOcclusion" methodname="RealShellDamageReloadAndIslandOcclusion" classname="GrandNavigation.Battle2D.Tests.Battle2DTests" runstate="Runnable" seed="1346432712" result="Passed" start-time="2026-11-12 16:01:22Z" end-time="2026-11-12 16:01:28Z" duration="6.155796" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="ResultsAndThreeRetries" fullname="GrandNavigation.Battle2D.Tests.Battle2DTests.ResultsAndThreeRetries" methodname="ResultsAndThreeRetries" classname="GrandNavigation.Battle2D.Tests.Battle2DTests" runstate="Runnable" seed="191140797" result="Passed" start-time="2026-11-12 16:01:28Z" end-time="2026-11-12 16:01:29Z" duration="1.129414" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/13476/AppData/LocalLow/DefaultCompany/GrandNavigation\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
